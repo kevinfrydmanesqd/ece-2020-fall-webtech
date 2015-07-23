@@ -31,6 +31,9 @@ storage API through HTTP REST services and service HTML pages.
 ## Data Streaming with HTTP push   
 
 It presents the HTTP push mechanism and it show how to update a graphic in realtime.
+
+## Notes
+
 All courses will take place in "Labo Linux User".
 
 

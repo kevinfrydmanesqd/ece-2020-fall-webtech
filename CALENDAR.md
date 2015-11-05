@@ -10,13 +10,13 @@ concepts of modules and packages.
 ## Packages best practices
 
 It shows how to respect Node.js convention to package modules with executable
-programs, dependencies and unit tests.
+programs, dependencies and unit tests. It will also initiate the use of git and github.
 
 ## Transpilers everywhere
 
 The language used across the course such as JavaScript, CSS, HTML can be written
 in alternative syntaxes. The rest of the course will present and use CoffeeScript,
-TypeScript, Jade, Stylus and friends.
+Jade, Stylus and friends.
 
 ## Embeded LevelDB datastore and unit testing
 

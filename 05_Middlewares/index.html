@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>ECE AST - Middlewares</title>
+
+    <meta name="description" content="ECE NodeJS class lesson on Middlewares">
+    <meta name="author" content="César Berezowski">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="../reveal.js/css/reveal.css">
+    <link rel="stylesheet" href="../reveal.js/css/theme/black.css" id="theme">
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="../reveal.js/lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? '../reveal.js/css/print/pdf.css' : '../reveal.js/css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div style="position:absolute; top:20px; left:20px;">
+    <p><img src="../img/adaltas.png" width="200px" style="margin: 10px 0" /></p>
+    </div>
+
+    <div class="reveal">
+
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+        <section>
+          <h1>Middlewares</h1>
+          <h4>Asynchronous Server Technologies</h4>
+          <p>
+            César Berezowski <br/>
+            <i>Big Data Consultant @ Adaltas</i><br/>
+            <i>cesar@adaltas.com</i>
+          </p>
+        </section>
+
+        <section data-markdown>
+          ## Recap
+
+          * Developper tools: terminal, editor, github, stack overflow, ...
+          * Best-practices on a NodeJS project :
+            - scripts: automate your commands
+            - npm: external libraries
+            - modules: split your code intelligently
+            - unit testing: check that your code does what it's supposed to
+            - transpilers: write cleaner code, faster
+        </section>
+
+        <section data-markdown>
+          ## Last class
+
+          * Tools: Nodemon & Postman
+          * Framework: ExpressJS
+          * Database: LevelDB
+        </section>
+
+        <section data-markdown>
+          ## Your project
+
+          Project on Github, written in coffee & using express
+
+          ```shell
+          myproject/ 
+          |-- .gitignore 
+          |-- .travis.yml 
+          |-- package.json 
+          |-- authors.txt
+          |-- readme.md 
+          |-- db/     -> levelDB files, DO NOT ADD TO GIT
+          |-- bin/     -> scripts
+          |-- src/    -> coffee code 
+          |-- lib/    -> compiled js from coffee , DO NOT ADD TO GIT
+          |-- public/ -> static files (css/js/imges)
+          |-- views/  -> jade views
+          +-- test/   -> unit tests
+          ```
+        </section>
+
+        <section data-markdown>
+          ## Final project
+
+          * Based on code from class
+
+          * Simple dashboard app :
+            * User login
+            * A user can insert metrics
+            * A user can retrieve his metrics in a graph
+            * A user can only access his own metrics
+        </section>
+
+        <section data-markdown>
+          ## Questions ?
+        </section>
+
+        <section data-markdown>
+          ## Middleware
+        </section>
+
+        <section data-markdown>
+          ## What is it ?
+
+          * Very vague term, multiple definition
+          * In our case :
+
+          "Middleware are functions that handle requests"
+        </section>
+        <section>
+          <section data-markdown>
+            ## Example
+
+            ```coffeescript
+            express = require 'express' 
+            app = express()
+
+            myMiddleware = (req, res, next) ->
+              console.log "#{req.method} on #{req.url}"
+              next()
+
+            app.use myMiddleware
+
+            app.get '/', (req, res) ->
+              res.status(200).send "Hello world !"
+
+            app.listen 1337, -> console.log 'listening on port 1337'
+            ```
+          </section>
+
+          <section data-markdown>
+            ## 2nd Example
+
+            Install [`morgan` middleware](https://github.com/expressjs/morgan) with npm
+
+            ```coffeescript
+            express = require 'express'
+            morgan = require 'morgan' 
+            app = express()
+
+            app.use morgan 'dev'
+
+            app.get '/', (req, res) ->
+              res.status(200).send "Welcome to the api"
+
+            app.get '/hello/:name', (req, res) ->
+              res.status(200).send "Hello #{req.params.name}"
+
+            app.listen 1337, -> console.log 'listening on port 1337'
+            ```
+          </section>
+        </section>
+
+        <section data-markdown>
+          ## How to use it
+
+          Global middleware
+
+          ```coffeescript
+          app.use middleware
+          ```
+
+          Route specific middleware
+
+          ```coffeescript
+          app.get '/myroute', middleware, (req, res) ->
+            # route logic
+          ```
+
+          Router specific middleware
+
+          ```coffeescript
+          router = express.Router()
+
+          router.use middleware
+          router.get '/myroute', (req, res) ->
+            # route logic
+          app.use router
+          ```
+        </section>
+
+        <section data-markdown>
+          ## What can we use it for ?
+
+          * Anything !
+          * Content validation / parsing
+          * Data completion
+          * User authentication / authorization
+          * Logging
+          * ...
+        </section>
+
+        <section data-markdown>
+          ## Some middlewares
+
+          * body-parser
+          * errorhandler
+          * cookie-parser
+          * morgan
+          * ...
+
+          [Exhaustive list](http://expressjs.com/en/resources/middleware.html), use the ones you find useful !
+        </section>
+
+        <section>
+          <section data-markdown>
+            ## Let's setup authentication
+
+            * We'll need :
+              * User CRUD (Create Read Update Delete)
+              * DB persistance
+              * User sessions
+              * User auth
+              * Authorization middleware
+              * Login pages
+            * We could also use [PassportJS](http://passportjs.org/)
+          </section>
+
+          <section data-markdown>
+            ### User CRUD
+
+            We need a user module !
+
+            ```coffeescript
+            module.exports =
+              get: (username, callback) ->
+                # TODO: get a user by username
+
+              save: (username, password, name, email, callback) ->
+                # TODO: get a user by username
+
+              remove: (username, callback) ->
+                # TODO: delete a user by username
+
+              # We won't do update
+            ```
+          </section>
+
+          <section data-markdown>
+            ### DB Persistance
+
+            `get`
+
+            ```coffeescript
+            db = require('./db') "#{__dirname}/../db/user"
+
+            module.exports =
+              get: (username, callback) ->
+                user = {}
+                rs = db.createReadStream
+                  gte: "user:#{username}"
+                rs.on 'data', (data) ->
+                  # parsing logic
+                rs.on 'error', callback
+                rs.on 'close', ->
+                  callback null, user
+            ```
+            Do the `save` and `remove` yourself
+          </section>
+
+          <section data-markdown>
+            ### User sessions
+
+            * Install [`level-session-store` middleware](https://github.com/scriptollc/level-session-store) with npm
+            * Install [`express-session` middleware](https://github.com/expressjs/session) with npm
+            * In our `app.coffee` :
+
+            ```coffeescript
+            session = require 'express-session'
+            LevelStore = require('level-session-store')(session)
+
+            app.use session
+              secret: 'MyAppSecret'
+              store: new LevelStore './db/sessions'
+              resave: true
+              saveUninitialized: true
+            ```
+          </section>
+
+          <section data-markdown>
+            ### User authentication
+
+            In our `app.coffee`
+
+            ```coffeescript
+            app.get '/login', (req, res) ->
+              res.render 'login'
+
+            app.post 'login', (req, res) ->
+              user.get req.body.username, (err, data) ->
+                return next err if err
+                unless # user login validation
+                  res.redirect '/login'
+                else
+                  req.session.loggedIn = true
+                  req.session.username = data.username
+                  res.redirect '/'
+
+            app.get '/logout', (req, res) ->
+              delete req.session.loggedIn
+              delete req.session.username
+              res.redirect '/login'
+            ```
+          </section>
+
+          <section data-markdown>
+            ### User authorization middleware
+
+            In our `app.coffee`
+
+            ```coffeescript
+            authCheck = (req, res, next) ->
+              unless req.session.loggedIn == true
+                res.redirect '/login'
+              else
+                next()
+
+            app.get '/', authCheck, (req, res) ->
+              res.render 'index', name: req.session.username
+            ```
+          </section>
+
+          <section data-markdown>
+            ### Login page layout
+
+            In a `views/login.jade`
+
+            ```html
+            block content
+              #form
+                p Please login to your account
+                hr
+                form#login(action='/login', method="post")
+                  .form-group
+                    label Username
+                    input(type='text', name="username")
+                  .form-group
+                    label Password
+                    input(type='password', name="password")
+                  button#login_submit.btn.btn-primary.btn-block(type='submit')
+                    i.icon-ok.icon-white
+                    |  Connect
+                  hr
+                  button.btn.btn-success.btn-block(type='button', href='/signup') Create an account
+            ```
+          </section>
+
+          <section data-markdown>
+            ### Index page layout
+
+            In your `index.jade` :
+
+            ```html
+            button.btn.btn-danger(href='/logout' onClick='document.location.href="/logout"') Logout
+            ```
+          </section>
+
+          <section data-markdown>
+            ### Your turn
+
+            * Do the `save` and `remove` functions for a user
+            * Do the `/signup` routes and form
+          </section>
+        </section>
+
+        <section data-markdown>
+          ## Questions ?
+        </section>
+
+        <section data-markdown>
+          ## Your work
+
+          * Fully implement `user` authentication
+          * Using the `metrics` module implemented for this week:
+            * Create a `user-metric` relation module
+            * Write the CRUD functions for this module
+            * Bind them to the corresponding routes
+            * Implement the mechanisms for a user to add metrics and retrieve them (only it's own !)
+          * On the front-end:
+            * Display data accordingly on the connected user
+            * Allow a user to display each of his metrics group
+        </section>
+      </div>
+    </div>
+
+    <script src="../reveal.js/lib/js/head.min.js"></script>
+    <script src="../reveal.js/js/reveal.js"></script>
+
+    <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: '../reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: '../reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: '../reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: '../reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+          { src: '../reveal.js/plugin/zoom-js/zoom.js', async: true },
+          { src: '../reveal.js/plugin/notes/notes.js', async: true }
+        ]
+      });
+
+    </script>
+
+  </body>
+</html>

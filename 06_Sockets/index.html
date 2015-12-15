@@ -4,9 +4,9 @@
   <head>
     <meta charset="utf-8">
 
-    <title>ECE AST - Sockets</title>
+    <title>ECE AST - Websockets</title>
 
-    <meta name="description" content="ECE NodeJS class lesson on Sockets">
+    <meta name="description" content="ECE NodeJS class lesson on Websockets">
     <meta name="author" content="César Berezowski">
 
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -45,7 +45,7 @@
       <!-- Any section element inside of this container is displayed as a slide -->
       <div class="slides">
         <section>
-          <h1>Sockets</h1>
+          <h1>Websockets</h1>
           <h4>Asynchronous Server Technologies</h4>
           <p>
             César Berezowski <br/>
@@ -55,51 +55,25 @@
         </section>
 
         <section data-markdown>
-          ## Recap
+          ## Up until now
 
-          * Developper tools: terminal, editor, github, stack overflow, ...
-          * Best-practices on a NodeJS project :
-            - scripts: automate your commands
-            - npm: external libraries
-            - modules: split your code intelligently
-            - unit testing: check that your code does what it's supposed to
-            - transpilers: write cleaner code, faster
-        </section>
+          - NodeJS: simple HTTP server with your modules
+          - NPM to manage our application and modules
+          - ExpressJS:
+            - Handle routing
+            - Manage user auth and sessions with middlewares
+            - Expose static content to display in a browser
+          - Transpilers to ease writing and reading code
+          - Level DB to store the data
+          - ...
 
-        <section data-markdown>
-          ## Last class
-
-          * Tools: Nodemon & Postman
-          * Framework: ExpressJS
-          * Database: LevelDB
-        </section>
-
-        <section data-markdown>
-          ## Your project
-
-          Project on Github, written in coffee & using express
-
-          ```shell
-          myproject/ 
-          |-- .gitignore 
-          |-- .travis.yml 
-          |-- package.json 
-          |-- authors.txt
-          |-- readme.md 
-          |-- db/     -> levelDB files, DO NOT ADD TO GIT
-          |-- bin/     -> scripts
-          |-- src/    -> coffee code 
-          |-- lib/    -> compiled js from coffee , DO NOT ADD TO GIT
-          |-- public/ -> static files (css/js/imges)
-          |-- views/  -> jade views
-          +-- test/   -> unit tests
-          ```
+          And also a set of best-practices and other tools to enhance the developer’s experience
         </section>
 
         <section data-markdown>
           ## Final project
 
-          * Based on code from class
+          * Using the code from class
 
           * Simple dashboard app :
             * User login
@@ -110,10 +84,172 @@
 
         <section data-markdown>
           ## Questions ?
+
+          Now is the time !
         </section>
 
         <section data-markdown>
-          ## Sockets
+          ## Websockets
+        </section>
+
+        <section data-markdown>
+          ## Client-Server communication
+
+          - Server holding the data
+
+          - Client getting the data
+
+          - Client needs to call to check for update
+
+          - Client needs to send its updates
+
+          - Regular updates => regular calls to the server
+
+          - Only simulated realtime with HTTP Polling
+        </section>
+
+        <section data-markdown>
+          ## What are websockets ?
+
+          - Client/server communication technology
+
+          - TCP socket connection between client & server
+
+          - Bi-directional => full duplex
+
+          - Low latency connection
+        </section>
+
+        <section data-markdown>
+          ## How do we use them ?
+
+          - Socket.IO !
+
+          - JS library
+
+          - Two part library:
+
+            - client in browser
+            - server side in Node.JS
+
+          - Event-driven, like Node.JS
+
+          - Used in Microsoft Office, Yammer, Zendesk, ...
+        </section>
+
+        <section data-markdown>
+          ## Questions ?
+        </section>
+
+        <section data-markdown>
+          ## Socket.io setup
+        </section>
+
+        <section data-markdown>
+          ## Basic express Server
+
+          - `npm init`
+
+          - `npm i --save express coffee-script jade jstransformer-coffee-script jstransformer-stylus nodemon`
+
+          ```
+          # src/app.coffee
+          app = require('express')()
+
+          app.set 'port', 1337
+          app.set 'views', "#{__dirname}/../views"
+          app.set 'view engine', 'jade'
+
+          app.get '/', (req, res) ->
+            res.render 'index'
+
+          app.listen app.get('port'), ->
+            console.log "server listening on #{app.get 'port'}"
+          ```
+        </section>
+
+        <section data-markdown>
+          ## Server with socket.io
+
+          - `npm i --save socket.io`
+
+          - Wrap express with `node-http`
+
+          - Instantiate `socket.io` with the server as parameter
+
+          ```
+          # src/app.coffe
+          eapp = require('express')()
+          server = require('http').Server(app)
+          io = require('socket.io')(server)
+          ```
+        </section>
+
+        <section data-markdown>
+          ## Server with socket.io
+
+          - Open `socket.io` connection
+
+          - Prepare events
+
+          ```
+          # src/app.coffe
+          express = require 'express'
+          app = express()
+          server = require('http').Server(app)
+          io = require('socket.io')(server)
+
+          # Rest of server code
+
+          io.on 'connection', (socket) ->
+            socket.emit 'news',
+              hello: 'world'
+            socket.on 'client event', (data) ->
+              console.log data
+
+          server.listen app.get('port'), ->
+            console.log "server listening on #{app.get 'port'}"
+          ```
+        </section>
+
+        <section data-markdown>
+          ## Front
+
+          Require `/socket.io/socket.io.js`
+
+          ```
+          # views/index.jade
+          block head
+            script(type="text/javascript" src="/socket.io/socket.io.js" charset="utf-8")
+          ```
+
+          Connect to the socket
+
+          ```
+          # views/index.jade
+          block content
+            p Hello
+            script
+              :coffee-script
+                socket = io.connect 'http://localhost:1337'
+                socket.on 'news', (data) ->
+                  console.log data
+                  socket.emit 'client event', my: 'data'
+          ```
+        </section>
+
+        <section data-markdown>
+          ## Check our installation
+
+          - `./node_modules/.bin/nodemon src/app.coffee`
+
+          - Load `http://localhost:1337` in your browser
+
+          - Check Node.JS' and the browser's console
+        </section>
+
+        <section data-markdown>
+          ## Let's make a simple chat
         </section>
       </div>
     </div>

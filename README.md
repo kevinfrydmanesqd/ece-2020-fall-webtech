@@ -21,3 +21,16 @@ This course is requiring familiarity with the JavaScript language and general kn
 
 No book is used nor required. Reliable information is gathered from wikis, GitHub, source codes and various blogs.
 
+## About those presentations
+
+Every presentation uses [reveal.js](https://github.com/hakimel/reveal.js/)
+
+To export to pdf, use [decktape](https://github.com/astefanutti/decktape) :
+
+```
+git clone --depth 1 https://github.com/astefanutti/decktape.git
+cd decktape
+curl -L http://astefanutti.github.io/decktape/downloads/phantomjs-[platform] -o bin/phantomjs
+chmod +x bin/phantomjs
+./bin/phantomjs decktape.js generic --keycode=Space file://path/to/prez.html /path/to/dest.pdf
+```

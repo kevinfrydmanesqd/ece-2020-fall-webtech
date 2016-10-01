@@ -109,13 +109,16 @@
         <section data-markdown>
 					## Node.JS
 
+					* Javascript runtime
 					* Created in 2009 by Ryan Dahl
 					* Uses Google’s V8 JavaScript Engine
 					* Package management using NPM
 					* Asynchronous IO
 					* Unix philosophy of small components
-					* Community on Github & backed up by the Node.js foundation
-					* Last version is 4.2.x
+					* Community
+						* on Github
+						* backed up by the Node.js foundation
+					* Current version is 6.7.0 & LTS is 4.6.0
         </section>
 
         <section data-markdown>
@@ -125,6 +128,18 @@
 					* Not blocking, not waisting CPU
 					* No memory synchronization
 					* Maintain multiple HTTP connections
+        </section>
+
+        <section data-markdown>
+          ## Event Loop
+
+          * Event-driven paradigm
+            * Central mechanisms
+            * Listens for events
+            * Calls a callback function
+              * ex: `element.onClick()`
+          * The event-loop delegates blocking calls to the system
+            * ex: writing, holding connections, ...
         </section>
 
         <section data-markdown>
@@ -162,9 +177,15 @@
 				<section data-markdown>
 					## Modules ?
 
-					* Use ‘module.exports = …’
+					* Use
+						```javascript
+						module.exports = …
+						```
 					* Export anything: a function, an array, an object …
-					* Import in another file: var my_mod = require(‘/path/to/my_file.js’)
+					* Import in another file: 
+						```javascript
+						var my_mod = require(‘/path/to/my_file.js’)`
+						```
 					* That’s how Node libraries are made !
 				</section>
 

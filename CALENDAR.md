@@ -3,6 +3,7 @@
 
 ## Node.js and NPM
 
+It starts with a review of the basic knowledge needed for web development.
 It provides a brief overview of Node.js, its usage, strengths and ecosystem with NPM.
 It is also a quick getting started to get a script up and running introducing the
 concepts of modules and packages.
@@ -11,9 +12,8 @@ It will finally initiate the use of git and github.
 ## Packages best practices
 
 It shows how to respect Node.js convention to package modules with executable
-programs, dependencies and unit tests and will introduce the use of external 
+programs, dependencies and unit tests and will introduce the use of external
 libraries.
-It will also present various tools to enhance the developing experience.
 
 ## Transpilers everywhere
 

@@ -57,10 +57,15 @@
         <section data-markdown>
           ## Recap
 
+          * Tools & concepts for web development
+            * Terminal & Vim
+            * Client / sever concepts
+            * IP/HTTP protocol & security + SSH
+            * Git & Github
+            * ...
           * What’s JS, NodeJS & NPM ?
           * What’s a package ? How is it made ?
           * First script & module
-          * What’s Git & GitHub ? How is it used ?
         </section>
 
         <section data-markdown>
@@ -70,6 +75,7 @@
 
           ```shell
           myproject/ 
+          |-- .gitignore
           |-- package.json 
           |-- readme.md 
           +-- src/ 
@@ -96,37 +102,6 @@
 
         <section data-markdown>
           ## Tools & processes
-        </section>
-
-        <section data-markdown>
-          ## Terminal
-
-          * Best and simplest tool
-          * Any number of customizations
-          * Oh-my-zsh (https://github.com/robbyrussell/oh-my-zsh)
-          * On windows : Powershell, Cygwin, …
-        </section>
-
-        <section data-markdown>
-          ## Atom editor
-
-          * As a developer, your editor shall be your best friend
-          * Developed by Github
-          * Developed with and running on Node.JS
-          * Highly customizable & lots of packages
-          * [http://atom.io](http://atom.io)
-          * Alternatives: TextWrangler, Sublime Text, ...
-        </section>
-
-        <section data-markdown>
-          ## Git apps
-
-          * GitX (Mac)
-          * GitG (Linux)
-          * GitHub (Mac/Win/Linux)
-          * SourceTree (Mac/Win/Linux)
-          * GitKraken (Mac/Win/Linux)
-          * Your terminal !
         </section>
 
         <section data-markdown>
@@ -194,18 +169,19 @@
           Simplify running commands
 
           ```shell
-          ./node_modules/mocha/bin/mocha test/* -> ./bin/test
+          # in ./bin/test
+          ./node_modules/mocha/bin/mocha test/*
           ```
 
           Prepare multiple commands
 
           ```shell
           bin/test : ./node_modules/.bin/mocha test
-          bin/start: node lib/index.js
+          bin/start: node src/index.js
           bin/mycommand ...
           ```
 
-          `chmod +x bin/*` to make it executable
+          `chmod +x bin/*` to make them executable
         </section>
 
         <section data-markdown>

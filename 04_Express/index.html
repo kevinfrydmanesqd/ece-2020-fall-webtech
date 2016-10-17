@@ -220,15 +220,15 @@
             ## Prepare a front end
 
             ```shell
-            npm i --save jade jstransformer-coffee-script
+            npm i --save pug jstransformer-coffee-script
             ```
 
             * Create a `view/` directory
-            * Create a `layout.jade` file in it:
+            * Create a `layout.pug` file in it:
 
             ```html
-            doctype
-            html 
+            doctype html
+            html (lang='en')
               head
                 title My Web Page 
                 block head
@@ -240,8 +240,7 @@
           <section data-markdown>
             ## Prepare a front end
 
-            * Create a `view/` directory
-            * Create a `layout.jade` file in it:
+            * Create an index.pug file :
 
             ```html
             extends layout
@@ -257,11 +256,11 @@
           <section data-markdown>
             ## Prepare a front end
 
-            Tell express to use our Jade views
+            Tell express to use our pug views
 
             ```coffeescript
             app.set 'views', "#{__dirname}/../views" 
-            app.set 'view engine', 'jade'
+            app.set 'view engine', 'pug'
             ```
 
             Render our index on `/`
@@ -292,7 +291,7 @@
             app.use '/', express.static "#{__dirname}/../public"
             ```
 
-            In our index.jade
+            In our index.pug
 
             ```html
             block head 
@@ -358,7 +357,7 @@
           <section data-markdown>
             ## And get it on the front-end !
 
-            * In our `index.jade`
+            * In our `index.pug`
 
             ```html
             block content 
@@ -373,7 +372,7 @@
           <section data-markdown>
             ## And get it on the front-end !
 
-            * In our `index.jade`
+            * In our `index.pug`
 
             ```html
             block content 
@@ -449,7 +448,7 @@
           ## Let’s setup
 
           ```shell
-          npm install --save levelup leveldown level-ws
+          npm install --save level level-ws
           ```
 
           * Create a `db/` directory at root
@@ -556,15 +555,15 @@
             ```coffeescript
             #!/usr/bin/env coffee
 
-  metric = require '../src/metrics'
+            metric = require '../src/metrics'
 
-            met = [ 
+            met = [ 
               timestamp:(new Date '2013-11-04 14:00 UTC').getTime(), value:12 
             , 
               timestamp:(new Date '2013-11-04 14:10 UTC').getTime(), value:13 
             ]
 
-            metric.save 0, met, (err) -> 
+            metric.save 0, met, (err) -> 
               throw err  if err
               console.log 'Metrics saved'
             ```

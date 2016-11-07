@@ -57,13 +57,14 @@
         <section data-markdown>
           ## Recap
 
-          * Developper tools: terminal, editor, github, stack overflow, ...
-          * Best-practices on a NodeJS project :
-            - scripts: automate your commands
-            - npm: external libraries
-            - modules: split your code intelligently
-            - unit testing: check that your code does what it's supposed to
-            - transpilers: write cleaner code, faster
+          * Developer tools: terminal, editor, github, stack overflow, travis-ci…
+          * Best practices on a node project :
+            * `scripts`: don’t repeat long and complicated commands
+            * `examples`: tell people how to use your code
+            * `npm`: external libraries
+            * `modules`: split your code intelligently
+            * `unit testing`: check that your code does what it is supposed to do
+            * `transpilers`: write cleaner code faster
         </section>
 
         <section data-markdown>
@@ -77,21 +78,20 @@
         <section data-markdown>
           ## Your project
 
-          Project on Github, written in coffee & using express
+          * Project on github linked to travis CI
 
           ```shell
           myproject/ 
-          |-- .gitignore 
-          |-- .travis.yml 
+          |-- .gitignore
+          |-- .travis.yml
           |-- package.json 
-          |-- authors.txt
           |-- readme.md 
-          |-- db/     -> levelDB files, DO NOT ADD TO GIT
-          |-- bin/     -> scripts
-          |-- src/    -> coffee code 
-          |-- lib/    -> compiled js from coffee , DO NOT ADD TO GIT
+          |-- db/     -> levelDB files, NOT IN GIT REPO
+          |-- bin/    -> scripts
+          |-- src/     -> coffee code
+          |-- lib/    -> compiled JS from Coffee, NOT IN GIT REPO
           |-- public/ -> static files (css/js/imges)
-          |-- views/  -> jade views
+          |-- views/  -> pug views
           +-- test/   -> unit tests
           ```
         </section>
@@ -217,6 +217,7 @@
           * ...
 
           [Exhaustive list](http://expressjs.com/en/resources/middleware.html), use the ones you find useful !
+          [Express doc on middlewares](http://expressjs.com/en/guide/using-middleware.html)
         </section>
 
         <section>
@@ -244,7 +245,7 @@
                 # TODO: get a user by username
 
               save: (username, password, name, email, callback) ->
-                # TODO: get a user by username
+                # TODO: save a user with it's info
 
               remove: (username, callback) ->
                 # TODO: delete a user by username
@@ -272,7 +273,7 @@
                 rs.on 'close', ->
                   callback null, user
             ```
-            Do the `save` and `remove` yourself
+            Do the `save` and `remove` by yourself
           </section>
 
           <section data-markdown>

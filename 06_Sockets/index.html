@@ -250,6 +250,101 @@
 
         <section data-markdown>
           ## Let's make a simple chat
+          
+          https://github.com/cesarBere/ece-nodejs-chat
+        </section>
+        
+        <section data-markdown>
+          ## Socket.IO in our context
+          
+          We'll use it for logging
+        </section>
+        
+        <section data-markdown>
+          ## Server side 
+          
+          Setup the Socket.IO server
+          
+          ```
+          app = express()
+          server = require('http').Server(app)
+          io = require('socket.io')(server)
+
+          sockets = []
+
+          io.on 'connection', (socket) ->
+            sockets.push socket
+            
+          # Session loading
+          ```
+        </section>
+        
+        <section data-markdown>
+          ## Server side 
+          
+          Prepare a logging middleware with IO
+          
+          ```
+          # Logging middleware
+          app.use (req, res, next) -> 
+            for socket, i in sockets 
+              socket.emit 'logs',
+                username: 
+                  if req.session.user == undefined then 'anonymous' 
+                  else req.session.user.username
+                url: req.url
+            next()
+          ```
+        </section>
+        
+        <section data-markdown>
+          ## Server side 
+          
+          Set logging route and run the server
+          
+          ```
+          app.get '/logging', (req, res) -> 
+            res.render 'logging'
+            
+          server.listen '1337', ->
+            console.log "listening on port 1337"
+          ```
+        </section>
+        
+        <section data-markdown>
+          ## Front side 
+          
+          Prepare a page to display the logs
+          
+          ```
+          doctype html
+            html(lang="en")
+              head
+                title AST - Logs
+                link(rel='stylesheet', href='/css/bootstrap.css')
+                script(type="text/javascript" src='/js/jquery-2.1.4.min.js')
+                script(type="text/javascript" src='/js/bootstrap.min.js')
+                script(type="text/javascript" src='/socket.io/socket.io.js')
+              body
+                .container
+                  h1 Logs
+                  #content 
+          ```
+        </section>
+        
+        <section data-markdown>
+          ## Front side 
+          
+          Setup the JS to handle Socket.IO
+          
+          ```
+          script
+            :coffee-script
+              socket = io.connect 'http://localhost:1337'
+              socket.on 'logs', (data) ->
+                $('#content').append "#{data.username} loaded #{data.url}"
+              ...
+          ```
         </section>
       </div>
     </div>

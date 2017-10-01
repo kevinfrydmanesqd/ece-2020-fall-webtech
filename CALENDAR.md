@@ -3,16 +3,16 @@
 
 ## Node.js and NPM
 
-It starts with a review of the basic knowledge needed for web development.
-It provides a brief overview of Node.js, its usage, strengths and ecosystem with NPM.
-It is also a quick getting started to get a script up and running introducing the
-concepts of modules and packages.
-It will finally initiate the use of git and github.
+The course starts with a review of the basic knowledge needed for web development.
+We'll do a brief overview of Node.js, its usage, strengths and ecosystem with 
+NPM and then a quick getting started to get a script up and running introducing 
+the concepts of modules and packages.
+We will finally initiate the use of git and github.
 
 ## Packages best practices
 
-It shows how to respect Node.js convention to package modules with executable
-programs, dependencies and unit tests and will introduce the use of external
+We'll see how to respect Node.js convention to package modules with executable
+programs, dependencies and unit tests and then introduce the use of external
 libraries.
 
 ## Transpilers everywhere
@@ -21,20 +21,30 @@ The language used across the course such as JavaScript, CSS, HTML can be written
 in alternative syntaxes. The rest of the course will present and use CoffeeScript,
 Jade, Stylus and friends.
 
-## Embeded LevelDB datastore and unit testing
+## ExpressJS & Storage
 
-It writes the storage API to manage a LevelDB database and interact with it.
-The writing process will be driven by unit tests.
+The course will introduce Node.js frameworks and focus on ExpressJS to write a 
+web application that exposes REST services and renders HTML pages.
 
-## Advanced web application and REST service
+In the second part we'll choose database (LevelDB) and write the storage API to 
+manage it and interact with it. The writing process will be driven by unit tests.
 
-Using the popular Express to write a web application framework. It exposes the
-storage API through HTTP REST services and service HTML pages.
+This class is also the beginning point for the final project
 
-## Data Streaming with HTTP push
+## Middlewares 
 
-It presents the HTTP push mechanism and it shows how to update a graphic in realtime.
+We'll learn how to use ExpressJS' middlewares, first with existing libraries and
+then by writing our own middlewares for authenticating.
+
+## Data Streaming with sockets
+
+The course will introduce the web sockets protocol and demonstrate its uses with
+a mini-project.
 
 ## Notes
 
-All courses will take place in "Labo Linux User".
+* All of the students' code should be on a git platform
+* The class' notation will take in account :
+  * Continuous assesment (through git history)
+  * A written test
+  * A final project

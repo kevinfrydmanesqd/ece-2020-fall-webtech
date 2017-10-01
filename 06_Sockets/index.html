@@ -80,6 +80,7 @@
             * A user can insert metrics
             * A user can retrieve his metrics in a graph
             * A user can only access his own metrics
+          * See [PROJECT.md](https://github.com/adaltas/ece-nodejs/blob/master/project.md)
         </section>
 
         <section data-markdown>
@@ -96,27 +97,19 @@
           ## Client-Server communication
 
           - Server holding the data
-
           - Client getting the data
-
           - Client needs to call to check for update
-
           - Client needs to send its updates
-
           - Regular updates => regular calls to the server
-
           - Only simulated realtime with HTTP Polling
         </section>
 
         <section data-markdown>
           ## What are websockets ?
 
-          - Client/server communication technology
-
+         - Client/server communication technology
           - TCP socket connection between client & server
-
           - Bi-directional => full duplex
-
           - Low latency connection
         </section>
 
@@ -124,16 +117,11 @@
           ## How do we use them ?
 
           - Socket.IO !
-
           - JS library
-
           - Two part library:
-
             - client in browser
             - server side in Node.JS
-
           - Event-driven, like Node.JS
-
           - Used in Microsoft Office, Yammer, Zendesk, ...
         </section>
 
@@ -149,7 +137,6 @@
           ## Basic express Server
 
           - `npm init`
-
           - `npm i --save express coffee-script jade jstransformer-coffee-script jstransformer-stylus nodemon`
 
           ```
@@ -172,9 +159,7 @@
           ## Server with socket.io
 
           - `npm i --save socket.io`
-
           - Wrap express with `node-http`
-
           - Instantiate `socket.io` with the server as parameter
 
           ```
@@ -189,7 +174,6 @@
           ## Server with socket.io
 
           - Open `socket.io` connection
-
           - Prepare events
 
           ```
@@ -199,7 +183,7 @@
           server = require('http').Server(app)
           io = require('socket.io')(server)
 
-          # Rest of server code
+          # rest of server code
 
           io.on 'connection', (socket) ->
             socket.emit 'news',
@@ -242,9 +226,7 @@
           ## Check our installation
 
           - `./node_modules/.bin/nodemon src/app.coffee`
-
           - Load `http://localhost:1337` in your browser
-
           - Check Node.JS' and the browser's console
         </section>
 

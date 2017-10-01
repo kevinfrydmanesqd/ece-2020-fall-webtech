@@ -73,13 +73,13 @@
           * Project on github linked to travis CI
 
           ```shell
-          myproject/ 
+          myproject/
           |-- .gitignore
           |-- .travis.yml
-          |-- package.json 
-          |-- readme.md 
+          |-- package.json
+          |-- readme.md
           |-- bin/ -> scripts
-          |-- src/  -> coffee code
+          |-- src/ -> coffee code
           |-- lib/ -> compiled JS from Coffee
           +-- test/
           ```
@@ -95,6 +95,7 @@
             * A user can insert metrics
             * A user can retrieve his metrics in a graph
             * A user can only access his own metrics
+          * See [PROJECT.md](https://github.com/adaltas/ece-nodejs/blob/master/project.md)
         </section>
 
         <section data-markdown>
@@ -174,9 +175,9 @@
 
           ```shell
           express = require 'express'
-          app = express()  
+          app = express()
 
-          app.set 'port', 1337  
+          app.set 'port', 1337
 
           app.listen app.get('port'), () ->
             console.log "server listening on #{app.get 'port'}"
@@ -190,16 +191,16 @@
           * With Express:
 
           ```js
-          app.get '/', (req, res) -> 
-            # GET  
+          app.get '/', (req, res) ->
+            # GET
 
-          app.post '/', (req, res) -> 
-            # POST  
+          app.post '/', (req, res) ->
+            # POST
 
-          app.put '/', (req, res) -> 
+          app.put '/', (req, res) ->
             # PUT
 
-          app.delete '/', (req, res) -> 
+          app.delete '/', (req, res) ->
             # DELETE
           ```
         </section>
@@ -210,7 +211,7 @@
           You can add parameters in the routes :
 
           ```shell
-          app.get '/hello/:name', (req, res) -> 
+          app.get '/hello/:name', (req, res) ->
             res.send "Hello #{req.params.name}"
           ```
         </section>
@@ -228,9 +229,9 @@
 
             ```html
             doctype html
-            html (lang='en')
+            html(lang='en')
               head
-                title My Web Page 
+                title My Web Page
                 block head
               body
                 block content
@@ -259,7 +260,7 @@
             Tell express to use our pug views
 
             ```coffeescript
-            app.set 'views', "#{__dirname}/../views" 
+            app.set 'views', "#{__dirname}/../views"
             app.set 'view engine', 'pug'
             ```
 
@@ -277,7 +278,7 @@
             ## Make it sexy !
 
             * Expose static content (JS, CSS, Images, …)
-            * Download bootstrap [ getbootstrap.com/getting-started/#download](http:// getbootstrap.com/getting-started/#download)
+            * Download bootstrap [getbootstrap.com/getting-started/#download](http://getbootstrap.com/getting-started/#download)
             * Download JQuery [code.jquery.com/jquery-2.1.4.min.js](http://code.jquery.com/jquery-2.1.4.min.js)
             * Add the css in public/css and the js in public/js
           </section>
@@ -294,9 +295,9 @@
             In our index.pug
 
             ```html
-            block head 
+            block head
               script(type="text/javascript" src="/js/jquery-2.1.4.min.js" charset="utf-8")
-              script(type="text/javascript" src="/js/bootstrap.min.js" charset="utf-8") 
+              script(type="text/javascript" src="/js/bootstrap.min.js" charset="utf-8")
               link(rel='stylesheet', href='/css/bootstrap.min.css')
             ```
 
@@ -321,20 +322,20 @@
             * Let’s create a new module called `metrics`:
 
             ```coffeescript
-            module.exports = 
+            module.exports =
               ###
-                `get(callback)` 
-                ——————— 
-                returns some hard-coded metrics 
+                `get(callback)`
+                ———————
+                returns some hard-coded metrics
 
                 `callback`: callback function
-              ###  
+              ###
 
-              get: (callback) -> 
+              get: (callback) ->
                 callback null, [
-                  timestamp:(new Date '2013-11-04 14:00 UTC').getTime(), value:12 
+                  timestamp:(new Date '2013-11-04 14:00 UTC').getTime(), value:12
                 ,
-                    timestamp:(new Date '2013-11-04 14:30 UTC').getTime(), value:15 
+                    timestamp:(new Date '2013-11-04 14:30 UTC').getTime(), value:15
                 ]
             ```
           </section>
@@ -360,11 +361,11 @@
             * In our `index.pug`
 
             ```html
-            block content 
-              div.container 
-                div.col-md-6.col-md-offset-3 
-                  p hello world ! 
-                  button(type="button" class="btn btn-success" id="show-metrics") Bring the metrics 
+            block content
+              div.container
+                div.col-md-6.col-md-offset-3
+                  p hello world !
+                  button(type="button" class="btn btn-success" id="show-metrics") Bring the metrics
                   #metrics
             ```
           </section>
@@ -375,7 +376,7 @@
             * In our `index.pug`
 
             ```html
-            block content 
+            block content
               script
                 :coffee-script
                   $('#show-metrics').click (e) ->
@@ -403,7 +404,7 @@
         </section>
 
         <section data-markdown>
-          ## How about storing ?
+          ## What about storage ?
         </section>
 
         <section data-markdown>
@@ -440,9 +441,11 @@
         <section data-markdown>
           ## Some limitations
 
-          * Not an SQL database
+          * Not a SQL database
           * Only a single process at a time
         </section>
+        
+        <!-- Use unit tests !!! -->
 
         <section data-markdown>
           ## Let’s setup
@@ -468,14 +471,14 @@
           To write
 
           ```html
-          db.put key, value, (err) -> 
+          db.put key, value, (err) ->
             if err then …
           ```
 
           To read
 
           ```html
-          db.get key, (err, value) -> 
+          db.get key, (err, value) ->
             if err then …
           ```
         </section>
@@ -506,13 +509,13 @@
             In our `metrics.coffee`, add a save function
 
             ```coffeescript
-            save: (id, metrics, callback) -> 
-              ws = db.createWriteStream() 
-              ws.on 'error', callback 
-              ws.on 'close', callback 
-              for metric in metrics 
+            save: (id, metrics, callback) ->
+              ws = db.createWriteStream()
+              ws.on 'error', callback
+              ws.on 'close', callback
+              for metric in metrics
                 {timestamp, value} = metric
-                ws.write key: "metric:#{id}:#{timestamp}", value: value 
+                ws.write key: "metric:#{id}:#{timestamp}", value: value
               ws.end()
             ```
           </section>
@@ -526,7 +529,7 @@
             npm i --save body-parser
             ```
 
-            Configure Express to use it 
+            Configure Express to use it
 
             ```coffeescript
             app.use bodyparser.json()
@@ -540,12 +543,12 @@
             * Using Postman :
               * Set up a POST request on /metrics
               * Set the header Content-Type:application/json
-              * Add an array of metrics as RAW body : 
+              * Add an array of metrics as RAW body :
 
             ```shell
-            [ 
-              { "timestamp":"1384686660000", "value":"10" } 
-            ] 
+            [
+              { "timestamp":"1384686660000", "value":"10" }
+            ]
             ```
           </section>
 
@@ -557,14 +560,14 @@
 
             metric = require '../src/metrics'
 
-            met = [ 
-              timestamp:(new Date '2013-11-04 14:00 UTC').getTime(), value:12 
-            , 
-              timestamp:(new Date '2013-11-04 14:10 UTC').getTime(), value:13 
+            met = [
+              timestamp:(new Date '2013-11-04 14:00 UTC').getTime(), value:12
+            ,
+              timestamp:(new Date '2013-11-04 14:10 UTC').getTime(), value:13
             ]
 
-            metric.save 0, met, (err) -> 
-              throw err  if err
+            metric.save 0, met, (err) ->
+              throw err if err
               console.log 'Metrics saved'
             ```
           </section>

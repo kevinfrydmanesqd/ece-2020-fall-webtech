@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>ECE AST - Production</title>
+
+    <meta name="description" content="ECE NodeJS class lesson on Production considerations">
+    <meta name="author" content="César Berezowski">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="../reveal.js/css/reveal.css">
+    <link rel="stylesheet" href="../reveal.js/css/theme/black.css" id="theme">
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="../reveal.js/lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? '../reveal.js/css/print/pdf.css' : '../reveal.js/css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div style="position:absolute; top:20px; left:20px;">
+    <p><img src="../img/adaltas.png" width="200px" style="margin: 10px 0" /></p>
+    </div>
+
+    <div class="reveal">
+
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+        <section>
+          <h1>Production</h1>
+          <h4>Asynchronous Server Technologies</h4>
+          <p>
+            César Berezowski <br/>
+            <i>Big Data Consultant @ Adaltas</i><br/>
+            <i>cesar@adaltas.com</i>
+          </p>
+        </section>
+
+        <section data-markdown>
+          ## Up until now
+
+          - NodeJS: simple HTTP server with your modules
+          - NPM to manage our application and modules
+          - ExpressJS:
+            - Handle routing
+            - Manage user auth and sessions with middlewares
+            - Expose static content to display in a browser
+          - Transpilers to ease writing and reading code
+          - Level DB to store the data
+          - Websockets
+          - ...
+
+          And also a set of best-practices and other tools to enhance the developer’s experience
+        </section>
+
+        <section data-markdown>
+          ## Final project
+
+          * Using the code from class
+
+          * Simple dashboard app :
+            * User login
+            * A user can insert metrics
+            * A user can retrieve his metrics in a graph
+            * A user can only access his own metrics
+          * See [PROJECT.md](https://github.com/adaltas/ece-nodejs/blob/master/project.md)
+        </section>
+
+        <section data-markdown>
+          ## Questions ?
+
+          Now is the time !
+        </section>
+        
+
+        <section data-markdown>
+          ## What's "production" ?
+
+          When your code is running in the final target environment e.g. your website is accessible to the public
+        </section>
+
+        <section data-markdown>
+          ## Production considerations
+          
+          - Running an app 
+          - Environment variables / arguments 
+          - Error handling 
+          - Security
+        </section>
+
+        <section data-markdown>
+          ## Running an app 
+          
+          - `forever` module (~nohup): simple
+          - Docker: compartimented but more work
+          - Hosting platform: little work but costs more (google cloud, digitalocean, azure, ...)
+
+        </section>
+        
+        <section data-markdown>
+          ## Env variables
+          
+          `process.env.[VAR_NAME]`
+          
+          - `NODE_ENV` -> production / development 
+          - ...
+          
+          Use [dotenv](https://www.npmjs.com/package/dotenv) module to ease the use of env variables
+        </section>
+        
+        <section data-markdown>
+          ## Application arguments 
+          
+          `process.argv`
+          
+          - Parsers: [argparse](nodeca.github.io/argparse/), [yargs](yargs.js.org), [parameters](github.com/adaltas/node-parameters)
+        </section>
+        
+        <section data-markdown>
+          ## Error handling 
+          
+          - An error can be wrapped in an `Error` object 
+          - Once thrown (`throw new Error("...")`) it becomes an Exception
+          - Exceptions can be caught like in any other language 
+          - In dev: [`errorhandler`](https://www.npmjs.com/package/errorhandler) module
+          
+          Lots of documentation on the subject, for ex: https://www.joyent.com/node-js/production/design/errors
+        </section>
+        
+        <section data-markdown>
+          ## Security: HTTPS
+          
+          ```
+          https = require 'https'
+          fs = require 'fs'
+          app = require('express')()
+          
+          # prepare express app...
+          
+          options =
+            key: fs.readFileSync path_to_key
+            cert: fs.readFileSync path_to_cert
+
+          https.createServer(options, app).listen '[port]', ->
+            console.log "Up at https://localhost:[port]"
+          ```
+        </section>
+        
+        <section data-markdown>
+          ## Security: Others
+          
+          - Hosting server 
+          - DB: access, stored pwd, ...
+          - User sessions
+          - !! *Nothing in front JS is secure* !!
+          - Beware of what you git (logins, api keys, tokens, ...)
+        </section>
+
+        <section data-markdown>
+          ## Questions ?
+        </section>
+
+        <section data-markdown>
+          ## What else can you do with Node.JS ?
+          
+          - Desktop apps with [electron](electronjs.org) (ex: Atom !) 
+          - CLIs / automation (ex: [`rimraf`](github.com/isaacs/rimraf) or Adaltas' [`nikita`](github.com/adaltas/node-nikita) )
+        </section>
+      </div>
+    </div>
+
+    <script src="../reveal.js/lib/js/head.min.js"></script>
+    <script src="../reveal.js/js/reveal.js"></script>
+
+    <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: '../reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: '../reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: '../reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: '../reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+          { src: '../reveal.js/plugin/zoom-js/zoom.js', async: true },
+          { src: '../reveal.js/plugin/notes/notes.js', async: true }
+        ]
+      });
+
+    </script>
+
+  </body>
+</html>

@@ -1,17 +1,17 @@
 
 # Calendar
 
-## Node.js and NPM
+## Node.JS and NPM
 
 The course starts with a review of the basic knowledge needed for web development.
-We'll do a brief overview of Node.js, its usage, strengths and ecosystem with 
+We'll do a brief overview of Node.JS, its usage, strengths and ecosystem with 
 NPM and then a quick getting started to get a script up and running introducing 
 the concepts of modules and packages.
 We will finally initiate the use of git and github.
 
 ## Packages best practices
 
-We'll see how to respect Node.js convention to package modules with executable
+We'll see how to respect Node.JS convention to package modules with executable
 programs, dependencies and unit tests and then introduce the use of external
 libraries.
 
@@ -23,7 +23,7 @@ Jade, Stylus and friends.
 
 ## ExpressJS & Storage
 
-The course will introduce Node.js frameworks and focus on ExpressJS to write a 
+The course will introduce Node.JS frameworks and focus on ExpressJS to write a 
 web application that exposes REST services and renders HTML pages.
 
 In the second part we'll choose database (LevelDB) and write the storage API to 
@@ -41,10 +41,17 @@ then by writing our own middlewares for authenticating.
 The course will introduce the web sockets protocol and demonstrate its uses with
 a mini-project.
 
+## Production considerations
+
+We'll talk production and the basics of production requirements in the context of a Node.JS application.
+
+We will also see alternative uses of Node.JS.
+
 ## Notes
 
 * All of the students' code should be on a git platform
 * The class' notation will take in account :
   * Continuous assesment (through git history)
   * A written test
+  * A lab work 
   * A final project

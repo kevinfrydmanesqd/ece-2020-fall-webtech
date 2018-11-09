@@ -2,20 +2,19 @@
 
 ## Introduction
 
-We will cover best practices when developing Node.js programs including API design, package definition, NPM interaction, test coverages and CoffeeScript. Each unit of the course are design to complement each other in the building of a real-life application. We propose to build a time-serie database which collect data from multiple agents, store the data and provide access throuh a web application and a REST api. For example, the result could be used to collect system metrics from a cluster.
+We will cover best practices when developing Node.js programs including API design, package definition, NPM interaction, test coverages and TypeScript. Each unit of the course is designed to complement each other in the building of a real-life application. We propose to build an API enabling to store and retrieve timeseries data with a complementary web UI. For example, the result could be used to collect system metrics from a cluster.
 
 ## Requirements
 
-This course is requiring familiarity with the JavaScript language and general knowledges in Web technologies. Prior experience with server side environment such as Lamp is a plus.
+This course is requiring familiarity with the JavaScript language and general knowledges in Web technologies. Prior experience with server side environment such as Lamp is a plus. A reminder of basic web and UNIX knowledge will be done during first class.
 
 ## Outline
 
-1.  Node.js and NPM
-2.  Packages best practices
-3.  Transpilers everywhere
-4.  Embeded LevelDB datastore and unit testing   
-5.  Advanced web application and REST service   
-6.  Data Streaming with HTTP push   
+1.  Node.js
+2.  Dependency management & ExpressJS framework
+3.  Transpilation & embedded datastore with unit testing
+4.  Middlewares & authentication
+5.  Real-time communication with Socket.io & production considerations
 
 ## Bibliography/webography
 

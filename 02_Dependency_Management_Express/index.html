@@ -1,0 +1,561 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>ECE AST - ExpressJS</title>
+
+    <meta name="description" content="ECE NodeJS lesson on ExpressJS">
+    <meta name="author" content="César Berezowski">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="../reveal.js/css/reveal.css">
+    <link rel="stylesheet" href="../reveal.js/css/theme/black.css" id="theme">
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="../reveal.js/lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? '../reveal.js/css/print/pdf.css' : '../reveal.js/css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div style="position:absolute; top:20px; left:20px;">
+    <p><img src="../img/adaltas.png" width="200px" style="margin: 10px 0" /></p>
+    </div>
+
+    <div class="reveal">
+
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+        <section>
+          <h1>NodeJS</h1>
+          <h4>Asynchronous Server Technologies</h4>
+          <p>
+            César Berezowski <br/>
+            <i>Big Data Consultant & Data Engineer @ Adaltas</i><br/>
+            <i>cesar@adaltas.com</i>
+          </p>
+        </section>
+
+        <section data-markdown>
+          ## About this course
+
+          * You will use / do :
+            * JavaScript / TypeScript & Markdown
+            * Node.JS & NPM or yarn
+            * Git & Github / GitLab
+            * Unit tests & Travis CI
+            * Use a framework & transpiler
+            * Read the doc ! Ask Google !
+          * You will apprehend tools of the Open Source
+        </section>
+
+        <section data-markdown>
+          ## About this course
+
+          * Evaluation :
+            * Continuous using Git
+            * Simple project at end of course
+          * Planning: [CALENDAR.md](https://github.com/adaltas/ece-nodejs/blob/master/CALENDAR.md)
+        </section>
+
+        <section data-markdown>
+          ## Final project
+
+          * Based on code from class
+          * Using presented technologies
+          * Simple dashboard app :
+            * User login
+            * A user can insert simple metrics
+            * A user can retrieve his metrics displayed nicely in a graph
+            * A user can only access his own metrics
+          * See [PROJECT.md](https://github.com/adaltas/ece-nodejs/blob/master/project.md)
+        </section>
+
+        <section data-markdown>
+          ## Recap
+
+          * Tools & concepts for web development
+            * Terminal & Vim
+            * Client / sever concepts
+            * IP/HTTP protocol & security + SSH
+            * Git & Github
+            * ...
+          * What’s JS & NodeJS
+          * How do you setup a NodeJS server with basic routing
+          * What’s a package ? How is it made ?
+        </section>
+
+        <section data-markdown>
+          ## Questions ?
+        </section>
+
+        <section data-markdown>
+          ## Summary
+          
+          * Dependency management
+          * Nodemon (tool)
+          * ExpressJS (framework)
+          * Postman (tool)
+        </section>
+
+        <section data-markdown>
+          ## Dependency Management
+
+          * Download and install existing packages 
+          * State versions used by your app
+          * Not reinvent the wheel
+          * Participate to the community
+        </section>
+  
+        <section data-markdown>
+          ## NPM 
+
+          * Package manager for Node.JS
+          * Developed by Isaac Z. Schlueter
+          * Upload, share & download packages
+          * Two modes: global & local
+          * Modules: system I/O, networking, cryptography, framework, …
+          * [npmjs.com](http://npmjs.com)
+        </section>
+        
+        <section data-markdown>
+          ## yarn
+          
+          * Alternative package manager for Node.JS
+          * Developed & open-sourced by Facebook
+          * Introduced novelties recuperated by NPM v4 & 5
+          * Equivalent nowadays
+        </section>
+
+        <section data-markdown>
+          ## Install dependencies
+
+          * Add using NPM / yarn / package.json (manual)
+          * Specify version
+          * Install locally / globally
+
+          ```shell
+          npm i[nstall] [--save] [--save-dev] [-g] package_name
+          yarn add package_name [--dev]
+          ```
+
+          * Installation location: node_modules
+        </section>
+
+				<section data-markdown>
+          ## Module declaration
+          
+          `package.json`: stores a module's informations
+
+          * 'name', 'description', 'version', `license` and `private`
+          * 'dependencies' and 'devDependencies'
+          * scripts and commands
+          ```json
+          {
+            "name": "ece-ast",
+            "description": "NodeJS project for ECE class",
+            "version": "0.1.0",
+            "license": "UNLICENSED",
+            "private": true,
+            "dependencies": {},
+            "devDependencies": {}
+          }
+          ```
+
+          [package.json doc](https://docs.npmjs.com/files/package.json)
+        </section>
+
+				<section data-markdown>
+          ## Module declaration
+          
+          Interactive `package.json` creation with 
+          
+          ```shell
+          npm init
+          yarn init
+          ```
+
+          [package.json doc](https://docs.npmjs.com/files/package.json)
+        </section>
+
+				<section data-markdown>
+          ## Dependencies declaration
+          
+          * dependencies: necessary to make your app run
+          ```json
+          { "dependencies": {
+            "foo": "1.0.0", // Version 1.0.0 exactly
+            "bar": ">1.0.0", // Any superior to 1.0.0
+            "baz": "1.2.x", // Any 1.2 version
+            "boo": "owner/repo", // The github project repo from owner
+            "asd": "[git url]", // The module in given repo
+            "local": "file:/path/to/file",
+            "tar": "http://web.site/my.tar.gz"
+          }}
+          ```
+          * devDependencies: test runners, doc framework, ...
+
+          [package.json doc](https://docs.npmjs.com/files/package.json)
+        </section>
+
+				<section data-markdown>
+          ## Versioning with Semver
+          
+          * [Semantic Versionning](https://semver.org/)
+          * Version X.Y.Z
+            - X = Major, breaking changes
+            - Y = Minor, new features and backward compatible 
+            - Z = Patch, bug fixing
+          * Version 0.Y.Z = unitial dev, unstable
+        </section>
+        
+        <section data-markdown>
+          ## Deterministic Installs: lock file
+
+          * `package-lock.json` for NPM 
+          * `yarn.lock` for yarn
+          * Fixes dependency versions
+          * Avoids the "but it works on my computer!" situation
+        </section>
+        
+        <section data-markdown>
+          ## Nodemon
+        </section>
+
+        <section data-markdown>
+          ## What is it ?
+
+          * A simple utility
+          * Watches your development files
+          * Restarts the server on saving
+        </section>
+
+        <section data-markdown>
+          ## How to use it ?
+
+          ```shell
+          npm i --save nodemon
+          # or
+          yarn add nodemon
+          # thzn 
+          ./node_modules/.bin/nodemon main.js
+          ```
+        </section>
+
+        <section data-markdown>
+          ## ExpressJS
+        </section>
+
+        <section data-markdown>
+          ## What is it ?
+
+          * Minimalist framework for NodeJS apps
+          * Provides features for web app development
+          * Create robust APIs
+          * Functions to expose a front end
+        </section>
+
+        <section data-markdown>
+          ## What’s an API ?
+
+          * Application Programming Interface
+          * In web: REST
+            * Expose a set of HTTP routes
+            * Use HTTP verbs (GET / POST / PUT / DELETE)
+            * Client connects to communicate
+            * Usually communicating in JSON
+        </section>
+
+        <section data-markdown>
+          ## How to use an API ?
+
+          * Combination of two sides:
+            * Back-end: rest api
+            * Front-end: web pages w/ JS, mobile app, …
+          * Express brings both for the web !
+        </section>
+
+        <section data-markdown>
+          ## Create a basic server
+
+          * Manually: use `node-http`
+          * With express:
+
+          ```javascript
+          express = require('express')
+          app = express()
+
+          app.set('port', 1337)
+
+          app.listen(
+            app.get('port'), 
+            () => console.log(`server listening on ${app.get('port')}`)
+          )
+          ```
+        </section>
+
+        <section data-markdown>
+          ## Routing
+
+          * Manually: parse the url and apply corresponding logic
+          * With Express:
+
+          ```javascript
+          app.get('/', function (req, res) {
+            // GET
+          })
+
+          app.post('/', (req, res) => {
+            // POST
+          })
+
+          app
+            .put('/', function (req, res) {
+              // PUT
+            })
+            .delete('/', (req, res) => {
+              // DELETE
+            })
+          ```
+        </section>
+
+        <section data-markdown>
+          ## Routing
+
+          You can add parameters in the routes :
+
+          ```javascript
+          app.get(
+            '/hello/:name', 
+            (req, res) => res.send("Hello " + req.params.name)
+          )
+          ```
+        </section>
+
+        <section data-markdown>
+          ## Prepare a quick front end
+          
+          * Install package `ejs`
+          * Create a `view/` directory
+          * Create a `hello.ejs` file in it:
+
+          ```html
+          &lt;h1>Hello <%= name %>&lt;/h1>
+          &lt;p>Welcome to our humble application&lt;/p>
+          ```
+        </section>
+
+        <section data-markdown>
+          ## Prepare a front end
+
+          Tell express to expose our views with ejs templating:
+
+          ```javascript
+          app.set('views', __dirname + "/views")
+          app.set('view engine', 'ejs');
+          ```
+
+          Render our index on `/hello/:name`:
+
+          ```javascript
+          app.get(
+            '/hello/:name', 
+            (req, res) => res.render('hello.ejs', {name: req.params.name})
+          )
+          ```
+        </section>
+
+          <section data-markdown>
+            ## Make it sexy !
+
+            * Expose static content (JS, CSS, Images, …)
+            * Download bootstrap [getbootstrap.com/getting-started/#download](http://getbootstrap.com/getting-started/#download)
+            * Download JQuery [code.jquery.com/jquery-3.1.2.min.js](http://code.jquery.com/jquery-3.1.2.min.js)
+            * Add the css in public/css and the js in public/js
+          </section>
+
+          <section data-markdown>
+            ## Make it sexy !
+
+            * In `index.js`
+            ```js
+            path = require('path')
+            app.use(express.static(path.join(__dirname, 'public')))
+            ```
+            * Put JQuery & bootstrap files in `public/js` and `public/css`
+            * In a `views/partials/head.ejs` file:
+            
+            ```html
+            &lt;meta charset="UTF-8">
+            &lt;title>ECE AST&lt;/title>
+            
+            &lt;link rel="stylesheet" href="/css/bootstrap.min.css">
+            &lt;style>
+                body    { padding-top:50px; }
+            &lt;/style>
+            
+            &lt;script src="/js/jquery-2.1.4.min.js">&lt;/script>
+            &lt;script src="/js/bootstrap.min.js" />&lt;/script>
+            ```
+          </section>
+
+          <section data-markdown>
+            ## Make it sexy !
+
+            * In `views/hello.ejs`:
+            
+            ```html
+            &lt;!DOCTYPE html>
+            &lt;html lang="en">
+              &lt;head>
+                  &lt;% include partials/head %>
+              &lt;/head>
+              &lt;body class="container">
+                &lt;h1>Hello &lt;%= name %>&lt;/h1>
+                &lt;p>Welcome to our humble application&lt;/p>
+              &lt;/body>
+            &lt;/html>
+            ```
+          </section>
+
+        <section data-markdown>
+          ## Let’s bring some AJAX
+
+          * Technologies used to dynamically update static pages
+          * Use JS embedded in HTML
+          * Get data from a server
+          * Update page without reloading
+        </section>
+
+        <section data-markdown>
+          ## Create dummy data
+
+          * Prepare the data on the back-end
+          * Let’s create a new module called `metrics`:
+
+          ```js
+          module.exports = {
+            get: (callback) => {
+              callback(null, [
+                { timestamp: new Date('2013-11-04 14:00 UTC').getTime(), value:12}
+              , { timestamp: new Date('2013-11-04 14:30 UTC').getTime(), value:15}
+              ])
+            }
+          }
+          ```
+        </section>
+
+        <section data-markdown>
+          ## Create dummy data
+
+          * Expose the metrics on the back-end
+
+          ```javascript
+          app.get('/metrics.json', (req, res) => {
+            metrics.get((err, data) => {
+              if(err) throw err
+              res.status(200).json(data)
+            })
+          })
+          ```
+        </section>
+        
+        <section data-markdown>
+          ## And get it on the front !
+
+          * In our `hello.ejs`
+
+          ```html
+          &lt;body class="container">
+            &lt;div class="col-md-6.col-md-offset-3">
+              &lt;h1>Hello &lt;%= name %>&lt;/h1>
+              &lt;button class="btn btn-success" id="show-metrics">
+                Bring the metrics
+              &lt;/button>
+              &lt;div id="metrics">&lt;/div>
+            &lt;/div>
+          &lt;/body>
+          ```
+        </section>
+
+        <section data-markdown>
+          ## And get it on the front !
+
+          * And after the end of the body between script tags:
+
+          ```js
+          $('#show-metrics').click((e) => {
+            e.preventDefault();
+            $.getJSON("/metrics.json", {}, (data) => {
+              const content = data.map(d => {
+                `&lt;p>timestamp: ${d.timestamp}, value: ${d.value}&lt;/p>`
+              })
+              $('#metrics').append(content.join("\n"));
+            });
+          })
+          ```
+        </section>
+
+        <section data-markdown>
+          ## Postman
+        </section>
+
+        <section data-markdown>
+          ## Postman
+
+          * Dashboard to test your API
+          * Simulate HTTP request
+          * Specify custom body & headers
+          * [getpostman.com](http://getpostman.com)
+        </section>
+      </div>
+    </div>
+
+    <script src="../reveal.js/lib/js/head.min.js"></script>
+    <script src="../reveal.js/js/reveal.js"></script>
+
+    <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: '../reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: '../reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: '../reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: '../reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+          { src: '../reveal.js/plugin/zoom-js/zoom.js', async: true },
+          { src: '../reveal.js/plugin/notes/notes.js', async: true }
+        ]
+      });
+
+    </script>
+
+  </body>
+</html>

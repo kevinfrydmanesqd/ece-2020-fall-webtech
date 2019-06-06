@@ -1,0 +1,638 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>ECE AST - Transpilers</title>
+
+    <meta name="description" content="ECE NodeJS class on Transpilers">
+    <meta name="author" content="Pierre Berezowski">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="../reveal.js/css/reveal.css">
+    <link rel="stylesheet" href="../reveal.js/css/theme/black.css" id="theme">
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="../reveal.js/lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? '../reveal.js/css/print/pdf.css' : '../reveal.js/css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div style="position:absolute; top:20px; left:20px;">
+    <p><img src="../img/adaltas.png" width="200px" style="margin: 10px 0" /></p>
+    </div>
+
+    <div class="reveal">
+
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+        <section>
+          <h1>Transpilation & storage</h1>
+          <h4>Asynchronous Server Technologies</h4>
+          <p>
+            César Berezowski <br/>
+            <i>Big Data Consultant & Data Engineer @ Adaltas</i><br/>
+            <i>cesar@adaltas.com</i>
+          </p>
+        </section>
+
+        <section data-markdown>
+          ## About this course
+
+          * You will use / do :
+            * JavaScript / TypeScript & Markdown
+            * Node.JS & NPM or yarn
+            * Git & Github / GitLab
+            * Unit tests & Travis CI
+            * Use a framework & transpiler
+            * Read the doc ! Ask Google !
+          * You will apprehend tools of the Open Source
+        </section>
+
+        <section data-markdown>
+          ## About this course
+
+          * Evaluation :
+            * Continuous using Git
+            * Simple project at end of course
+          * Planning: [CALENDAR.md](https://github.com/adaltas/ece-nodejs/blob/master/CALENDAR.md)
+        </section>
+
+        <section data-markdown>
+          ## Final project
+
+          * Based on code from class
+          * Using presented technologies
+          * Simple dashboard app :
+            * User login
+            * A user can insert simple metrics
+            * A user can retrieve his metrics displayed nicely in a graph
+            * A user can only access his own metrics
+          * See [PROJECT.md](https://github.com/adaltas/ece-nodejs/blob/master/project.md)
+        </section>
+
+        <section data-markdown>
+          ## Questions ?
+        </section>
+      
+        <section data-markdown>
+          ## Summary 
+          
+          * Transpilers
+          * Storage 
+        </section>
+      
+        <section data-markdown>
+          ## What is a Transpiler ?
+        </section>
+
+        <section data-markdown>
+          ## Compiler & transpiler
+
+          * Compile: transforming a source code written in a language A (source language) to a language B (target language)
+          * Transpile (or transcompile): a source-to-source compilation, meaning that the source language and the target language are of the same level (cf: high/low level of programming languages)
+          * A transpiler **is** a compiler
+        </section>
+
+        <section data-markdown>
+          ## Why
+
+          * Enhance code quality and readability
+          * Accelerate programming
+          * Change strong/weak typing (eg: TypeScript)
+          * Change programmation paradigm
+          * Add fancy features (eg: Babel, CoffeeScript)
+        </section>
+
+        <section data-markdown>
+          ## In web technologies
+
+          * Development speed is very important
+          * No impact on execution speed
+          * Allow a pretty, clean, commented source code
+          * Compiles into size-optimized files
+        </section>
+
+        <section data-markdown>
+          ## TypeScript
+        </section>
+
+        <section data-markdown>
+          ## TypeScript
+
+          * Javascript transpiler
+          * Quick learning
+          * Adds optional typing to JS
+          * New JS features from EcmaScript
+
+          Doc: [typescriptlang.org/docs](https://www.typescriptlang.org/docs/home.html)  
+          Resource: [basarat.gitbooks.io/typescript](https://basarat.gitbooks.io/typescript/docs/why-typescript.html)
+        </section>
+
+        <section data-markdown>
+          ## Typing
+
+          Two types
+          * Implicit
+          ```js
+          var foo = 123; // TypeScript infers `number`
+          foo = '456'; // Error: cannot assign `string` to `number`
+          ```
+          NB: this code will emit an error but still output JavaScript
+          
+          * Explicit
+          ```js
+          var foo: number = '123'; // Error: cannot assign a `string` to a `number`
+          ```
+        </section>
+
+        <section data-markdown>
+          ## Duck Typing 
+          
+          *"If it walks like a duck, swims like a duck, and quacks like a duck, then it probably is a duck."*
+          
+          * Typed objects only need to have method/attributes
+          
+          ```js
+          interface Point2D {
+              x: number;
+              y: number;
+          }
+          interface Point3D {
+              x: number;
+              y: number;
+              z: number;
+          }
+          var point2D: Point2D = { x: 0, y: 10 }
+          var point3D: Point3D = { x: 0, y: 10, z: 20 }
+          function iTakePoint2D(point: Point2D) { /* do something */ }
+
+          iTakePoint2D(point2D); // exact match okay
+          iTakePoint2D(point3D); // extra information okay
+          iTakePoint2D({ x: 0 }); // Error: missing information `y`
+          ```
+        </section>
+
+        <section data-markdown>
+          ## TypeScript Setup
+
+          * Install `typescript` as a dev dependency
+          * Run `./node_modules/.bin/tsc --init`
+          * Convert your `.js` files to `.ts`
+        </section>
+
+        <section data-markdown>
+          ## tsconfig.json
+
+          * Presence declares a TypeScript project 
+          * Specifies how to compile
+        </section>
+
+        <section data-markdown>
+          ## tsconfig.json
+              
+          * Move all your JS files to an `src/` directory
+          * Add the following lines to the root object:
+          
+          ```JSON
+          "compilerOptions": {
+              ...,
+              "outDir": "./dist",
+              "moduleResolution": "node"
+          }
+          "include": [
+              "src/**/*"
+          ],
+          "exclude": [
+              "node_modules",
+              "**/*.spec.ts"
+          ]
+          ```
+          
+          `./node_modules/.bin/tsc [-p tsconfig.json]`
+        </section>
+        
+        <section data-markdown>
+        ## Automating build
+        
+        * Through IDE, with `tsconfig.json`
+        ```json
+        "compileOnSave": true,
+        ```
+        * Through `package.json` and `npm run build`
+        ```json
+        "scripts": {
+            "build": "./node_modules/.bin/tsc -p tsconfig.json"
+        }
+        ```
+        </section>
+        
+        <section data-markdown>
+        ## Dev setup
+        
+        * Install `nodemon` & `ts-node` as dev dependencies
+        * Create a `nodemon.json` file with content:
+        ```json
+        {
+            "ignore": ["**/*.test.ts", "**/*.spec.ts", ".git", "node_modules"],
+            "watch": ["src"],
+            "exec": "npm start", 
+            "ext": "ts"
+        }
+        ```
+        * Enrich `package.json`
+        ```json
+        "scripts": {
+            "start": "./node_modules/.bin/ts-node src/index.ts",
+            "dev": "./node_modules/.bin/nodemon "
+        }
+        ```
+        </section>
+        
+        <section data-markdown>
+          ## TS with Node.JS 
+          
+          * Add dependencies types:           
+          ```shell
+          npm i --save-dev @types/node @types/express
+          ```
+          * In a `src/server.ts` file: 
+          
+          ```javascript
+          import express = require('express')
+
+          const app = express()
+          const port: string = process.env.PORT || '8080'
+
+          app.get('/', (req: any, res: any) => {
+            res.write('Hello world')
+            res.end()
+          })
+
+          app.listen(port, (err: Error) => {
+            if (err) {
+              throw err
+            }
+            console.log(`server is listening on port ${port}`)
+          })
+          ```
+        </section>
+        
+        <section data-markdown>
+          ## TS with Node.JS
+          
+          * In a `src/metrics.ts` file: 
+          
+          ```javascript
+          export class Metric {
+            public timestamp: string
+            public value: number
+
+            constructor(ts: string, v: number) {
+              this.timestamp = ts
+              this.value = v
+            }
+          }
+
+          export class MetricsHandler {
+            static get(callback: (error: Error | null, result?: Metric[]) => void) {
+              const result = [
+                new Metric('2013-11-04 14:00 UTC', 12),
+                new Metric('2013-11-04 14:30 UTC', 15)
+              ]
+              callback(null, result)
+            }
+          }
+          ```
+        </section>
+        
+        <section data-markdown>
+          ## TS with Node.JS
+          
+          * In the `src/server.ts` file: 
+          ```javascript
+          import { MetricsHandler } from './metrics'
+          app.get('/metrics', (req: any, res: any) => {
+              MetricsHandler.get((err: Error | null, result?: any) => {
+                if (err) {
+                  throw err
+                }
+                res.json(result)
+              })
+          })
+          ```
+        </section>
+
+        <section data-markdown>
+          ## Questions ?
+        </section>
+
+        <section data-markdown>
+          ## What about storage ?
+        </section>
+
+        <section data-markdown>
+          ## Databases
+
+          * RDBMS -> MySQL, PostGreSQL, Hive
+          * NoSQL
+            * Column families: HBase, Cassandra
+            * Document Store: MongoDB, ElasticSearch
+            * Key Value: LevelDB
+            * Graph DBs: JanusGraph (ex-TitanDB), Neo4J
+        </section>
+
+        <section data-markdown>
+          ## LevelDB
+
+          * In-memory key-value store embedded in Node
+          * OpenSource
+          * NoSQL DB, Key Value store
+          * Originally written by Google
+          * [leveldb.org](http://leveldb.org)
+        </section>
+
+        <section data-markdown>
+          ## Why LevelDB for our project ?
+
+          * It’s blazing fast
+          * In memory & backed by the file system
+          * Keys are ordered : suitable for metrics
+          * Data compression with Snappy
+          * Embedded in the app, nothing else to setup / manage
+        </section>
+
+        <section data-markdown>
+          ## Some limitations
+
+          * Not a SQL database
+          * Only a single process at a time
+        </section>
+        
+        <!-- Use unit tests !!! -->
+
+        <section data-markdown>
+          ## Let’s setup
+          
+          * Dependencies install
+          ```shell
+          npm install --save encoding-down leveldown levelup level-ws 
+          npm i --save-dev @types/levelup
+          ```
+          * Create a `src/declarations.d.ts` file and add 
+          ```javascript
+          declare module 'encoding-down'
+          declare module 'leveldown'
+          declare module 'levelup'
+          declare module 'level-ws'
+          ```
+          * In `tsconfig.json` set 
+          ```json
+          {
+              "compilerOptions": {
+                "noImplicitAny": false
+              }
+          }
+          ```
+        </section>
+
+        <section data-markdown>
+          ## Use the db
+
+          To open
+
+          ```javascript
+          import encoding from 'encoding-down'
+          import leveldown from 'leveldown'
+          import levelup from 'levelup'
+          import WriteStream from 'level-ws'
+          
+          const db = levelup(encoding(
+            leveldown("path"), 
+            { valueEncoding: 'json' })
+          )
+          const stream = WriteStream(db)
+          ```
+        </section>
+
+        <section data-markdown>
+          ## Use the db
+
+          To write
+
+          ```javascript
+          db.put(key, value, (err) => {
+            if(err) {...}
+          })
+          ```
+
+          To read
+
+          ```javascript
+          db.get(key, (err, value) => {
+            if(err) {...}
+          })
+          ```
+        </section>
+
+        <section data-markdown>
+          ## Use the db
+
+          Let's create a wrapper  
+          In a `leveldb.ts` file: 
+
+          ```javascript
+          import encoding from 'encoding-down'
+          import leveldown from 'leveldown'
+          import levelup from 'levelup'
+
+          export class LevelDb {
+            static open(path: string) {
+              const encoded = encoding(leveldown(path), { valueEncoding: 'json' })
+              return levelup(encoded)
+            }
+          }
+          ```
+        </section>
+
+        <section data-markdown>
+          ## The metrics
+
+          * Key: metrics:#{id}:#{timestamp}
+          * Value: an integer
+        </section>
+
+        <section data-markdown>
+          ## Read/write metrics
+
+          * One by one ? Too heavy !
+          * Use streaming :
+
+          ```javascript
+          import WriteStream from 'level-ws'
+          const rs = db.createReadStream(...)
+          const ws = WriteStream(db)
+          ```
+        </section>
+
+        <section data-markdown>
+          ## Let’s post some metrics
+
+          In `src/metrics.ts`
+          
+          * Update the class to open a database connection 
+          
+          ```javascript 
+          import LevelDb = require('./leveldb')
+          
+          export class MetricsHandler {
+            private db: any 
+            
+            constructor(dbPath: string) {
+              this.db = LevelDb.open(dbPath)
+            }
+          }
+          ```
+        </section>
+        
+        <section data-markdown>
+          ## Let’s post some metrics
+
+          In `src/metrics.ts`
+          
+          * Add a function to save data
+          ```javascript 
+          import WriteStream from 'level-ws'
+          export class MetricsHandler {
+            public save(key: number, metrics: Metric[], callback: (error: Error | null) => void) {
+              const stream = WriteStream(this.db)
+              stream.on('error', callback)
+              stream.on('close', callback)
+              metrics.forEach((m: Metric) => {
+                stream.write({ key: `metric:${key}${m.timestamp}`, value: m.value })
+              })
+              stream.end()
+            }
+          }
+          ```
+          * And update the getter
+        </section>
+
+        <section data-markdown>
+          ## Let’s post some metrics
+
+          Install body-parser to parse the request’s body
+
+          ```shell
+          npm i --save body-parser
+          ```
+
+          Configure Express to use it in `src/server.ts`
+
+          ```javascript
+          app.use(bodyparser.json())
+          app.use(bodyparser.urlencoded())
+          ```
+        </section>
+
+        <section data-markdown>
+          ## Let’s post some metrics
+
+          * Using Postman :
+            * Set up a POST request on /metrics
+            * Set the header Content-Type:application/json
+            * Add an array of metrics as RAW body :
+
+          ```shell
+          [
+            { "timestamp":"1384686660000", "value":"10" }
+          ]
+          ```
+        </section>
+
+        <section data-markdown>
+          ## Or use a script ?
+          
+          `tsc && ./node_modules/.bin/ts-node bin/populate.ts`
+          
+          ```javascript
+          #!/usr/bin/env ts-node
+
+          import { Metric, MetricsHandler } from '../src/metrics'
+
+          const met = [
+            new Metric(`${new Date('2013-11-04 14:00 UTC').getTime()}`, 12),
+            new Metric(`${new Date('2013-11-04 14:15 UTC').getTime()}`, 10),
+            new Metric(`${new Date('2013-11-04 14:30 UTC').getTime()}`, 8)
+          ]
+
+          const db = new MetricsHandler('./db')
+
+          db.save('0', met, (err: Error | null) => {
+            if (err) throw err
+            console.log('Data populated')
+          })
+          ```
+        </section>
+
+        <section data-markdown>
+          ## Questions ?
+        </section>
+
+        <section data-markdown>
+          ## Your work
+
+          * Add a `delete` function to `metrics` module
+          * Add a route to delete a metric based on its key
+        </section>
+      </div>
+    </div>
+
+    <script src="../reveal.js/lib/js/head.min.js"></script>
+    <script src="../reveal.js/js/reveal.js"></script>
+
+    <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: '../reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: '../reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: '../reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: '../reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+          { src: '../reveal.js/plugin/zoom-js/zoom.js', async: true },
+          { src: '../reveal.js/plugin/notes/notes.js', async: true }
+        ]
+      });
+
+    </script>
+
+  </body>
+</html>

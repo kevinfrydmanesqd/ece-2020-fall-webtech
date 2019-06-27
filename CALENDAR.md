@@ -22,7 +22,7 @@ Jade, Stylus and friends.
 The course will introduce Node.JS frameworks and focus on ExpressJS to write a
 web application that exposes REST services and renders HTML pages.
 
-In the second part we'll choose a database (LevelDB) and write the storage API to
+In the second part we'll choose a database (MongoDB) and write the storage API to
 manage it and interact with it. The writing process will be driven by unit tests.
 
 This class is also the beginning point for the final project

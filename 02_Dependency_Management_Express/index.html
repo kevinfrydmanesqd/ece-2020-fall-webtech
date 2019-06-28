@@ -48,9 +48,9 @@
           <h1>NodeJS</h1>
           <h4>Asynchronous Server Technologies</h4>
           <p>
-            César Berezowski <br/>
-            <i>Big Data Consultant & Data Engineer @ Adaltas</i><br/>
-            <i>cesar@adaltas.com</i>
+            Sergei Kudinov<br/>
+            <i>Web Developer @ Adaltas</i><br/>
+            <i>sergei@adaltas.com</i>
           </p>
         </section>
 
@@ -73,7 +73,7 @@
           * Evaluation :
             * Continuous using Git
             * Simple project at end of course
-          * Planning: [CALENDAR.md](https://github.com/adaltas/ece-nodejs/blob/master/CALENDAR.md)
+          * Planning: [CALENDAR.md](https://github.com/adaltas/ece-nodejs/blob/adaptation-sergkudinov/CALENDAR.md)
         </section>
 
         <section data-markdown>
@@ -255,9 +255,22 @@
           npm i --save nodemon
           # or
           yarn add nodemon
-          # thzn 
+          # then 
           ./node_modules/.bin/nodemon main.js
           ```
+
+          Or add this to package.json:
+          
+          ```json
+          "scripts": {
+            "dev": "./node_modules/.bin/nodemon "
+          }
+          ```
+          and then:
+          ```shell
+          npm run dev app.js
+          ```
+          
         </section>
 
         <section data-markdown>
@@ -271,6 +284,8 @@
           * Provides features for web app development
           * Create robust APIs
           * Functions to expose a front end
+          
+          [Express guide](https://expressjs.com/en/guide/)
         </section>
 
         <section data-markdown>
@@ -388,7 +403,7 @@
 
             * Expose static content (JS, CSS, Images, …)
             * Download bootstrap [getbootstrap.com/getting-started/#download](http://getbootstrap.com/getting-started/#download)
-            * Download JQuery [code.jquery.com/jquery-3.1.2.min.js](http://code.jquery.com/jquery-3.1.2.min.js)
+            * Download JQuery [code.jquery.com/jquery-3.4.1.min.js](https://code.jquery.com/jquery-3.4.1.min.js)
             * Add the css in public/css and the js in public/js
           </section>
 
@@ -485,7 +500,7 @@
 
           ```html
           &lt;body class="container">
-            &lt;div class="col-md-6.col-md-offset-3">
+            &lt;div class="col-md-6 col-md-offset-3">
               &lt;h1>Hello &lt;%= name %>&lt;/h1>
               &lt;button class="btn btn-success" id="show-metrics">
                 Bring the metrics
@@ -506,7 +521,7 @@
             e.preventDefault();
             $.getJSON("/metrics.json", {}, (data) => {
               const content = data.map(d => {
-                `&lt;p>timestamp: ${d.timestamp}, value: ${d.value}&lt;/p>`
+                return '<p>timestamp: '+d.timestamp+', value: '+d.value+'</p>';
               })
               $('#metrics').append(content.join("\n"));
             });
@@ -525,6 +540,16 @@
           * Simulate HTTP request
           * Specify custom body & headers
           * [getpostman.com](http://getpostman.com)
+        </section>
+        
+        <section data-markdown>
+          ## Other tools for testing API
+
+          * [Swagger Inspector](https://inspector.swagger.io)
+          * `curl` bush command:
+          ```shell
+          curl 
+          ```
         </section>
       </div>
     </div>

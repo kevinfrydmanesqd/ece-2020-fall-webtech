@@ -1,6 +1,6 @@
 # Dependency management & Express
 
-Using the code and repo from last weeks TP, convert everything to use `express` 
+Using the code and repo from last module, convert everything to use `express` 
 instead of doing routing and server setup manually
 
 Notes :

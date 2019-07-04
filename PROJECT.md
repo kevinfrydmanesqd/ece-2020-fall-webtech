@@ -1,6 +1,6 @@
 # Asynchronous Server Technologies project
 
-**DEADLINE: SUNDAY 16TH OF DECEMBER AT 11:55PM**
+**DEADLINE: FRIDAY 19TH OF JULY AT 12:30**
 
 ## Instructions
 

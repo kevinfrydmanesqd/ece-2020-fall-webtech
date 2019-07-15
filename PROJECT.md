@@ -27,7 +27,7 @@ The codebase should:
 * be unit tested with mocha and chai
 * use travis-ci
 * have the necessary project files (README, package.json, package-lock.json or yarn.lock; .gitignore, ts-config.json, ...) as shown in class
-* not have any file/dir in git that shouldn't be (node_modules, db files, ...)
+* not have any file/dir in git that shouldn't be (node_modules, .idea, ...)
 
 The project shall be written in typescript, css and ejs and nothing else. You are encouraged to use the tools presented in class.
 

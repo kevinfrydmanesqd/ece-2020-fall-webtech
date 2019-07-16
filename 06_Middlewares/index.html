@@ -283,8 +283,8 @@
                 this.setPassword(password)
               } else this.password = password
             }
-            
             ...
+          }
           ```
         </section>
 
@@ -295,14 +295,14 @@
 
           ```Javascript
             ...
-            
             static fromDb(username: string, value: any): User {
-              const [password, email] = value.split(":")
-              return new User(username, email, password)
+              console.log(value)
+              return new User(username, value.email, value.password)
             }
 
             public setPassword(toSet: string): void {
               // Hash and set password
+              this.password = toSet
             }
 
             public getPassword(): string {
@@ -310,8 +310,36 @@
             }
 
             public validatePassword(toValidate: String): boolean {
-              // return comparison with hashed password
+              return this.password === toValidate
             }
+            ...
+          ```
+        </section>
+
+        <section data-markdown>
+          ### User CRUD part 2
+
+          In a `src/user.ts` file:
+
+          ```Javascript
+          export class UserHandler {
+            public db: any
+            constructor(db: any) {
+              this.db = db
+            }
+
+            public get(username: string, callback: (err: Error | null, result: User | null) => void) {
+              const collection = this.db.collection('users')
+              // Find some documents
+              collection.findOne({username: username}, function(err: any, result: any) {
+                if (err) return callback(err, result)
+                if (result)
+                  callback(err, User.fromDb(username, result))
+                else
+                  callback(err, null)
+              })
+            }
+            ...
           }
           ```
         </section>
@@ -322,55 +350,61 @@
           In a `src/user.ts` file:
 
           ```Javascript
-          import { LevelDB } from "./leveldb"
-          import WriteStream from 'level-ws'
-          
-          export class UserHandler {
-            public db: any
-
-            public get(username: string, callback: (err: Error | null, result?: User) => void) {
-              this.db.get(`user:${username}`, function (err: Error, data: any) {
-                if (err) callback(err)
-                else if (data === undefined) callback(null, data)
-                callback(null, User.fromDb(username, data))
-              })
-            }
-
-            public save(user: User, callback: (err: Error | null) => void) {
-              this.db.put(`user:${user.username}`, `${user.getPassword}:${user.email}`, (err: Error | null) => {
+          ...
+          public save(user: User, callback: (err: Error | null) => void) {
+            const collection = this.db.collection('users')
+            // Insert some document
+            collection.insertOne(
+              user,
+              function(err: any, result: any) {
+                if(err)
+                  return callback(err)
+                console.log("User inserted into the collection")
                 callback(err)
-              })
-            }
-            
-            public delete(username: string, callback: (err: Error | null) => void) {
-              // TODO
-            }
-
-            constructor(path: string) {
-              this.db = LevelDB.open(path)
-            }
+            });
           }
+          ...
           ```
         </section>
 
         <section data-markdown>
           ### User sessions
           
-          * `npm i --save level level-session-store express-session`
+          * `npm i --save express-session connect-mongo`
+          * `npm i --save-dev @types/connect-mongo`
           * In `src/server.ts` 
 
           ```javascript
           import session = require('express-session')
-          import levelSession = require('level-session-store')
-          
-          const LevelStore = levelSession(session)
-          
+          import ConnectMongo = require('connect-mongo')
+          const MongoStore = ConnectMongo(session)
+
           app.use(session({
-            secret: 'my very secret phrase',
-            store: new LevelStore('./db/sessions'),
-            resave: true,
-            saveUninitialized: true
+            secret: 'user session',
+            resave: false,
+            saveUninitialized: true,
+            store: new MongoStore({ url: 'mongodb://localhost/mydb' })
           }))
+          ```
+        </section>
+        
+        <section data-markdown>
+          ### User sessions
+          
+          * Do not forget initialize `dbUser`
+
+          ```javascript
+          ...
+          // Initialize connection once
+          var db: any
+          var dbUser: any
+          ...
+          MongoClient.connect(..., () => {
+            ...
+            db = client.db('mydb')
+            dbUser = new UserHandler(db)
+            ...
+          }
           ```
         </section>
 
@@ -381,23 +415,24 @@
 
           ```javascript
           import { UserHandler, User } from './users'
-          const dbUser: UserHandler = new UserHandler('./db/users')
+          const dbUser = new UserHandler(db)
           const authRouter = express.Router()
-          
-          authRouter.get('/login', (req: any, res: any) => {
+
+          authRouter.get('/login', function (req: any, res: any) {
             res.render('login')
           })
-          
-          authRouter.get('/signup', (req: any, res: any) => {
+
+          authRouter.get('/signup', function (req: any, res: any) {
             res.render('signup')
           })
 
-          authRouter.get('/logout', (req: any, res: any) => {
-            delete req.session.loggedIn
-            delete req.session.user
+          authRouter.get('/logout', function (req: any, res: any) {
+            if (req.session.loggedIn) {
+              delete req.session.loggedIn
+              delete req.session.user
+            }
             res.redirect('/login')
           })
-          
           ...
           ```
         </section>
@@ -410,10 +445,11 @@
           ```javascript
           ...
           
-          app.post('/login', (req: any, res: any, next: any) => {
-            dbUser.get(req.body.username, (err: Error | null, result?: User) => {
+          authRouter.post('/login', function (req: any, res: any, next: any) {
+            dbUser.get(req.body.username, function (err: Error | null, result: User | null) {
               if (err) next(err)
-              if (result === undefined || !result.validatePassword(req.body.password)) {
+              if (result === null || !result.validatePassword(req.body.password)) {
+                console.log('login')
                 res.redirect('/login')
               } else {
                 req.session.loggedIn = true
@@ -421,7 +457,7 @@
                 res.redirect('/')
               }
             })
-          }
+          })
           
           app.use(authRouter)
           ...
@@ -435,31 +471,31 @@
 
           ```javascript
           ...
-            const userRouter = express.Router()
+          const userRouter = express.Router()
 
-            userRouter.post('/', (req: any, res: any, next: any) => {
-              dbUser.get(req.body.username, function (err: Error | null, result?: User) {
-                if (!err || result !== undefined) {
-                 res.status(409).send("user already exists")
-                } else {
-                  dbUser.save(req.body, function (err: Error | null) {
-                    if (err) next(err)
-                    else res.status(201).send("user persisted")
-                  })
-                }
-              })
+          userRouter.post('/', function (req: any, res: any, next: any) {
+            dbUser.get(req.body.username, function (err: Error | null, result: User | null) {
+              if (err) next(err)
+              if (result) {
+                res.status(409).send("user already exists")
+              } else {
+                dbUser.save(req.body, function (err: Error | null) {
+                  if (err) next(err)
+                  else res.status(201).send("user persisted")
+                })
+              }
             })
-
-            userRouter.get('/:username', (req: any, res: any, next: any) => {
-              dbUser.get(req.params.username, function (err: Error | null, result?: User) {
-                if (err || result === undefined) {
-                  res.status(404).send("user not found")
-                } else res.status(200).json(result)
-              })
-            })
-
-            app.use('/user', userRouter)
           })
+
+          userRouter.get('/:username', (req: any, res: any, next: any) => {
+            dbUser.get(req.params.username, function (err: Error | null, result: User | null) {
+              if (err || result === undefined) {
+                res.status(404).send("user not found")
+              } else res.status(200).json(result)
+            })
+          })
+
+          app.use(userRouter)
           ```
         </section>
 
@@ -476,7 +512,7 @@
           }
 
           app.get('/', authCheck, (req: any, res: any) => {
-            res.render('index', { name: req.session.username })
+            res.render('hello.ejs', {name: req.params.name})
           })
           ```
         </section>
@@ -522,21 +558,15 @@
         </section>
 
         <section data-markdown>
-          ### Your turn
-
-          * Do the `remove` functions for a user
-          * Do the `/signup` form and link to /user POST
-        </section>
-
-        <section data-markdown>
           ## Questions ?
         </section>
 
         <section data-markdown>
           ## Your work
           
-          * Finish the Metrics unit tests
-          * Fully implement User module: auth, CRUD & unit tests
+          * Fully implement User module: auth, CRUD & unit tests:
+            * Do the `remove` functions for a user
+            * Do the `/signup` form and link to /user POST
           * Using the `metrics` module implemented on past work:
             * Link metrics to users 
             * Implement the mechanisms for a user to add metrics and retrieve them (only its own !)

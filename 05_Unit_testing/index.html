@@ -212,30 +212,49 @@
         <section data-markdown>
           ## Testing Metrics
             
-          * Prepare and clear database collection 
+          * Prepare asynchronous function to initialize connection
           
           ```javascript
           import { expect } from 'chai'
           import { Metric, MetricsHandler } from './metrics'
-          import clientStart from './db'
+          import mongodb from 'mongodb'
 
           var dbMet: MetricsHandler
+          var db: any
+          var clientDb: any
 
-          describe('Metrics', function() {
-            before(function() {
-              clientStart(function(client: any) {
-                client.db('mydb')
-                  .collection('documents')
-                  .deleteMany({},function(err:Error | null, result:any) {
-                  if (err) throw err
-                  client.close()
-                })
+          var mongoAsync = (callback: any) => {
+            const MongoClient = mongodb.MongoClient // Create a new MongoClient
+            MongoClient.connect("mongodb://localhost:27017", { useNewUrlParser: true }, (err: any, client: any) => {
+              if(err) throw err
+              callback(client)
+            });
+          }
+          ```
+        </section>
+
+        <section data-markdown>
+          ## Testing Metrics
+            
+          * Prepare the functions before() and after()
+          
+          ```javascript
+          describe('Metrics', () => {
+            before((done) =>  {
+              mongoAsync((client: any) => {
+                clientDb = client
+                db = clientDb.db('mydb')
+                dbMet = new MetricsHandler(db)
+                done()
               })
-              
-              dbMet = new MetricsHandler()
             })
+            
+            after(() => {
+              clientDb.close()
+            })
+            
+            // ...
           })
-
           ```
         </section>
 
@@ -245,7 +264,7 @@
           * Test `db#get`
           
           ```javascript
-          describe('#get', function() {
+          describe('/get', () =>  {
             it('should get empty array', function() {
               dbMet.get({value: 0}, function(err: Error | null, result?: Metric[]) {
                 expect(err).to.be.null
@@ -255,6 +274,8 @@
             })
           })
           ```
+          
+          * Now running with `npm test` command
         </section>
 
         <section data-markdown>

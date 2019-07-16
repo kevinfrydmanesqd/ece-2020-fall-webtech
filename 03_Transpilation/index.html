@@ -358,7 +358,7 @@
           * In the `src/server.ts` file: 
           ```javascript
           import { MetricsHandler } from './metrics'
-          app.get('/metrics', (req: any, res: any) => {
+          app.get('/metrics.json', (req: any, res: any) => {
               MetricsHandler.get((err: Error | null, result?: any) => {
                 if (err) {
                   throw err
@@ -377,7 +377,9 @@
           ## Your work
 
           * Add to `src/server.ts` the code to expose the front that we had previously
-          in the `index.js`.
+          in the `index.js`. You should have:
+            - `/` home page with description 
+            - `/hello` page with the button and AJAX request for obtaining metrics
         </section>
       </div>
     </div>

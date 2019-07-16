@@ -2,7 +2,9 @@
 
 Using the code and repo from last weeks TP and enhanced in class, 
 add to `src/server.ts` the code to expose the front that we had previously
-in the `index.js`.
+in the `index.js`. You should have:
+  - `/` home page with description 
+  - `/hello` page with the button and AJAX request for obtaining metrics
 
 Notes :
 

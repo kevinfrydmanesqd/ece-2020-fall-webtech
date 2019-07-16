@@ -339,24 +339,28 @@
         </section>
         
         <section data-markdown>
-          ## Let’s now create a wrapper
+          ## Let’s now initialize a connection
 
-          * Create a file `src/db.ts`:
+          * In `src/server.ts`:
           
           ```javascript 
+          // Initialize connection once
+          var db: any
           import mongodb from 'mongodb'
-          const url: string = 'mongodb://localhost:27017' 
-          export default function clientStart (callback:(client:any) => void) {
-            const MongoClient = mongodb.MongoClient
-            const client = new MongoClient(url, { useNewUrlParser: true })
-            // Use connect method to connect to the Server
-            client.connect(function(err) {
-              if(err)
+          const MongoClient = mongodb.MongoClient // Create a new MongoClient
+          MongoClient.connect("mongodb://localhost:27017", { useNewUrlParser: true }, (err: any, client: any) => {
+            if(err) throw err
+            db = client.db('mydb')
+            
+            // Start the application after the database connection is ready
+            const port: string = process.env.PORT || '8115'
+            app.listen(port, (err: Error) => {
+              if (err) {
                 throw err
-              console.log("Connected successfully to server")
-              callback(client)
-            });
-          }
+              }
+              console.log(`server is listening on port ${port}`)
+            })
+          });
           ```
         </section>
 
@@ -367,13 +371,12 @@
           
           * Update the class to open a database connection 
           
-          ```javascript 
-          import clientStart from './db'
+          ```javascript
           
           export class MetricsHandler {
             private clientStart: any
             
-            constructor() { 
+            constructor(db) { 
               this.clientStart = clientStart
             }
           }
@@ -390,17 +393,16 @@
           ```javascript
           export class MetricsHandler {
             public save(metric: Metric, callback: (err: Error | null, result?: any) => void) {
-              this.clientStart(function(client: any){
-                const db = client.db('mydb')
-                const collection = db.collection('documents')
-                // Insert some document
-                collection.insertOne( metric, function(err: any, result: any) {
-                  if(err) return callback(err, result)
+              const collection = this.db.collection('documents')
+              // Insert some document
+              collection.insertOne(
+                metric,
+                function(err: any, result: any) {
+                  if(err)
+                    return callback(err, result)
                   console.log("Document inserted into the collection")
-                  client.close() // Close the connection
                   callback(err, result)
-                });
-              })
+              });
             }
           }
           ```
@@ -430,9 +432,9 @@
           
           ```javascript
           app.post('/metrics', (req: any, res: any) => {
-            if(req.body.value){
+            if(req.body){
               const metric = new Metric(parseInt(req.body.value));
-              new MetricsHandler().save(metric, (err: any, result: any) => {
+              new MetricsHandler(db).save(metric, (err: any, result: any) => {
                 if (err)
                   return res.status(500).json({error: err, result: result});
                 res.status(201).json({error: err, result: true})
@@ -463,15 +465,20 @@
           Create file ./bin/populate.ts:
           ```javascript
           import { Metric, MetricsHandler } from '../src/metrics'
-          
           var metrics = [new Metric(11), new Metric(12), new Metric(13), new Metric(14)]
 
-          metrics.map(metric => {
-            new MetricsHandler().save(metric, (err: any, result: any) => {
-              if (err)
-                console.log(err)
+          import mongodb from 'mongodb'
+          const MongoClient = mongodb.MongoClient
+          MongoClient.connect("mongodb://localhost:27017", { useNewUrlParser: true }, (err: any, client: any) => {
+            if(err) throw err
+            const db = client.db('mydb')
+            metrics.map(metric => {
+              new MetricsHandler(db).save(metric, (err: any, result: any) => {
+                if (err) console.log(err)
+              })
             })
-          })
+            client.close()
+          });
           ```
           
           Run:

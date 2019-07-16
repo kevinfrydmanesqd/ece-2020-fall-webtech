@@ -379,6 +379,7 @@
             constructor(db) { 
               this.db = db
             }
+            ...
           }
           ```
         </section>
@@ -392,6 +393,7 @@
           
           ```javascript
           export class MetricsHandler {
+            ...
             public save(metric: Metric, callback: (err: Error | null, result?: any) => void) {
               const collection = this.db.collection('documents')
               // Insert some document
@@ -428,7 +430,7 @@
         <section data-markdown>
           ## Let’s post some metrics
 
-          * Add post route:
+          * Add post route in `src/server.ts`:
           
           ```javascript
           app.post('/metrics', (req: any, res: any) => {

@@ -64,20 +64,21 @@ The following reasons will instantly equal to zero:
 
 Otherwise: 
 
-| Subject                                                         | Grading   |
-|:----------------------------------------------------------------|:---------:|
-| Functional populate DB scripts                                  |    +3     |
-| Functional sever with exposed front views                       |    +4     |
-| User authentication & authorization                             |    +4     |
-| Functional unit tests                                           |    +2     |
-| Front implementation: signin / signup / signout                 |    +2     |
-| Front implementation: select a metric and display it in a graph |    +3     |
-| Front implementation: update / delete a metric                  |    +2     |
-| No use of transpilers                                           |    -5     |
-| No use of GitHub                                                |    -5     |
-| Missing mandatory project files (per file)                      |    -2     |
-| .docx / .pdf file (per file)                                    |    -2     |
-| Files/dir in git that shouldn't be (per file/dir)               |    -2     |
+| Subject                                                         |   Code    | Grading   |
+|:----------------------------------------------------------------|:---------:|:---------:|
+| Functional populate DB scripts                                  |    FPS    |    +3     |
+| Functional sever with exposed front views                       |    FFV    |    +4     |
+| User authentication & authorization                             |    UAA    |    +4     |
+| Functional unit tests                                           |    FUT    |    +2     |
+| Front implementation: signin / signup / signout                 |    SSS    |    +2     |
+| Front implementation: select a metric and display it in a graph |    MDG    |    +3     |
+| Front implementation: update / delete a metric                  |    UDM    |    +2     |
+| Clean design of the front                                       |    CDF    |    +1     |
+| No use of transpilers                                           |     N     |    -5     |
+| No use of GitHub                                                |     N     |    -5     |
+| Missing mandatory project files (per file)                      |     N     |    -2     |
+| .docx / .pdf file (per file)                                    |     N     |    -2     |
+| Files/dir in git that shouldn't be (per file/dir)               |     N     |    -2     |
 
 Negative points total will be ceiled to 10 i.e. you can't get more than 10 negative points
 

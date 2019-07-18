@@ -82,13 +82,7 @@
             * A user can only access his own metrics
           * See [PROJECT.md](https://github.com/adaltas/ece-nodejs/blob/2019/PROJECT.md)
         </section>
-
-        <section data-markdown>
-          ## Questions ?
-
-          Now is the time !
-        </section>
-
+        
         <section data-markdown>
           ## Environment 
 
@@ -110,10 +104,89 @@
         <section data-markdown>
           ## Running an app 
           
-          - `forever` module (~nohup): simple
           - Docker: compartimented but more work
           - Hosting platform: little work but costs more (GCP, AWS, heroku, digitalocean, azure, ...)
 
+        </section>
+        
+        <section data-markdown>
+          ## Why Docker container?
+          
+          - Fast building and deploying applications
+          - Reduces the infrastructure and maintenance costs
+          - Includes everything it needs to run: code, runtime, system tools and libraries
+          - Guarantees that your application will always run the same 
+
+        </section>
+        
+        
+        <section data-markdown>
+          ## Prepare Docker image
+          
+          - Create `Dockerfile` (this is a file name) in the root
+          ```
+          FROM node:latest
+          RUN mkdir -p /usr/src/app
+          WORKDIR /usr/src/app
+          COPY package.json /usr/src/app/
+          RUN npm install
+          COPY . /usr/src/app
+          EXPOSE 3000
+          CMD npm start
+          ```
+
+        </section>
+        
+        <section data-markdown>
+          ## Prepare Docker image
+          
+          - Change all the URL to MonogoDB in you app
+          ```
+          // From
+          mongodb://localhost:27017
+          // To 
+          mongodb://mongo:27017
+          ```
+
+        </section>
+        
+        <section data-markdown>
+          ## Prepare Docker image
+          
+          - Create `docker-compose.yml` in the root
+          ```
+          version: "2"
+          services:
+            app:
+              container_name: app
+              restart: always
+              build: .
+              ports:
+                - "3000:3000"
+              links:
+                - mongo
+            mongo:
+              container_name: mongo
+              image: mongo
+              ports:
+                - "27017:27017"
+          ```
+
+        </section>
+        
+        <section data-markdown>
+          ## Prepare Docker image
+          
+          - Build Docker image
+          ```
+          docker-compose build
+          ```
+          
+          - Then run and open localhost:3000
+          ```
+          docker-compose up
+          ```
+          
         </section>
         
         <section data-markdown>

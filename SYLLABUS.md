@@ -2,10 +2,10 @@
 
 ## Introduction
 
-This course covers best practices when developping a Node.JS application including API design, package definition, NPM interaction, unit tests and 
+This course covers best practices when developing a Node.JS application including API design, package definition, NPM interaction, unit tests and 
 transpilers with TypeScript. The objective is to prepare an API which collects metrics to store in a database and provide access through a dashboard.
 
-The course also makes use of usual developer tools : versionning, knowledge bases, transpilers, terminal, ...
+The course also makes use of usual developer tools : versioning, knowledge bases, transpilers, terminal, ...
 
 ## Requirements
 

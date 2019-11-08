@@ -10,11 +10,13 @@ Create a basic app with three routes:
 
 You should have an `index.js` file with the server creation and `handles.js` defining the server's callback
 
+Add a `package.json` file with you module declaration
+
 Add a `readme.md` file with title, introduction, run instructions and your name
 
-Push it all to a GitLab / GitHub repository
+Push it all to a GitLab / GitHub repository and send a link to your repository to sergei@adaltas.com
 
-Notes :
+## Notes
 
 This work is part of the continuous assessment of this class and will be the basis for your final
 project. Your final grade will be calculated based on the final project’s result and your Git’s history.

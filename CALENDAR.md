@@ -7,7 +7,7 @@ We'll do a brief overview of Node.JS, its usage, strengths and ecosystem with
 NPM and yarn, and then a quick getting started to get a script up and running introducing
 the concepts of modules and packages.
 
-We will finally initiate the use of git and github. We'll also cover package best practices
+We will finally initiate the use of git and GitHub. We'll also cover package best practices
 to respect Node.JS conventions for packaging with executables dependencies, unit tests and
 then introduce the use of external libraries.
 
@@ -22,7 +22,7 @@ Jade, Stylus and friends.
 The course will introduce Node.JS frameworks and focus on ExpressJS to write a
 web application that exposes REST services and renders HTML pages.
 
-In the second part we'll choose a database (MongoDB) and write the storage API to
+In the second part we'll choose a database (LevelDB) and write the storage API to
 manage it and interact with it. The writing process will be driven by unit tests.
 
 This class is also the beginning point for the final project
@@ -42,6 +42,5 @@ We will also see alternative uses of Node.JS.
 
 - All of the students' code should be on a git platform
 - The class' notation will take in account :
-  - Continuous assesment (through git history)
-  - A written test
+  - Continuous assessment (through git history)
   - A final project

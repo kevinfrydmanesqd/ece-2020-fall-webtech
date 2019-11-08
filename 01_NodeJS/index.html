@@ -63,7 +63,7 @@
             * Git & Github / GitLab
             * Unit tests & Travis CI
             * Use a framework & transpiler
-            * Use MongoDB
+            * Use a storage (LevelDB)
             * Read the doc ! Ask Google !
           * You will apprehend tools of the Open Source
         </section>
@@ -74,9 +74,10 @@
           * Evaluation :
             * Continuous using Git
             * Simple project at the end of the course
-          * Planning: [CALENDAR.md](https://github.com/adaltas/ece-nodejs/blob/2019/CALENDAR.md)
+          * Planning: [CALENDAR.md](../CALENDAR.md)
         </section>
-
+        
+        
         <section data-markdown>
           ## Final project
 
@@ -87,7 +88,7 @@
             * A user can insert simple metrics
             * A user can retrieve his metrics displayed nicely in a graph
             * A user can only access his own metrics
-          * See [PROJECT.md](https://github.com/adaltas/ece-nodejs/blob/2019/PROJECT.md)
+          * See [PROJECT.md](../PROJECT.md)
         </section>
 
         <section data-markdown>
@@ -95,11 +96,22 @@
         </section>
 
         <section data-markdown>
-          ## Node.JS
-        </section>
+          ## In this module
 
+          * Part 1: Node.js
+            * Creating "Hello world" project
+            * Creating HTTP server
+            * Routing with query parameters
+            
+          * Part 2: Dependency managment in Node.js
+            * Node.js modules
+            * Packages
+            * Using Nodemon utility
+        </section>
+        
+        
         <section data-markdown>
-					## Javascript
+					## JavaScript
 
 					* Developed in 1995 at NetScape
 					* Shipped with IE3 in 1996 as JScript
@@ -113,7 +125,7 @@
         <section data-markdown>
 					## Node.JS
 
-					* Javascript runtime for server-side scripting
+					* JavaScript runtime for server-side scripting
 					* Created in 2009 by Ryan Dahl
 					* Uses Google's V8 JavaScript Engine
 					* Package management using NPM
@@ -213,7 +225,6 @@
             res.write(content);
             res.end();
           }
-
           ```
         </section>
 
@@ -277,13 +288,24 @@
 				<section data-markdown>
 					## Questions ?
 				</section>
+        
+        <section data-markdown>
+          ## Work
+            
+          * Create a basic app with three routes:   
+            * `/` explains how `/hello` works 
+            * `/hello` takes a `name` query parameter and 
+              * random names replies `hello [name]`
+              * your own name replies with a short intro of yourself
+              * any other replies a 404 code with a not found message
+        </section>
 
 				<section data-markdown>
-					## Node.JS modules
+					## Dependency managment in Node.js
 				</section>
 
 				<section data-markdown>
-          ## What is a module
+          ## What is a Node.js module ?
           
           * What we call a library in other languages 
           * One or more `.js` files doing something
@@ -305,8 +327,8 @@
 						  b: ...
 						} 
 						// or 
-						exports.a = ...
-						exports.b = ...
+						module.exports.a = ...
+						module.exports.b = ...
             ```
 					* Import in another file: (NB: **no extension**)
 						```javascript
@@ -332,36 +354,188 @@
           server.listen(8080)
           ```
 				</section>
+        
+        <section data-markdown>
+          ## Dependency Management
 
-				<section data-markdown>
-					## Questions ?
+          * Download and install existing packages 
+          * State versions used by your app
+          * Not reinvent the wheel
+          * Participate to the community
+        </section>
+  
+        <section data-markdown>
+          ## NPM 
+
+          * Package manager for Node.JS
+          * Developed by Isaac Z. Schlueter
+          * Upload, share & download packages
+          * Two modes: global & local
+          * Modules: system I/O, networking, cryptography, framework, …
+          * [npmjs.com](http://npmjs.com)
         </section>
         
-				<section data-markdown>
+        <section data-markdown>
+          ## yarn
+          
+          * Alternative package manager for Node.JS
+          * Developed & open-sourced by Facebook
+          * Introduced novelties recuperated by NPM v4 & 5
+          * Equivalent nowadays
+        </section>
+
+        <section data-markdown>
+          ## Install dependencies
+
+          * Add using NPM / yarn / package.json (manual)
+          * Specify version
+          * Install locally / globally
+
+          ```shell
+          npm i[nstall] [--save] [--save-dev] [-g] package_name
+          yarn add package_name [--dev]
+          ```
+
+          * Installation location: node_modules
+        </section>
+
+        <section data-markdown>
+          ## Module declaration
+          
+          `package.json`: stores a module's informations
+
+          * `name`, `description`, `version`, `license` and `private`
+          * `dependencies` and `devDependencies`
+          * scripts and commands
+          ```json
+          {
+            "name": "ece-ast",
+            "description": "NodeJS project for ECE class",
+            "version": "0.1.0",
+            "license": "UNLICENSED",
+            "private": true,
+            "dependencies": {},
+            "devDependencies": {}
+          }
+          ```
+
+          [package.json documentation](https://docs.npmjs.com/files/package.json)
+        </section>
+
+        <section data-markdown>
+          ## Module declaration
+          
+          Interactive `package.json` creation with 
+          
+          ```shell
+          npm init
+          yarn init
+          ```
+
+          [package.json doc](https://docs.npmjs.com/files/package.json)
+        </section>
+
+        <section data-markdown>
+          ## Dependencies declaration
+          
+          * dependencies: necessary to make your app run
+          ```json
+          { "dependencies": {
+            "foo": "1.0.0", // Version 1.0.0 exactly
+            "bar": ">1.0.0", // Any superior to 1.0.0
+            "baz": "1.2.x", // Any 1.2 version
+            "boo": "owner/repo", // The github project repo from owner
+            "asd": "[git url]", // The module in given repo
+            "local": "file:/path/to/file",
+            "tar": "http://web.site/my.tar.gz"
+          }}
+          ```
+          * devDependencies: test runners, doc framework, ...
+
+          [package.json doc](https://docs.npmjs.com/files/package.json)
+        </section>
+
+        <section data-markdown>
+          ## Versioning with Semver
+          
+          * [Semantic Versionning](https://semver.org/)
+          * Version X.Y.Z
+            - X = Major, breaking changes
+            - Y = Minor, new features and backward compatible 
+            - Z = Patch, bug fixing
+          * Version 0.Y.Z = unitial dev, unstable
+        </section>
+        
+        <section data-markdown>
+          ## Deterministic Installs: lock file
+
+          * `package-lock.json` for NPM 
+          * `yarn.lock` for yarn
+          * Fixes dependency versions
+          * Avoids the "but it works on my computer!" situation
+        </section>
+        
+        <section data-markdown>
+          ## Nodemon
+        </section>
+
+        <section data-markdown>
+          ## What is it ?
+
+          * A simple utility
+          * Watches your development files
+          * Restarts the server on saving
+        </section>
+
+        <section data-markdown>
+          ## How to use it ?
+
+          ```shell
+          npm i --save nodemon
+          # or
+          yarn add nodemon
+          # then 
+          ./node_modules/.bin/nodemon main.js
+          ```
+
+          Or add this to package.json:
+          
+          ```json
+          "scripts": {
+            "dev": "./node_modules/.bin/nodemon "
+          }
+          ```
+          and then:
+          ```shell
+          npm run dev app.js
+          ```
+          
+        </section>
+
+        <section data-markdown>
           ## Presenting your work: `readme.md`
 
           * Written in Markdown
-          * Should contain :
+          * Should contain:
             * Short introduction
             * Installation instructions 
             * Usage instruction with simple (and advanced) examples
             * List of contributors
 
-          [Markdown doc](https://daringfireball.net/projects/markdown/syntax)
+          [Markdown documentation](https://daringfireball.net/projects/markdown/syntax)
         </section>
-
+        
+				<section data-markdown>
+					## Questions ?
+        </section>
+        
 				<section data-markdown>
           ## Work
             
-          * Create a basic app with three routes:   
-            * `/` explains how `/hello` works 
-            * `/hello` takes a `name` query parameter and 
-              * random names replies `hello [name]`
-              * your own name replies with a short intro of yourself
-              * any other replies a 404 code with a not found message
           * You should have an `index.js` file with the server creation and `handles.js` defining the server's callback
+          * Add a `package.json` file with you module declaration
           * Add a `readme.md` file with title, introduction, run instructions and your name
-          * Push it all to a GitLab / GitHub repository
+          * Push it all to a GitLab / GitHub repository and send a link to your repository to sergei@adaltas.com
         </section>
 			</div>
     </div>

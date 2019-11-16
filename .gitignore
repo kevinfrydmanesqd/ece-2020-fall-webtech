@@ -1,8 +1,6 @@
 .*
 !.gitignore
 exports
-02_Dependency_Management_Express
-03_Transpilation
 04_Storage
 05_Unit_testing
 06_Middlewares

@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>ECE AST - Storage</title>
+
+    <meta name="description" content="ECE NodeJS lesson on ExpressJS">
+    <meta name="author" content="César Berezowski">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="../reveal.js/css/reveal.css">
+    <link rel="stylesheet" href="../reveal.js/css/theme/black.css" id="theme">
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="../reveal.js/lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? '../reveal.js/css/print/pdf.css' : '../reveal.js/css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div style="position:absolute; top:20px; left:20px;">
+    <p><img src="../img/adaltas.png" width="200px" style="margin: 10px 0" /></p>
+    </div>
+
+    <div class="reveal">
+
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+        <section>
+          <h1>Storage</h1>
+          <h4>Asynchronous Server Technologies</h4>
+          <p>
+            Sergei Kudinov<br/>
+            <i>Web Developer @ Adaltas</i><br/>
+            <i>sergei@adaltas.com</i>
+          </p>
+        </section>
+
+        <section data-markdown>
+          ## Recap
+
+          * Developer tools: terminal, editor, github, stack overflow
+          * Best practices on Node.js projects :
+            * `scripts` in package.json - don’t repeat long commands
+            * Examples in README.md - tell people how to use your code
+            * `npm install` - external libraries (ExpressJS, Nodemon)
+            * Modules - split your code intelligently
+            * Transpilers and TypeScript - write reliable code faster
+        </section>
+        
+        <section data-markdown>
+          ## Final project
+
+          * Based on code from class
+
+          * Simple dashboard app :
+            * User login
+            * A user can insert metrics
+            * A user can retrieve his metrics in a graph
+            * A user can only access his own metrics
+          * See [PROJECT.md](https://github.com/adaltas/ece-nodejs/blob/master/project.md)
+        </section>
+
+        <section data-markdown>
+          ## Questions ?
+        </section>
+
+        <section data-markdown>
+          ## Storage
+        </section>
+
+        <section data-markdown>
+          ## Databases
+
+          * RDBMS (basis for SQL) : MySQL, PostgreSQL, Hive, Oracle
+          * NoSQL :
+            * Column families: HBase, Cassandra
+            * Document Store: MongoDB, ElasticSearch
+            * Key Value: LevelDB
+            * Graph DBs: JanusGraph (ex-TitanDB), Neo4J
+        </section>
+
+        <section data-markdown>
+          ## LevelDB
+
+          * In-memory key-value store embedded in Node
+          * OpenSource
+          * NoSQL DB, Key Value store
+          * Originally written by Google
+          * [leveldb.org](http://leveldb.org)
+        </section>
+
+        <section data-markdown>
+          ## Why LevelDB for our project ?
+
+          * It’s blazing fast
+          * In memory & backed by the file system
+          * Keys are ordered : suitable for metrics
+          * Data compression with Snappy
+          * Embedded in the app, nothing else to setup / manage
+        </section>
+
+        <section data-markdown>
+          ## Some limitations
+
+          * Not a SQL database
+          * Only a single process at a time
+        </section>
+        
+        <!-- Use unit tests !!! -->
+
+        <section data-markdown>
+          ## Let’s setup
+          
+          * Dependencies install
+          ```shell
+          npm install --save encoding-down leveldown levelup level-ws 
+          npm i --save-dev @types/levelup
+          ```
+          * Create a `src/declarations.d.ts` file and add 
+          ```javascript
+          declare module 'encoding-down'
+          declare module 'leveldown'
+          declare module 'levelup'
+          declare module 'level-ws'
+          ```
+          * In `tsconfig.json` set 
+          ```json
+          {
+              "compilerOptions": {
+                "noImplicitAny": false
+              }
+          }
+          ```
+        </section>
+
+        <section data-markdown>
+          ## Use the db
+
+          To open
+
+          ```javascript
+          import encoding from 'encoding-down'
+          import leveldown from 'leveldown'
+          import levelup from 'levelup'
+          
+          const db = levelup(encoding(
+            leveldown("path"), 
+            { valueEncoding: 'json' })
+          )
+          ```
+        </section>
+
+        <section data-markdown>
+          ## Use the db
+
+          To write
+
+          ```javascript
+          db.put(key, value, (err) => {
+            if(err) {...}
+          })
+          ```
+
+          To read
+
+          ```javascript
+          db.get(key, (err, value) => {
+            if(err) {...}
+          })
+          ```
+        </section>
+
+        <section data-markdown>
+          ## Use the db
+
+          Let's create a wrapper  
+          Create a `leveldb.ts` file: 
+
+          ```javascript
+          import encoding from 'encoding-down'
+          import leveldown from 'leveldown'
+          import levelup from 'levelup'
+
+          export class LevelDB {
+            static open(path: string) {
+              const encoded = encoding(leveldown(path), { valueEncoding: 'json' })
+              return levelup(encoded)
+            }
+          }
+          ```
+        </section>
+
+        <section data-markdown>
+          ## The metrics
+
+          * Key: `metrics:#{id}:#{timestamp}`
+          * Value: an integer
+        </section>
+
+        <section data-markdown>
+          ## Read/write metrics
+
+          * One by one ? Too heavy !
+          * Use streaming :
+
+          ```javascript
+          // Write
+          import WriteStream from 'level-ws'
+          const ws = WriteStream(db);
+        
+          ws.on('error', function (err) {
+            console.log('Oh my!', err)
+          })
+          ws.on('close', function () {
+            console.log('Stream closed')
+          })
+          ws.write({ key: 'occupation', value: 'Clown' })
+          ws.end()
+          ```
+        </section>
+
+        <section data-markdown>
+          ## Read/write metrics
+
+          * One by one ? Too heavy !
+          * Use streaming :
+
+          ```javascript
+          // Read
+          const rs = db.createReadStream()
+            .on('data', function (data) {
+              console.log(data.key, '=', data.value)
+            })
+            .on('error', function (err) {
+              console.log('Oh my!', err)
+            })
+            .on('close', function () {
+              console.log('Stream closed')
+            })
+            .on('end', function () {
+              console.log('Stream ended')
+            })
+          ```
+        </section>
+
+        <section data-markdown>
+          ## Let’s post some metrics
+
+          In `src/metrics.ts`
+          
+          * Update the class to open a database connection 
+          
+          ```javascript 
+          import LevelDB = require('./leveldb')
+          
+          export class MetricsHandler {
+            private db: any 
+            
+            constructor(dbPath: string) {
+              this.db = LevelDB.open(dbPath)
+            }
+          }
+          ```
+        </section>
+        
+        <section data-markdown>
+          ## Let’s post some metrics
+
+          In `src/metrics.ts`
+          
+          * Add a function to save data
+          
+          ```javascript 
+          import WriteStream from 'level-ws'
+          
+          export class MetricsHandler {
+              public save(key: number, metrics: Metric[], callback: (error: Error | null) => void) {
+                const stream = WriteStream(this.db)
+                stream.on('error', callback)
+                stream.on('close', callback)
+                metrics.forEach((m: Metric) => {
+                  stream.write({ key: `metric:${key}${m.timestamp}`, value: m.value })
+                })
+                stream.end()
+              }
+          }
+          ```
+        </section>
+
+        <section data-markdown>
+          ## Let’s post some metrics
+
+          Install `body-parser` to parse the request’s body
+
+          ```shell
+          npm i --save body-parser
+          ```
+
+          Configure Express to use it in `src/server.ts`
+
+          ```javascript
+          app.use(bodyparser.json())
+          app.use(bodyparser.urlencoded())
+          ```
+        </section>
+        
+        <section data-markdown>
+          ## Let’s post some metrics
+
+          Add a route in `src/server.ts`
+
+          ```javascript
+          const dbMet: MetricsHandler = new MetricsHandler('./db/metrics')
+          
+          app.post('/metrics/:id', (req: any, res: any) => {
+            dbMet.save(req.params.id, req.body, (err: Error | null) => {
+              if (err) throw err
+              res.status(200).send()
+            })
+          })
+          ```
+        </section>
+
+        <section data-markdown>
+          ## Let’s post some metrics
+
+          * Using Postman :
+            * Set up a POST request on /metrics
+            * Set the header Content-Type:application/json
+            * Add an array of metrics as RAW body :
+
+          ```shell
+          [
+            { "timestamp":"1384686660000", "value":"10" }
+          ]
+          ```
+        </section>
+
+        <section data-markdown>
+          ## Or use a script ?
+          
+          `tsc && ./node_modules/.bin/ts-node bin/populate.ts`
+          
+          ```javascript
+          #!/usr/bin/env ts-node
+
+          import { Metric, MetricsHandler } from '../src/metrics'
+
+          const met = [
+            new Metric(`${new Date('2013-11-04 14:00 UTC').getTime()}`, 12),
+            new Metric(`${new Date('2013-11-04 14:15 UTC').getTime()}`, 10),
+            new Metric(`${new Date('2013-11-04 14:30 UTC').getTime()}`, 8)
+          ]
+
+          const db = new MetricsHandler('./db')
+
+          db.save('0', met, (err: Error | null) => {
+            if (err) throw err
+            console.log('Data populated')
+          })
+          ```
+        </section>
+
+        <section data-markdown>
+          ## Questions ?
+        </section>
+
+        <section data-markdown>
+          ## Your work
+          
+          * Add a `get` function to `metrics` module
+          * Add a route to get a metric (one of the metric, all the metrics)
+          * Add a `delete` function to `metrics` module
+          * Add a route to delete a metric based on its key
+        </section>
+        
+      </div>
+    </div>
+
+    <script src="../reveal.js/lib/js/head.min.js"></script>
+    <script src="../reveal.js/js/reveal.js"></script>
+
+    <script>
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: 'slide', // none/fade/slide/convex/concave/zoom
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: '../reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: '../reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: '../reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: '../reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+          { src: '../reveal.js/plugin/zoom-js/zoom.js', async: true },
+          { src: '../reveal.js/plugin/notes/notes.js', async: true }
+        ]
+      });
+    </script>
+
+  </body>
+</html>

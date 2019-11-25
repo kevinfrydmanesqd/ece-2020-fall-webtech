@@ -27,11 +27,11 @@ The project shall be written in coffee-script, pug and stylus (or another CSS tr
 Using the code from your previous work and from class : 
 
 1. On the front-end
-  1. Work with Stylus and Bootstrap to make it look nice
-  2. Display the metrics in a graph using d3.js
+    1. Work with Stylus and Bootstrap to make it look nice
+    2. Display the metrics in a graph using d3.js
 2. On the back-end
-  1. Add `get` and `remove` functions to the metrics module to retrieve and remove data from the database
-  2. Use postman to test your API functions
+    1. Add `get` and `remove` functions to the metrics module to retrieve and remove data from the database
+    2. Use postman to test your API functions
 3. Enhance the populatedb script that we saw in class to add multiple users and metric batches with different IDs 
 
 The code we worked on in class is available here : https://github.com/cesarBere/ece-ast-express

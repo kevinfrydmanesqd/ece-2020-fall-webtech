@@ -1,10 +1,9 @@
 # Asynchronous Server Technologies project
 
-**DEADLINE: FRIDAY 19TH OF JULY AT 12:30**
+**DEADLINE: will be set**
 
 ## Instructions
-
-This work is part of the continuous assessment of this class and will be the basis for your final project. 
+ 
 Your final grade will be calculated based on the final project’s result and your Git’s history.
 
 The project in itself is a simple web API with a dashboard that should allow you to :
@@ -14,7 +13,8 @@ The project in itself is a simple web API with a dashboard that should allow you
   - Authenticate
   - CRUD your own metrics (make use of an authorization middleware)
 * Front side
-  - Log in 
+  - Home page
+  - Sign In / Sign Up / Sign Out
   - Insert/update/delete metrics once logged in
   - Retrieve the user’s metrics and display it in a graph
   - Only access the user’s metrics, not the other ones
@@ -67,12 +67,13 @@ Otherwise:
 | Subject                                                         |   Code    | Grading   |
 |:----------------------------------------------------------------|:---------:|:---------:|
 | Functional populate DB scripts                                  |    FPS    |    +3     |
-| Functional sever with exposed front views                       |    FFV    |    +4     |
-| User authentication & authorization                             |    UAA    |    +4     |
-| Functional unit tests                                           |    FUT    |    +2     |
+| Functional sever with exposed front views                       |    FFV    |    +3     |
+| User authentication & authorization                             |    UAA    |    +3     |
+| Functional unit tests                                           |    FUT    |    +3     |
 | Front implementation: signin / signup / signout                 |    SSS    |    +2     |
-| Front implementation: select a metric and display it in a graph |    MDG    |    +3     |
+| Front implementation: display metrics in a graph                |    MDG    |    +3     |
 | Front implementation: update / delete a metric                  |    UDM    |    +2     |
+| Clean and well structured code base                             |    CCD    |    +1     |
 | Clean design of the front                                       |    CDF    |    +1     |
 | No use of transpilers                                           |     N     |    -5     |
 | No use of GitHub                                                |     N     |    -5     |
@@ -93,3 +94,4 @@ Negative points total will be ceiled to 10 i.e. you can't get more than 10 negat
 * Bootstrap documentation: [http://getbootstrap.com/](http://getbootstrap.com/)
 * MongoDB documentation: [https://docs.mongodb.com/manual/](https://docs.mongodb.com/manual/)
 * LevelDB documentation: [https://github.com/google/leveldb](https://github.com/google/leveldb)
+* How we structure our Express.js Routes: [https://medium.com/@sesitamakloe/how-we-structure-our-express-js-routes-58933d02e491]

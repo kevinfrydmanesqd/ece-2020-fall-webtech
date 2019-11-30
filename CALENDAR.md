@@ -11,23 +11,23 @@ We will finally initiate the use of git and GitHub. We'll also cover package bes
 to respect Node.JS conventions for packaging with executables dependencies, unit tests and
 then introduce the use of external libraries.
 
-## Transpiling
+## ExpressJS & Transpiling
+
+The course will introduce Node.JS frameworks and focus on ExpressJS to write a
+web application that exposes REST services and renders HTML pages.
 
 The language used across the course such as JavaScript, CSS, HTML can be written
 in alternative syntaxes. The rest of the course will present and use TypeScript,
 Jade, Stylus and friends.
 
-## ExpressJS & Storage
+##  Storage
 
-The course will introduce Node.JS frameworks and focus on ExpressJS to write a
-web application that exposes REST services and renders HTML pages.
+We will choose a database (LevelDB) and write the storage API to
+manage it and interact with it. This class is also the beginning point for the final project.
 
-In the second part we'll choose a database (LevelDB) and write the storage API to
-manage it and interact with it. The writing process will be driven by unit tests.
+## Unit Testing & Middlewares
 
-This class is also the beginning point for the final project
-
-## ExpressJS & Middlewares
+The writing process will be driven by unit tests.
 
 We'll learn how to use ExpressJS' middlewares, first with existing libraries and
 then by writing our own middlewares for authentication.

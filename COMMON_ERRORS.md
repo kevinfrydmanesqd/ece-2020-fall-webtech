@@ -24,6 +24,8 @@ Here is a list of common errors:
   - Use .gitignore (exclude node_modules, .DS_Store, etc.)
   - Remove all unused files (bootstrap-reboot.css, …)
 
+5. Split your code (public, views folders into root)
+
 # Administrative issues
 
 1. Put all the projects into one GitHub repository

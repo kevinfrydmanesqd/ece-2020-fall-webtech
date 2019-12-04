@@ -25,7 +25,6 @@ The codebase should:
 
 * be commented when necessary (listing the routes and parameters in the README is ok)
 * be unit tested with mocha and chai
-* use travis-ci
 * have the necessary project files (README, package.json, package-lock.json or yarn.lock; .gitignore, ts-config.json, ...) as shown in class
 * not have any file/dir in git that shouldn't be (node_modules, .idea, ...)
 
@@ -60,7 +59,6 @@ Also: **DON'T FORGET TO MAKE YOUR REPO PUBLIC**
 The following reasons will instantly equal to zero: 
 
 * I detect cheating, usually a repo with full implementation and 1-2 modification commits, I might mail you to discuss it
-* You started from the codebase implemented in class and provided as an example
 
 Otherwise: 
 

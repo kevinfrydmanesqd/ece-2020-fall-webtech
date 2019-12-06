@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>ECE AST - Unit testing</title>
+
+    <meta name="description" content="ECE NodeJS lesson on ExpressJS">
+    <meta name="author" content="César Berezowski">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="../reveal.js/css/reveal.css">
+    <link rel="stylesheet" href="../reveal.js/css/theme/black.css" id="theme">
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="../reveal.js/lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? '../reveal.js/css/print/pdf.css' : '../reveal.js/css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div style="position:absolute; top:20px; left:20px;">
+    <p><img src="../img/adaltas.png" width="200px" style="margin: 10px 0" /></p>
+    </div>
+
+    <div class="reveal">
+
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+        <section>
+          <h1>Unit testing</h1>
+          <h4>Asynchronous Server Technologies</h4>
+          <p>
+            Sergei Kudinov<br/>
+            <i>Web Developer @ Adaltas</i><br/>
+            <i>sergei@adaltas.com</i>
+          </p>
+        </section>
+
+        <section data-markdown>
+          ## Recap
+
+          * Developer tools: terminal, editor, github, stack overflow
+          * Best practices on Node.js projects :
+            * `scripts` in package.json - don’t repeat long commands
+            * Examples in README.md - tell people how to use your code
+            * `npm install` - external libraries (ExpressJS, Nodemon)
+            * Modules - split your code intelligently
+            * Transpilers and TypeScript - write reliable code faster
+        </section>
+        
+        <section data-markdown>
+          ## Final project
+
+          * Based on code from class
+
+          * Simple dashboard app :
+            * User login
+            * A user can insert metrics
+            * A user can retrieve his metrics in a graph
+            * A user can only access his own metrics
+          * See [PROJECT.md](../PROJECT.md)
+        </section>
+
+        <section data-markdown>
+          ## Questions ?
+        </section>
+        
+        <section data-markdown>
+          ## Unit testing
+          
+          * Test atomic components of code 
+          * Make sure it does what it is supposed to
+          * Prevent regression & ease future development
+          * Automate tests with a pipeline
+        </section>
+        
+        <section data-markdown>
+          ## Mocha
+          
+          Test framework
+          ```javascript
+          describe('MyObject', function () {
+            before(function () {
+              // Ran before all tests of 'MyObject'
+            })
+            beforeEach(function () {
+              // Ran before each tests of 'MyObject'
+            })
+            after(function () { ... }) // Same but after  
+            afterEach(function () { ... }) // Same but after each
+            
+            describe('#myFunction', function() { // Sub suite of 'MyObject'
+              it('should have an expected behaviour', function () {
+                // A test
+              })
+            })
+          })
+          ```
+          [Documentation](http://mochajs.org/)
+        </section>
+
+        <section data-markdown>
+          ## Chai
+          
+          Assertion library
+          ```javascript
+          import { expect } from 'chai'
+          
+          expect(2).to.equal(2)
+          expect(2).to.not.equal(1)
+          
+          const a: string = "something"
+          expect(a).to.be.a('string')
+          ```
+          [Documentation](https://www.chaijs.com/api/bdd/)
+        </section>
+
+        <!-- <section data-markdown>
+          ## Travis CI
+
+          * Continuous integration tools
+          * Integrated with GitHub
+          * `.travis.yml` file defines environment and parameters
+          * [travis-ci.org](http://travis-ci.org)
+          * [Get started: docs.travis-ci.com/user/getting-started/](http://docs.travis-ci.com/user/getting-started/)
+        </section> -->
+
+        <section data-markdown>
+          ## Setup
+          
+          ```shell
+          npm i --save-dev mocha @types/mocha chai @types/chai
+          ```
+          In `src/metrics.test.ts`:
+
+          ```js
+          import 'chai'
+
+          const a: number = 0
+
+          describe('Metrics', function () {
+            it('should save and get', function () {
+              expect(a).to.equal(0)
+            })
+          })
+          ```
+          Then run with:
+
+          ```shell
+          ./node_modules/.bin/mocha -r ts-node/register src/**/*.test.ts
+          ```
+        </section>
+
+        <section data-markdown>
+          ## Npm script          
+          
+          * In `package.json`:
+
+          ```json
+          "scripts": {
+            "test": "./node_modules/.bin/mocha -r ts-node/register src/**/*.test.ts",
+            ...
+          }
+          ```
+          * Now running with `npm test` command
+        </section>
+
+        <section data-markdown>
+          ## Run pipeline
+          
+          * In `.travis.yml`
+
+          ```json
+          language: node_js
+          node_js:
+            - "v12.13.0"
+          ```
+          * On [http://travis-ci.org](http://travis-ci.org), add the repository
+          * Could be done with gitlab-ci, [example here](https://gitlab.com/gitlab-examples/nodejs/).
+        </section>
+
+        <section data-markdown>
+          ## Testing Metrics
+            
+          * Prepare database connection
+          
+          ```javascript
+          import { expect } from 'chai'
+          import { Metric, MetricsHandler } from './metrics'
+          import { LevelDB } from "./leveldb"
+
+          const dbPath: string = 'db_test'
+          var dbMet: MetricsHandler
+
+          describe('Metrics', function () {
+            before(function () {
+              LevelDB.clear(dbPath)
+              dbMet = new MetricsHandler(dbPath)
+            })
+
+            after(function () {
+              dbMet.db.close()
+            })
+          })
+          ```
+        </section>
+
+        <section data-markdown>
+          ## Testing Metrics
+            
+          * Install `del` module
+          
+          ```shell
+          npm i --save del
+          ```
+          * Add the clear function to `LevelDB` module
+          
+          ```javascript
+          import fs = require('fs')
+          import del = require('del')
+
+          export class LevelDB {
+            ...
+            
+            static clear(path: string) {
+              if (fs.existsSync(path)) {
+                del.sync(path, { force: true })
+              }
+            }
+          }
+          ```
+        </section>
+
+        <section data-markdown>
+          ## Testing Metrics
+            
+          * Test `db#get`
+          
+          ```javascript
+          describe('#get', function () {
+            it('should get empty array on non existing group', function () {
+              dbMet.get("0", function (err: Error | null, result?: Metric[]) {
+                expect(err).to.be.null
+                expect(result).to.not.be.undefined
+                expect(result).to.be.empty
+              })
+            })
+          })
+          ```
+        </section>
+
+        <section data-markdown>
+          ## Work
+            
+          * TODO: test save & delete functions
+            - '#save' should save data
+            - '#save' should update existing data
+            - '#delete' should delete data 
+            - '#delete' should not fail if data does not exist
+        </section>
+        
+      </div>
+    </div>
+
+    <script src="../reveal.js/lib/js/head.min.js"></script>
+    <script src="../reveal.js/js/reveal.js"></script>
+
+    <script>
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: 'slide', // none/fade/slide/convex/concave/zoom
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: '../reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: '../reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: '../reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: '../reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+          { src: '../reveal.js/plugin/zoom-js/zoom.js', async: true },
+          { src: '../reveal.js/plugin/notes/notes.js', async: true }
+        ]
+      });
+    </script>
+
+  </body>
+</html>

@@ -4,9 +4,9 @@
   <head>
     <meta charset="utf-8">
 
-    <title>ECE AST - Unit testing</title>
+    <title>ECE AST - Middlewares</title>
 
-    <meta name="description" content="ECE NodeJS lesson on ExpressJS">
+    <meta name="description" content="ECE NodeJS class lesson on Middlewares">
     <meta name="author" content="César Berezowski">
 
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="../reveal.js/css/theme/black.css" id="theme">
 
     <!-- Code syntax highlighting -->
-    <link rel="stylesheet" href="../reveal.js/lib/css/zenburn.css">
+    <link rel="stylesheet" href=".//reveal.js/lib/css/zenburn.css">
 
     <!-- Printing and PDF exports -->
     <script>
@@ -45,7 +45,7 @@
       <!-- Any section element inside of this container is displayed as a slide -->
       <div class="slides">
         <section>
-          <h1>Unit testing</h1>
+          <h1>Middlewares</h1>
           <h4>Asynchronous Server Technologies</h4>
           <p>
             Sergei Kudinov<br/>
@@ -55,228 +55,493 @@
         </section>
 
         <section data-markdown>
-          ## Recap
+          ## About this course
 
-          * Developer tools: terminal, editor, github, stack overflow
-          * Best practices on Node.js projects :
-            * `scripts` in package.json - don’t repeat long commands
-            * Examples in README.md - tell people how to use your code
-            * `npm install` - external libraries (ExpressJS, Nodemon)
-            * Modules - split your code intelligently
-            * Transpilers and TypeScript - write reliable code faster
+          * You will use / do :
+            * JavaScript / TypeScript & Markdown
+            * Node.JS & NPM or yarn
+            * Git & Github / GitLab
+            * Unit tests & Travis CI
+            * Use a framework & transpiler
+            * Use LevelDB
+            * Read the doc ! Ask Google !
+          * You will apprehend tools of the Open Source
         </section>
-        
+
+        <section data-markdown>
+          ## About this course
+
+          * Evaluation :
+            * Continuous using Git
+            * Simple project at the end of the course
+          * Planning: [CALENDAR.md](../CALENDAR.md)
+        </section>
+
         <section data-markdown>
           ## Final project
 
           * Based on code from class
-
+          * Using presented technologies
           * Simple dashboard app :
             * User login
-            * A user can insert metrics
-            * A user can retrieve his metrics in a graph
+            * A user can insert simple metrics
+            * A user can retrieve his metrics displayed nicely in a graph
             * A user can only access his own metrics
           * See [PROJECT.md](../PROJECT.md)
         </section>
 
         <section data-markdown>
-          ## Questions ?
+          ## Middleware
+        </section>
+
+        <section data-markdown>
+          ## What is it ?
+
+          * Very vague term, multiple definition
+          * In our case :
+
+          *Middleware are functions that have access to the request and the next 
+          middleware function in the application’s request-response cycle*
+        </section>
+
+        <section data-markdown>
+          ## What is it ?
+
+          Middleware are functions that can:
+
+            * Execute any code.
+            * Make changes to request and response objects.
+            * End the request-response cycle.
+            * Call the next middleware function in the stack.
+            
+          If the current middleware function does not end the request-response 
+          cycle, it must call next() to pass control to the next middleware 
+          function. Otherwise, the request will be left hanging.
+
         </section>
         
         <section data-markdown>
-          ## Unit testing
+          ## Middlewares
           
-          * Test atomic components of code 
-          * Make sure it does what it is supposed to
-          * Prevent regression & ease future development
-          * Automate tests with a pipeline
+          * Application-level: executed every time the app receives a request
+          * Router-level: executed on every route of the router
+          * Error-handling: four arguments instead of three, specifically with the signature `(err, req, res, next)`
+          * Third-party: add functionality to Express apps with node module
         </section>
         
         <section data-markdown>
-          ## Mocha
+          ## Application-level
           
-          Test framework
+          * Executed every time the app receives a request  
+          
           ```javascript
-          describe('MyObject', function () {
-            before(function () {
-              // Ran before all tests of 'MyObject'
-            })
-            beforeEach(function () {
-              // Ran before each tests of 'MyObject'
-            })
-            after(function () { ... }) // Same but after  
-            afterEach(function () { ... }) // Same but after each
+          import express = require('express')
+          const app = express()
+          
+          app.use(function (req: any, res: any, next: any) {
+            console.log(req.method + ' on ' req.url)
+            next()
+          })
+          
+          app.get('/', (req: any, res: any) => {
+            res.send('hello world')
+          })
+          
+          app.listen('8080', (err: Error) => {
+            if (err) throw err
+            console.log('server is listening on port 8080')
+          })
+          ```
+        </section>
+
+        <section data-markdown>
+          ## Router-level
+          
+          * Executed on every route of the router
+          
+          ```javascript
+          import express = require('express')
+          const app = express()
+          const router = express.Router()
+          
+          router.use(function (req: any, res: any, next: any) {
+            console.log('router: '  + req.method + ' on ' req.url)
+            next()
+          })
+          
+          router.get('/', (req: any, res: any) => {
+            res.send('hello world')
+          })
+          
+          app.use(router)
+          
+          app.listen('8080', (err: Error) => {
+            if (err) throw err
+            console.log('server is listening on port 8080')
+          })
+          ```
+        </section>
+
+        <section data-markdown>
+          ## Error-handling
+
+          * Four arguments instead of three
+          
+          ```javascript
+          import express = require('express')
+          const app = express()
+          
+          app.use(function (err: Error, req: any, res: any, next: any) {
+            console.error(err.stack)
+            res.status(500).send('Something broke!')
+          })
+          
+          app.listen('8080', (err: Error) => {
+            if (err) throw err
+            console.log('server is listening on port 8080')
+          })
+          ```
+        </section>
+
+        <section data-markdown>
+          ## Third-party
+          
+          * Add functionality to Express apps with node module
+          * Install [`morgan`](https://github.com/expressjs/morgan) module
+
+          ```javascript
+          import express = require('express')
+          import morgan = require('morgan')
+          const app = express()
+          
+          app.use(morgan('dev'))
+          
+          app.get('/', (req: any, res: any) => {
+            res.send('hello world')
+          })
+          
+          app.listen('8080', (err: Error) => {
+            if (err) throw err
+            console.log('server is listening on port 8080')
+          })
+          ```
+        </section>
+
+        <section data-markdown>
+          ## What can we use it for ?
+
+          * Anything !
+          * Content validation / parsing
+          * Data completion
+          * User authentication / authorization
+          * Logging
+          * ...
+        </section>
+
+        <section data-markdown>
+          ## Some middlewares
+
+          * body-parser
+          * errorhandler
+          * cookie-parser
+          * morgan
+          * ...
+
+          [Exhaustive list](http://expressjs.com/en/resources/middleware.html), use the ones you find useful !
+          [Express doc on middlewares](http://expressjs.com/en/guide/using-middleware.html)
+        </section>
+
+        <section data-markdown>
+          ## Let's setup authentication
+
+          * We'll need :
+            * User CRUD (Create Read Update Delete)
+            * DB persistance
+            * User sessions
+            * User auth
+            * Authorization middleware
+            * Login pages
+          * We could also use [PassportJS](http://passportjs.org/)
+        </section>
+
+        <section data-markdown>
+          ### User CRUD part 1
+
+          In a `src/user.ts` file:
+
+          ```Javascript
+          export class User {
+            public username: string
+            public email: string
+            private password: string = ""
+
+            constructor(username: string, email: string, password: string, passwordHashed: boolean = false) {
+              this.username = username
+              this.email = email
+
+              if (!passwordHashed) {
+                this.setPassword(password)
+              } else this.password = password
+            }
             
-            describe('#myFunction', function() { // Sub suite of 'MyObject'
-              it('should have an expected behaviour', function () {
-                // A test
-              })
-            })
-          })
-          ```
-          [Documentation](http://mochajs.org/)
-        </section>
-
-        <section data-markdown>
-          ## Chai
-          
-          Assertion library
-          ```javascript
-          import { expect } from 'chai'
-          
-          expect(2).to.equal(2)
-          expect(2).to.not.equal(1)
-          
-          const a: string = "something"
-          expect(a).to.be.a('string')
-          ```
-          [Documentation](https://www.chaijs.com/api/bdd/)
-        </section>
-
-        <!-- <section data-markdown>
-          ## Travis CI
-
-          * Continuous integration tools
-          * Integrated with GitHub
-          * `.travis.yml` file defines environment and parameters
-          * [travis-ci.org](http://travis-ci.org)
-          * [Get started: docs.travis-ci.com/user/getting-started/](http://docs.travis-ci.com/user/getting-started/)
-        </section> -->
-
-        <section data-markdown>
-          ## Setup
-          
-          ```shell
-          npm i --save-dev mocha @types/mocha chai @types/chai
-          ```
-          In `src/metrics.test.ts`:
-
-          ```js
-          import 'chai'
-
-          const a: number = 0
-
-          describe('Metrics', function () {
-            it('should save and get', function () {
-              expect(a).to.equal(0)
-            })
-          })
-          ```
-          Then run with:
-
-          ```shell
-          ./node_modules/.bin/mocha -r ts-node/register src/**/*.test.ts
-          ```
-        </section>
-
-        <section data-markdown>
-          ## Npm script          
-          
-          * In `package.json`:
-
-          ```json
-          "scripts": {
-            "test": "./node_modules/.bin/mocha -r ts-node/register src/**/*.test.ts",
             ...
-          }
-          ```
-          * Now running with `npm test` command
-        </section>
-
-        <section data-markdown>
-          ## Run pipeline
-          
-          * In `.travis.yml`
-
-          ```json
-          language: node_js
-          node_js:
-            - "v12.13.0"
-          ```
-          * On [http://travis-ci.org](http://travis-ci.org), add the repository
-          * Could be done with gitlab-ci, [example here](https://gitlab.com/gitlab-examples/nodejs/).
-        </section>
-
-        <section data-markdown>
-          ## Testing Metrics
-            
-          * Prepare database connection
-          
-          ```javascript
-          import { expect } from 'chai'
-          import { Metric, MetricsHandler } from './metrics'
-          import { LevelDB } from "./leveldb"
-
-          const dbPath: string = 'db_test'
-          var dbMet: MetricsHandler
-
-          describe('Metrics', function () {
-            before(function () {
-              LevelDB.clear(dbPath)
-              dbMet = new MetricsHandler(dbPath)
-            })
-
-            after(function () {
-              dbMet.db.close()
-            })
-          })
           ```
         </section>
 
         <section data-markdown>
-          ## Testing Metrics
-            
-          * Install `del` module
-          
-          ```shell
-          npm i --save del
-          ```
-          * Add the clear function to `LevelDB` module
-          
-          ```javascript
-          import fs = require('fs')
-          import del = require('del')
+          ### User CRUD part 1
 
-          export class LevelDB {
-            ...
-            
-            static clear(path: string) {
-              if (fs.existsSync(path)) {
-                del.sync(path, { force: true })
-              }
+          In a `src/user.ts` file:
+
+          ```Javascript
+          ...
+            static fromDb(username: string, value: any): User {
+              const [password, email] = value.split(":")
+              return new User(username, email, password)
+            }
+
+            public setPassword(toSet: string): void {
+              // Hash and set password
+            }
+
+            public getPassword(): string {
+              return this.password
+            }
+
+            public validatePassword(toValidate: String): boolean {
+              // return comparison with hashed password
             }
           }
           ```
         </section>
 
         <section data-markdown>
-          ## Testing Metrics
-            
-          * Test `db#get`
+          ### User CRUD part 2
+
+          In a `src/user.ts` file:
+
+          ```Javascript
+          import { LevelDB } from "./leveldb"
+          import WriteStream from 'level-ws'
           
-          ```javascript
-          describe('#get', function () {
-            it('should get empty array on non existing group', function () {
-              dbMet.get("0", function (err: Error | null, result?: Metric[]) {
-                expect(err).to.be.null
-                expect(result).to.not.be.undefined
-                expect(result).to.be.empty
+          export class UserHandler {
+            public db: any
+
+            public get(username: string, callback: (err: Error | null, result?: User) => void) {
+              this.db.get(`user:${username}`, function (err: Error, data: any) {
+                if (err) callback(err)
+                else if (data === undefined) callback(null, data)
+                callback(null, User.fromDb(username, data))
               })
+            }
+
+            public save(user: User, callback: (err: Error | null) => void) {
+              this.db.put(`user:${user.username}`, `${user.getPassword}:${user.email}`, (err: Error | null) => {
+                callback(err)
+              })
+            }
+            
+            public delete(username: string, callback: (err: Error | null) => void) {
+              // TODO
+            }
+
+            constructor(path: string) {
+              this.db = LevelDB.open(path)
+            }
+          }
+          ```
+        </section>
+
+        <section data-markdown>
+          ### User sessions
+          
+          * `npm i --save level level-session-store express-session`
+          * In `src/server.ts` 
+
+          ```javascript
+          import session = require('express-session')
+          import levelSession = require('level-session-store')
+          
+          const LevelStore = levelSession(session)
+          
+          app.use(session({
+            secret: 'my very secret phrase',
+            store: new LevelStore('./db/sessions'),
+            resave: true,
+            saveUninitialized: true
+          }))
+          ```
+        </section>
+        
+        <section data-markdown>
+          ### User authentication
+
+          In `src/server.ts`
+
+          ```javascript
+          import { UserHandler, User } from './users'
+          const dbUser: UserHandler = new UserHandler('./db/users')
+          const authRouter = express.Router()
+          
+          authRouter.get('/login', (req: any, res: any) => {
+            res.render('login')
+          })
+          
+          authRouter.get('/signup', (req: any, res: any) => {
+            res.render('signup')
+          })
+
+          authRouter.get('/logout', (req: any, res: any) => {
+            delete req.session.loggedIn
+            delete req.session.user
+            res.redirect('/login')
+          })
+          
+          ...
+          ```
+        </section>
+        
+        <section data-markdown>
+          ### User authentication
+
+          In `src/server.ts`
+
+          ```javascript
+          ...
+          
+          authRouter.post('/login', (req: any, res: any, next: any) => {
+            dbUser.get(req.body.username, (err: Error | null, result?: User) => {
+              if (err) next(err)
+              if (result === undefined || !result.validatePassword(req.body.password)) {
+                res.redirect('/login')
+              } else {
+                req.session.loggedIn = true
+                req.session.user = result
+                res.redirect('/')
+              }
             })
+          })
+          
+          app.use(authRouter)
+          ...
+          ```
+        </section>
+
+        <section data-markdown>
+          ### User creation and retrieval
+
+          In `src/server.ts`
+
+          ```javascript
+          ...
+          
+          const userRouter = express.Router()
+
+          userRouter.post('/', (req: any, res: any, next: any) => {
+            dbUser.get(req.body.username, function (err: Error | null, result?: User) {
+              if (!err || result !== undefined) {
+               res.status(409).send("user already exists")
+              } else {
+                dbUser.save(req.body, function (err: Error | null) {
+                  if (err) next(err)
+                  else res.status(201).send("user persisted")
+                })
+              }
+            })
+          })
+
+          userRouter.get('/:username', (req: any, res: any, next: any) => {
+            dbUser.get(req.params.username, function (err: Error | null, result?: User) {
+              if (err || result === undefined) {
+                res.status(404).send("user not found")
+              } else res.status(200).json(result)
+            })
+          })
+
+          app.use('/user', userRouter)
+          ```
+        </section>
+
+        <section data-markdown>
+          ### User authorization middleware
+
+          In `src/server.ts`
+
+          ```javascript
+          const authCheck = function (req: any, res: any, next: any) {
+            if (req.session.loggedIn) {
+              next()
+            } else res.redirect('/login')
+          }
+
+          app.get('/', authCheck, (req: any, res: any) => {
+            res.render('index', { name: req.session.username })
           })
           ```
         </section>
 
         <section data-markdown>
-          ## Work
-            
-          * TODO: test save & delete functions
-            - '#save' should save data
-            - '#save' should update existing data
-            - '#delete' should delete data 
-            - '#delete' should not fail if data does not exist
+          ### Login page layout
+
+          In `views/login.ejs`
+
+          ```html
+          &lt;div id="form">
+            &lt;p>Please login to your account&lt;/p>
+            &lt;hr/>
+            &lt;form action="/login" method="post">
+              &lt;div class="form-group">
+                &lt;label for="form_username">Username&lt;/label>
+                &lt;input id="form_username" type="text" name="username" />
+              &lt;/div>
+              &lt;div class="form-group">
+                &lt;label for="form_password">Password&lt;/label>
+                &lt;input id="form_password" type="password" name="password" />
+              &lt;/div>
+              &lt;button class="btn btn-primary btn-block" type="submit" value="Submit">Connect&lt;/button>
+            &lt;/form>
+            &lt;hr/>
+            &lt;button class="btn btn-success btn-block" type="submit" href="/signup" onClick='document.location.href="/signup"'>
+              Create an account
+            &lt;/button>
+          &lt;/div>
+          ```
+        </section>
+
+        <section data-markdown>
+          ### Index page layout
+
+          In `views/index.ejs` (renamed from `hello.ejs`) :
+
+          ```html
+          &lt;button class="btn btn-danger" href="/logout" onClick='document.location.href="/logout"'>
+            Logout
+          &lt;/button>
+          ```
         </section>
         
+        <section data-markdown>
+           ### Your turn
+
+           * Do the `remove` functions for a user
+           * Do the `/signup` form and link to /user POST
+        </section>
+               
+        <section data-markdown>
+          ## Questions ?
+        </section>
+
+        <section data-markdown>
+          ## Your work
+          
+          * Fully implement User module: auth, CRUD & unit tests
+          * Using the `metrics` module implemented on past work:
+            * Link metrics to users 
+            * Implement the mechanisms for a user to add metrics and retrieve them (only its own !)
+          * On the front-end:
+            * Display data accordingly to the connected user
+            * Allow a user to display each of his metrics group
+        </section>
       </div>
     </div>
 
@@ -284,6 +549,7 @@
     <script src="../reveal.js/js/reveal.js"></script>
 
     <script>
+
       // Full list of configuration options available at:
       // https://github.com/hakimel/reveal.js#configuration
       Reveal.initialize({
@@ -291,7 +557,9 @@
         progress: true,
         history: true,
         center: true,
+
         transition: 'slide', // none/fade/slide/convex/concave/zoom
+
         // Optional reveal.js plugins
         dependencies: [
           { src: '../reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
@@ -302,6 +570,7 @@
           { src: '../reveal.js/plugin/notes/notes.js', async: true }
         ]
       });
+
     </script>
 
   </body>

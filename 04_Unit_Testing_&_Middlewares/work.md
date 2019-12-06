@@ -1,11 +1,3 @@
-# Unit Testing
-  
-* Test save & delete functions
-  - '#save' should save data
-  - '#save' should update existing data
-  - '#delete' should delete data 
-  - '#delete' should not fail if data does not exist
-
 # Middlewares
 
 Using the code and repo from last weeks TP and enhanced in class
@@ -17,6 +9,15 @@ Using the code and repo from last weeks TP and enhanced in class
 * On the front-end:
   * Display data accordingly to the connected user
   * Allow a user to display each of his metrics group
+
+
+# Unit Testing
+  
+* Test save & delete functions
+  - '#save' should save data
+  - '#save' should update existing data
+  - '#delete' should delete data 
+  - '#delete' should not fail if data does not exist
 
 Notes :
 

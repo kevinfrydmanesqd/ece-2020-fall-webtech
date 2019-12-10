@@ -152,7 +152,7 @@
           In `src/metrics.test.ts`:
 
           ```js
-          import 'chai'
+          import {expect} from'chai'
 
           const a: number = 0
 
@@ -256,11 +256,12 @@
           
           ```javascript
           describe('#get', function () {
-            it('should get empty array on non existing group', function () {
+            it('should get empty array on non existing group', function (done) {
               dbMet.get("0", function (err: Error | null, result?: Metric[]) {
                 expect(err).to.be.null
                 expect(result).to.not.be.undefined
                 expect(result).to.be.empty
+                done()
               })
             })
           })

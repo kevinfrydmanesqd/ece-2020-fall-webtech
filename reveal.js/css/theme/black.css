@@ -49,6 +49,9 @@ body {
   text-shadow: none;
   word-wrap: break-word; }
 
+.reveal section:first-child h1 {
+  text-transform: none;
+}
 .reveal h1 {
   font-size: 2.5em; }
 
@@ -151,7 +154,11 @@ body {
   box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.3); }
 
 .reveal code {
-  font-family: monospace; }
+  font-family: monospace; 
+  padding: 0.1rem 1rem;
+  background: #3f3f3f;
+  border-radius: .5rem;
+}
 
 .reveal pre code {
   display: block;

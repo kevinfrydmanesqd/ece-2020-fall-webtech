@@ -6,7 +6,7 @@
 
     <title>ECE AST - NodeJS</title>
 
-    <meta name="description" content="ECE NodeJS class lesson on NodeJS">
+    <meta name="description" content="NodeJS course for ECE">
     <meta name="author" content="César Berezowski">
 
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -14,18 +14,18 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
 
-    <link rel="stylesheet" href="../reveal.js/css/reveal.css">
-    <link rel="stylesheet" href="../reveal.js/css/theme/black.css" id="theme">
+    <link rel="stylesheet" href="./reveal.js/css/reveal.css">
+    <link rel="stylesheet" href="./reveal.js/css/theme/black.css" id="theme">
 
     <!-- Code syntax highlighting -->
-    <link rel="stylesheet" href="../reveal.js/lib/css/zenburn.css">
+    <link rel="stylesheet" href="./reveal.js/lib/css/zenburn.css">
 
     <!-- Printing and PDF exports -->
     <script>
       var link = document.createElement( 'link' );
       link.rel = 'stylesheet';
       link.type = 'text/css';
-      link.href = window.location.search.match( /print-pdf/gi ) ? '../reveal.js/css/print/pdf.css' : '../reveal.js/css/print/paper.css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? './reveal.js/css/print/pdf.css' : './reveal.js/css/print/paper.css';
       document.getElementsByTagName( 'head' )[0].appendChild( link );
     </script>
 
@@ -37,7 +37,7 @@
   <body>
 
     <div style="position:absolute; top:20px; left:20px;">
-    <p><img src="../img/adaltas.png" width="200px" style="margin: 10px 0" /></p>
+    <p><img src="./img/adaltas.png" width="200px" style="margin: 10px 0" /></p>
     </div>
 
     <div class="reveal">
@@ -47,9 +47,9 @@
         <section>
           <h1>Asynchronous Server Technologies</h1>
           <p>
-            César Berezowski <br/>
-            <i>Big Data Consultant @ Adaltas</i><br/>
-            <i>cesar@adaltas.com</i>
+            Sergei Kudinov<br/>
+            <i>Web Developer @ Adaltas</i><br/>
+            <i>sergei@adaltas.com</i>
           </p>
         </section>
 
@@ -57,10 +57,12 @@
           ## About this course
 
           * You will use / do :
-            * JavaScript / CoffeeScript and Markdown
-            * Node.JS / NPM
-            * Git / Github
+            * JavaScript / TypeScript & Markdown
+            * Node.JS & NPM or yarn
+            * Git & Github / GitLab
             * Unit tests & Travis CI
+            * Use a framework & transpiler
+            * Use a storage (LevelDB)
             * Read the doc ! Ask Google !
           * You will apprehend tools of the Open Source
         </section>
@@ -69,9 +71,9 @@
           ## About this course
 
           * Evaluation :
-            * Continuous using GitHub
+            * Continuous using Git
             * Simple project at end of course
-          * Planning: [CALENDAR.md](https://github.com/adaltas/ece-nodejs/blob/master/CALENDAR.md)
+          * Planning: [CALENDAR.md](https://github.com/adaltas/ece-nodejs/blob/2019/CALENDAR.md)
         </section>
 
         <section data-markdown>
@@ -84,13 +86,13 @@
             * A user can insert simple metrics
             * A user can retrieve his metrics displayed nicely in a graph
             * A user can only access his own metrics
-          * See [PROJECT.md](https://github.com/adaltas/ece-nodejs/blob/master/project.md)
+          * See [PROJECT.md](https://github.com/adaltas/ece-nodejs/blob/2019/PROJECT.md)
         </section>
 			</div>
     </div>
 
-    <script src="../reveal.js/lib/js/head.min.js"></script>
-    <script src="../reveal.js/js/reveal.js"></script>
+    <script src="./reveal.js/lib/js/head.min.js"></script>
+    <script src="./reveal.js/js/reveal.js"></script>
 
     <script>
 
@@ -106,12 +108,12 @@
 
         // Optional reveal.js plugins
         dependencies: [
-          { src: '../reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
-          { src: '../reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-          { src: '../reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-          { src: '../reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
-          { src: '../reveal.js/plugin/zoom-js/zoom.js', async: true },
-          { src: '../reveal.js/plugin/notes/notes.js', async: true }
+          { src: './reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: './reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: './reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: './reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+          { src: './reveal.js/plugin/zoom-js/zoom.js', async: true },
+          { src: './reveal.js/plugin/notes/notes.js', async: true }
         ]
       });
 

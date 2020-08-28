@@ -48,9 +48,9 @@
           <h1>Production</h1>
           <h4>Asynchronous Server Technologies</h4>
           <p>
-            César Berezowski <br/>
-            <i>Big Data Consultant @ Adaltas</i><br/>
-            <i>cesar@adaltas.com</i>
+            Sergei Kudinov<br/>
+            <i>Web Developer @ Adaltas</i><br/>
+            <i>sergei@adaltas.com</i>
           </p>
         </section>
 
@@ -64,8 +64,7 @@
             - Manage user auth and sessions with middlewares
             - Expose static content to display in a browser
           - Transpilers to ease writing and reading code
-          - Level DB to store the data
-          - Websockets
+          - LevelDB to store the data
           - ...
 
           And also a set of best-practices and other tools to enhance the developer’s experience
@@ -81,16 +80,15 @@
             * A user can insert metrics
             * A user can retrieve his metrics in a graph
             * A user can only access his own metrics
-          * See [PROJECT.md](https://github.com/adaltas/ece-nodejs/blob/master/project.md)
+          * See [PROJECT.md](../PROJECT.md)
         </section>
-
+        
         <section data-markdown>
           ## Questions ?
 
           Now is the time !
         </section>
         
-
         <section data-markdown>
           ## What's "production" ?
 
@@ -101,27 +99,35 @@
           ## Production considerations
           
           - Running an app 
-          - Environment variables / arguments 
+          - Environment variables / Application arguments 
           - Error handling 
           - Security
         </section>
-
+        
+        
         <section data-markdown>
           ## Running an app 
           
-          - `forever` module (~nohup): simple
-          - Docker: compartimented but more work
-          - Hosting platform: little work but costs more (google cloud, digitalocean, azure, ...)
+          - Hosting platform: Google Cloud, DigitalOcean, AWS, Azure, ...
+          - Docker container
 
         </section>
         
         <section data-markdown>
-          ## Env variables
+          ## Environment variables
           
           `process.env.[VAR_NAME]`
           
           - `NODE_ENV` -> production / development 
           - ...
+          
+          linux & mac: `export NODE_ENV=production`
+          windows: `$env:NODE_ENV = 'production'`
+          
+          Example:
+          ```
+          var dbDir = process.env.NODE_ENV == 'production' ? './db' : './db_test' ;
+          ```
           
           Use [dotenv](https://www.npmjs.com/package/dotenv) module to ease the use of env variables
         </section>
@@ -130,6 +136,11 @@
           ## Application arguments 
           
           `process.argv`
+          
+          Try to print them like:
+          ```
+          console.log(process.argv)
+          ```
           
           - Parsers: [argparse](http://nodeca.github.io/argparse/), [yargs](http://yargs.js.org), [parameters](https://github.com/adaltas/node-parameters)
         </section>
@@ -142,6 +153,14 @@
           - Exceptions can be caught like in any other language 
           - In dev: [`errorhandler`](https://www.npmjs.com/package/errorhandler) module
           
+          ```
+          var errorhandler = require('errorhandler')
+          var app = express()
+          if (process.env.NODE_ENV === 'development') {
+            // only use in development
+            app.use(errorhandler())
+          }
+          ```
           Lots of documentation on the subject, for ex: https://www.joyent.com/node-js/production/design/errors
         </section>
         
@@ -149,18 +168,21 @@
           ## Security: HTTPS
           
           ```
-          https = require 'https'
-          fs = require 'fs'
-          app = require('express')()
+          import https = require('https')
+          import fs = require('fs')
+          import app = require('express')()
           
           # prepare express app...
           
-          options =
-            key: fs.readFileSync path_to_key
+          const options = {
+            key: fs.readFileSync path_to_key,
             cert: fs.readFileSync path_to_cert
-
-          https.createServer(options, app).listen '[port]', ->
-            console.log "Up at https://localhost:[port]"
+          }
+          
+          https.createServer(options, app).listen(port,  (err: Error) => {
+            if (err) throw err
+            console.log(`Server is running on http://localhost:${port}`)
+          })
           ```
         </section>
         
@@ -175,15 +197,40 @@
         </section>
 
         <section data-markdown>
-          ## Questions ?
-        </section>
-
-        <section data-markdown>
           ## What else can you do with Node.JS ?
           
           - Desktop apps with [electron](http://electronjs.org) (ex: Atom !) 
           - CLIs / automation (ex: [`rimraf`](https://github.com/isaacs/rimraf) or Adaltas' [`nikita`](https://github.com/adaltas/node-nikita) )
         </section>
+        
+        <section data-markdown>
+          ## Some best practicies
+          
+          - Always check for errors in callbacks
+          - Specify a start and test scripts (and many more, ex. `npm run populate`)
+          - Structure your code base
+            ```
+            - db
+            - src 
+            -- controllers
+            --- metrics.ts
+            --- ...
+            -- routes
+            --- metrics.ts
+            --- ...
+            -- views
+            --- ...
+            -- server.ts
+            -- ...
+            - tests
+            - ...
+            ```
+        </section>
+        
+        <section data-markdown>
+          ## Questions ?
+        </section>
+        
       </div>
     </div>
 

@@ -1,51 +1,95 @@
+# Asynchronous Server Technologies project
 
-# ExpressJS, front-end & storage
+**DEADLINE: will be set**
 
-## About this work
-
-This work is part of the continuous assessment of this class and will be the basis for your final project. Your final grade will be calculated based on the final project’s result and your Git’s history.
+## Instructions
+ 
+Your final grade will be calculated based on the final project’s result and your Git’s history.
 
 The project in itself is a simple web API with a dashboard that should allow you to :
 
-* Login with a user
-* Insert metrics once logged in (UI is optional)
-* Retrieve the user’s metrics and display it in a graph
-* Only access the user’s metrics, not the rest of it
+* API side 
+  - CRUD users 
+  - Authenticate
+  - CRUD your own metrics (make use of an authorization middleware)
+* Front side
+  - Home page
+  - Sign In / Sign Up / Sign Out
+  - Insert/update/delete metrics once logged in
+  - Retrieve the user’s metrics and display it in a graph
+  - Only access the user’s metrics, not the other ones
+* Utils 
+  - pre-populate the database with at least two users and their own metrics
+  
+The codebase should:
 
-In class, we saw how to : 
+* be commented when necessary (listing the routes and parameters in the README is ok)
+* be unit tested with mocha and chai
+* have the necessary project files (README, package.json, package-lock.json or yarn.lock; .gitignore, ts-config.json, ...) as shown in class
+* not have any file/dir in git that shouldn't be (node_modules, .idea, ...)
 
-* Use Nodemon to launch our application, so we don’t have to relaunch the server every time
-* Create an ExpressJS app to facilitate Routing, use of HTTP verbs and exposing a front-end
-* Create a simple front-end in Pug with some AJAX call to add data dynamically to our webage
-* Use a LevelDB database to store our metrics
-* Create a coffee script to populate our database with dummy data so we don’t have to do it manually
+The project shall be written in typescript, css and ejs and nothing else. You are encouraged to use the tools presented in class.
 
-The project shall be written in coffee-script, pug and stylus (or another CSS transpiler) and nothing else. You are encouraged to use the tools presented in class.
+## Notation process 
 
-## TODO
+To test your codebase, the following steps will be taken: 
 
-Using the code from your previous work and from class : 
+* Observe the repo's git history
+* `git clone` the project 
+* Run: 
+  - `npm install`
+  - `npm run populate`
+  - `npm test`
+  - `npm run dev` or `npm start`
+* Play with the front UI
+* Test the API to:
+  - insert metrics unlogged
+  - try reading metrics unlogged
+  - login and try reading someone else's metrics
+* Read and analyse the codebase
 
-1. On the front-end
-    1. Work with Stylus and Bootstrap to make it look nice
-    2. Display the metrics in a graph using d3.js
-2. On the back-end
-    1. Add `get` and `remove` functions to the metrics module to retrieve and remove data from the database
-    2. Use postman to test your API functions
-3. Enhance the populatedb script that we saw in class to add multiple users and metric batches with different IDs 
+To facilitate the process, don't hesitate to add as much information as possible in the README.md ! And cloning the project freshly + running the 
+instructions as I will might be a good process for final validation...
 
-The code we worked on in class is available here : https://github.com/cesarBere/ece-ast-express
+Also: **DON'T FORGET TO MAKE YOUR REPO PUBLIC**
 
-You could of course if you want take the code and go from here adding what we did previously however that’s your loss because you won’t learn as much as doing it by yourself and it can be noticed.
 
-Also, you don’t have to but you could develop your `get` and `remove` functions using unit testing, it is going to be much easier to test than with another process. I added a unit test skeleton on the get function in the test directory as example.
+## Grading 
+
+The following reasons will instantly equal to zero: 
+
+* I detect cheating, usually a repo with full implementation and 1-2 modification commits, I might mail you to discuss it
+
+Otherwise: 
+
+| Subject                                                         |   Code    | Grading   |
+|:----------------------------------------------------------------|:---------:|:---------:|
+| Functional populate DB scripts                                  |    FPS    |    +3     |
+| Functional sever with exposed front views                       |    FFV    |    +3     |
+| User authentication & authorization                             |    UAA    |    +3     |
+| Functional unit tests                                           |    FUT    |    +3     |
+| Front implementation: signin / signup / signout                 |    SSS    |    +2     |
+| Front implementation: display metrics in a graph                |    MDG    |    +3     |
+| Front implementation: update / delete a metric                  |    UDM    |    +2     |
+| Clean and well structured code base                             |    CCD    |    +1     |
+| Clean design of the front                                       |    CDF    |    +1     |
+| No use of transpilers                                           |     N     |    -5     |
+| No use of GitHub                                                |     N     |    -5     |
+| Missing mandatory project files (per file)                      |     N     |    -2     |
+| .docx / .pdf file (per file)                                    |     N     |    -2     |
+| Files/dir in git that shouldn't be (per file/dir)               |     N     |    -2     |
+
+Negative points total will be ceiled to 10 i.e. you can't get more than 10 negative points
+
 
 ## Some useful links
 
-* Stylus documentation: https://learnboost.github.io/stylus/
-* Jade documentation: http://jade-lang.com/
-* Coffee-script documentation: http://coffeescript.org/
-* D3.JS documentation: http://d3js.org/
-* JQuery documentation: https://code.jquery.com/
-* Bootstrap documentation: http://getbootstrap.com/
-* Level-up documentation: https://github.com/Level/levelup
+* TypeScript documentation: [https://www.typescriptlang.org/docs/](https://www.typescriptlang.org/docs/)
+* Mocha documentation: [https://mochajs.org/](https://mochajs.org/)
+* Chai documentation: [https://www.chaijs.com/api/bdd/](https://www.chaijs.com/api/bdd/)
+* D3.JS documentation: [http://d3js.org/]( http://d3js.org/)
+* JQuery documentation: [https://code.jquery.com/](https://code.jquery.com/)
+* Bootstrap documentation: [http://getbootstrap.com/](http://getbootstrap.com/)
+* MongoDB documentation: [https://docs.mongodb.com/manual/](https://docs.mongodb.com/manual/)
+* LevelDB documentation: [https://github.com/google/leveldb](https://github.com/google/leveldb)
+* How we structure our Express.js Routes: [https://medium.com/@sesitamakloe/how-we-structure-our-express-js-routes-58933d02e491]

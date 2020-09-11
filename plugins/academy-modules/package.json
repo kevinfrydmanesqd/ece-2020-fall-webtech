@@ -1,0 +1,12 @@
+{
+  "name": "academy-course",
+  "version": "0.0.0",
+  "main": "index.js",
+  "author": "David Worms <david@adaltas.com> (http://www.adaltas.com)",
+  "license": "MIT",
+  "scripts": {},
+  "devDependencies": {},
+  "dependencies": {
+    "moment": "^2.22.2"
+  }
+}

@@ -5,6 +5,8 @@ module.exports = {
   plugins: [{
     resolve: `academy-modules`
   },{
+    resolve: `academy-slide`
+  },{
     resolve: `gatsby-source-filesystem`,
     options: {
       name: `courses`,

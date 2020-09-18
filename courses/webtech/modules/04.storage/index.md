@@ -1,41 +1,19 @@
 
-## Recap
-
-* Developer tools: terminal, editor, github, stack overflow
-* Best practices on Node.js projects :
-  * `scripts` in package.json - don’t repeat long commands
-  * Examples in README.md - tell people how to use your code
-  * `npm install` - external libraries (ExpressJS, Nodemon)
-  * Modules - split your code intelligently
-  * Transpilers and TypeScript - write reliable code faster
-
-## Final project
-
-* Based on code from class
-
-* Simple dashboard app :
-  * User login
-  * A user can insert metrics
-  * A user can retrieve his metrics in a graph
-  * A user can only access his own metrics
-* See [PROJECT.md](../PROJECT.md)
-
-## Storage
-
 ## Databases
 
 * RDBMS (basis for SQL) : MySQL, PostgreSQL, Hive, Oracle
 * NoSQL :
+  * Filesystems: posix and object storage
+  * Documents store: MongoDB, ElasticSearch
+  * Key/value and sorted key/value stores: LevelDB
   * Column families: HBase, Cassandra
-  * Document Store: MongoDB, ElasticSearch
-  * Key Value: LevelDB
   * Graph DBs: JanusGraph (ex-TitanDB), Neo4J
 
 ## LevelDB
 
 * In-memory key-value store embedded in Node
 * OpenSource
-* NoSQL DB, Key Value store
+* Embeddable, C and JS versions
 * Originally written by Google
 * [leveldb.org](http://leveldb.org)
 
@@ -43,9 +21,9 @@
 
 * It’s blazing fast
 * In memory & backed by the file system
-* Keys are ordered : suitable for metrics
+* Keys are ordered : suitable for timeseries such as messages and metrics
 * Data compression with Snappy
-* Embedded in the app, nothing else to setup / manage
+* Embedded in the app, nothing else to setup and manage
 
 ## Some limitations
 
@@ -54,11 +32,11 @@
 
 ## Let’s setup
 
-* Dependencies install
-```shell
-npm install --save encoding-down leveldown levelup level-ws 
-npm i --save-dev @types/levelup
-```
+* Dependencies installation
+  ```shell
+  npm install --save encoding-down leveldown levelup level-ws 
+  npm i --save-dev @types/levelup
+  ```
 * Create a `src/declarations.d.ts` file and add 
 ```javascript
 declare module 'encoding-down'

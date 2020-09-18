@@ -1,5 +1,5 @@
 {
-  "name": "academy-modules",
+  "name": "remark-extract-title",
   "version": "0.0.0",
   "main": "index.js",
   "author": "David Worms <david@adaltas.com> (http://www.adaltas.com)",
@@ -7,6 +7,7 @@
   "scripts": {},
   "devDependencies": {},
   "dependencies": {
-    "moment": "^2.22.2"
+    "micromatch": "^3.1.9",
+    "unist-util-visit": "^2.0.3"
   }
 }

@@ -3,14 +3,24 @@ const path = require('path')
 module.exports = {
   /* Your site config here */
   plugins: [{
+    resolve: `academy-courses`
+  },{
     resolve: `academy-modules`
   },{
-    resolve: `academy-slide`
+    resolve: `academy-slides`
+  },{
+    resolve: `gatsby-plugin-typography`,
+    options: {
+      pathToConfigModule: `src/utils/typography.js`,
+      omitGoogleFont: true,
+    }
+  },{
+    resolve: `gatsby-plugin-glamor`,
   },{
     resolve: `gatsby-source-filesystem`,
     options: {
       name: `courses`,
-      path: path.join(__dirname, `content`, `courses`),
+      path: path.join(__dirname, `courses`),
     },
   // },{
   //   resolve: "gatsby-theme-slideshow",
@@ -39,7 +49,10 @@ module.exports = {
             global: false,
           },
         },
-      }]
+      }],
+      gatsbyRemarkPlugins: [ {
+        resolve: 'remark-extract-title'
+      } ]
     }
   }],
 }

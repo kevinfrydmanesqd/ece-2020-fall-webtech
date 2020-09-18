@@ -18,18 +18,29 @@
     "@mdx-js/react": "^1.6.16",
     "eslint-config-react-app": "^5.2.1",
     "gatsby": "^2.24.54",
+    "gatsby-plugin-glamor": "^2.3.11",
     "gatsby-plugin-mdx": "^1.2.39",
+    "gatsby-plugin-typography": "^2.5.11",
     "gatsby-remark-prismjs": "^3.5.11",
     "gatsby-source-filesystem": "^2.3.29",
+    "glamor": "^2.20.40",
     "gray-matter": "^4.0.2",
+    "hast-util-to-text": "^2.0.0",
+    "micromatch": "^4.0.2",
     "prismjs": "^1.21.0",
     "react": "^16.12.0",
-    "react-dom": "^16.12.0"
+    "react-dom": "^16.12.0",
+    "react-typography": "^0.16.19",
+    "remark-extract-title": "file:./plugins/remark-extract-title",
     "svgstore": "^3.0.0-2",
     "svgstore-cli": "^2.0.0",
+    "typeface-fira-mono": "^0.0.72",
+    "typeface-inter": "^3.15.0",
+    "typography": "^0.16.19",
+    "typography-breakpoint-constants": "^0.16.19"
   },
   "devDependencies": {
-    "prettier": "2.1.1"
+    "prettier": "^2.1.1"
   },
   "repository": {
     "type": "git",

@@ -1,10 +1,5 @@
----
-title: Web Technologies - Prerequisite
-slug: /modules/prerequisite/
-order: 0
----
 
-## Tools & concepts
+# Prerequisite
 
 ## Terminal
 
@@ -51,6 +46,7 @@ order: 0
   * a *status text* (page not found)
 
 ## SSL/TLS & HTTPS
+
 (Secure Sockets Layer / Transport Layer Security)
 * Establish an encrypted link over a network
 * Exchange of public & private keys to secure the exchange
@@ -59,7 +55,6 @@ order: 0
   * Client & server exchange messages encrypted with the keys to authenticate
 * SSL certif has been certified by a renowned authority
 * HTTPS: HTTP secured with SSL/TLS
-
 
 ## SSH - Secure SHell
 

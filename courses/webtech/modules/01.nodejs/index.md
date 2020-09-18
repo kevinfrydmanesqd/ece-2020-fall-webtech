@@ -1,35 +1,12 @@
+---
+duration: 1.5 hours
+---
 
-## About this course
+# Node.js introduction
 
-You will use / do :
+The course starts a brief overview of Node.JS, its usage, strengths and ecosystem with NPM and yarn. It continues with a quick getting started to get a script up and running introducing the concepts of modules and packages.
 
-* Node.JS & NPM or yarn
-* React and web UI
-* Git & DevOps
-* Unit tests & Travis CI
-* Use frameworks & transpilers
-* Embed a NoSQL storage (LevelDB)
-* Read the doc, search and leverage Open Source
-
-## About this course
-
-Evaluation :
-
-* Participation
-* Continuous based on a project using Git
-* QCM at the end of the course
-
-## In this module
-
-* Part 1: Node.js
-  * Creating "Hello world" project
-  * Creating HTTP server
-  * Routing with query parameters
-  
-* Part 2: Dependency managment in Node.js
-  * Node.js modules
-  * Packages
-  * Using Nodemon utility
+We will finally initiate the use of git and GitHub. We'll also cover package best practices to respect Node.JS conventions for packaging with executables dependencies, unit tests and then introduce the use of external libraries.
 
 ## JavaScript
 
@@ -144,7 +121,7 @@ const serverHandle = function (req, res) {
 * Separated by `&`
 * Formatted as `key=value`
 ```
-http://my.site/my/page.html?a=cesar&b=berezowski
+http://my.site/my/page.html?username=toto&password=lulu
 ```
 * Parseable with node's `querystring` module on url's query property
 

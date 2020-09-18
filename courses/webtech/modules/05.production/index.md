@@ -1,28 +1,4 @@
 
-## Up until now
-
-- NodeJS: simple HTTP server with your modules
-- NPM to manage our application and modules
-- ExpressJS:
-  - Handle routing
-  - Manage user auth and sessions with middlewares
-  - Expose static content to display in a browser
-- Transpilers to ease writing and reading code
-- LevelDB to store the data
-- ...
-
-And also a set of best-practices and other tools to enhance the developer’s experience
-
-## Final project
-
-* Using the code from class
-
-* Simple dashboard app :
-  * User login
-  * A user can insert metrics
-  * A user can retrieve his metrics in a graph
-  * A user can only access his own metrics
-* See [PROJECT.md](../PROJECT.md)
 
 ## What's "production" ?
 

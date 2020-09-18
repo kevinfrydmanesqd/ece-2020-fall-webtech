@@ -10,7 +10,12 @@ exports.createSchemaCustomization = ({ actions }) => {
   const { createTypes } = actions
   createTypes(`
     type AcademyModule implements Node @infer {
-      aaaa: String
+      frontmatter: AcademyModuleFrontmatter
+    }
+    type AcademyModuleFrontmatter {
+      disabled: Boolean
+      slug: String!
+      sort: Int
     }
   `)
 }
@@ -20,12 +25,17 @@ exports.onCreateNode = async (args) => {
   const { createNode } = actions
   if (node.internal.type !== `Mdx`) { return }
   // Filter non-blog files
-  if(!/content\/courses\/[a-zA-Z0-9_\-\.]+\/[a-zA-Z0-9_\-\.]+\.md/.test(node.fileAbsolutePath)){ return }
+  if(!/courses\/[a-zA-Z0-9_\-\.]+\/modules\/[a-zA-Z0-9_\-\.]+\/index\.md/.test(node.fileAbsolutePath)){ return }
   node.frontmatter.disabled = !!node.frontmatter.disabled
   // Lang
   const filename = path.basename(node.fileAbsolutePath)
-  const dir = path.dirname(node.fileAbsolutePath).split(path.sep).pop()
-  const [sort, slug] = dir.split('.')
+  const slugs = path.dirname(node.fileAbsolutePath).split(path.sep)
+  const moduleSlug = slugs.pop()
+  slugs.pop()
+  const courseSlug = slugs.pop()
+  const [sort, slug] = moduleSlug.split('.')
+  node.frontmatter.slug = `/courses/${courseSlug}/${slug}/`
+  node.frontmatter.sort = parseInt(sort)
   // BlogArticle
   const copy = {}
   const filter = ['children', 'id', 'internal', 'fields', 'parent', 'type']
@@ -33,50 +43,58 @@ exports.onCreateNode = async (args) => {
     if(!filter.some(k => k === key)) copy[key] = node[key]
   })
   // Generate slide files
-  const createSlideFile = (fileContent, fileName) =>
-    createFileNodeFromBuffer({
+  const createSlideFile = async (fileContent, fileName) => {
+    await createFileNodeFromBuffer({
       buffer: Buffer.from(fileContent, 'utf8'),
       store,
       cache,
       createNode,
       createNodeId,
       name: fileName,
-      ext: '.md',
+      ext: '.mdx',
     });
+  }
   const nodeContent = await loadNodeContent(node);
   const { content, data: originalFrontmatter } = grayMatter(nodeContent);
+  let inSlide = false
   const slides = content.split(/(^## )/m)
-  .filter( (el) => el.trim())
-  .filter( (el) => el !== '## ' )
+  // Skip everything before first occurence of '##'
+  .filter( (el) => {
+    if( el === '## ' ){
+      inSlide = true
+    }
+    return inSlide
+  })
+  // remove empty blocks
+  .filter( el => el.trim())
+  // remove split characters
+  .filter( el => el !== '## ' )
+  // Re-integration split characters and merge it all
   .map( (el) => '## '+el)
-  slides.map( async (slide, slideNumber) => {
+  for(let i=0; i<slides.length; i++){
+    const slide = slides[i]
+    .split(/(^#)/m)
+    .filter( el => el !== '#')
+    .join('')
+    const slideNumber = i
     const slideFrontmatter = {
       ...originalFrontmatter,
       slideNumber,
       lastSlide: slides.length,
-      slug: `/courses/${slug}/slides/${slideNumber}/`,
+      slug: `/courses/${courseSlug}/${slug}/slides/${slideNumber}/`,
     };
     const slideContent = grayMatter.stringify(slide, slideFrontmatter);
     await createSlideFile(slideContent, path.dirname(node.fileAbsolutePath)+'/slides/'+slideNumber);
-  })
-  
+  }
   createNode({
     // Custom fields
     ...copy,
-    slug: `/courses/${slug}/`,
-    sort: parseInt(sort),
-    toto: {
-      lulu: 'yes'
-    },
     // Gatsby fields
-    id: createNodeId(`/courses/${slug}/`),
+    id: createNodeId(node.frontmatter.slug),
     parent: node.id,
     children: [],
     internal: {
       type: `AcademyModule`,
-      // // An optional field. This is rarely used. It is used when a source plugin sources data it doesn’t know how to transform 
-      // content: content,
-      // the digest for the content of this node. Helps Gatsby avoid doing extra work on data that hasn’t changed.
       contentDigest: crypto
         .createHash(`md5`)
         .update(JSON.stringify(node))
@@ -85,11 +103,36 @@ exports.onCreateNode = async (args) => {
   })
 }
 
-// extendNodeType
-// setFieldsOnGraphQLNodeType
 exports.createResolvers = ({ createResolvers, createNodeId }) => {
   createResolvers({
-    AcademyModule: {}
+    AcademyModule: {
+      course: {
+        type: `AcademyCourse`,
+        resolve(source, args, context, info) {
+          return context.nodeModel
+          .getAllNodes(
+            { type: `AcademyCourse` }, 
+            { connectionType: "AcademyCourse" }
+          )
+          .filter( course =>
+            source.frontmatter.slug.startsWith(course.frontmatter.slug)
+          )[0]
+        },
+      },
+      slides: {
+        type: [`AcademySlide`],
+        resolve(source, args, context, info) {
+          return context.nodeModel
+          .getAllNodes(
+            { type: `AcademySlide` }, 
+            { connectionType: "AcademySlide" }
+          )
+          .filter(slide =>
+            slide.frontmatter.slug.startsWith(source.frontmatter.slug)
+          )
+        },
+      },
+    }
   })
 }
 
@@ -100,9 +143,9 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
     {
       modules: allAcademyModule {
         nodes {
-          slug
           frontmatter {
             disabled
+            slug
           }
         }
       }
@@ -116,9 +159,8 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
     if (module.frontmatter.disabled) return
     // Page creation
     createPage({
-      path: module.slug,
+      path: module.frontmatter.slug,
       component: template,
     })
   })
-  
 }

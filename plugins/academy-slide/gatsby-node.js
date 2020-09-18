@@ -13,7 +13,6 @@ exports.createSchemaCustomization = ({ actions }) => {
 exports.onCreateNode = ({ actions, createNodeId, node }) => {
   const { createNode } = actions
   if (node.internal.type !== `Mdx`) { return }
-  console.log(node.fileAbsolutePath)
   if(!/content\/courses\/.*\/slides\/.*.md/.test(node.fileAbsolutePath)){ return }
   console.log('!!!', node.fileAbsolutePath)
   // Import properties

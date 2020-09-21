@@ -43,5 +43,5 @@ app.get('/channel/:id', (req, res) => {
 })
 
 app.listen(config.port, () => {
-  console.log(`Example app listening at http://localhost:${config.port}`)
+  console.log(`Chat is waiting for you at http://localhost:${config.port}`)
 })

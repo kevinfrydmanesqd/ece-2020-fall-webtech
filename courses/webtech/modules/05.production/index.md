@@ -1,6 +1,8 @@
+---
+disabled: true
+---
 
-
-## What's "production" ?
+# What's "production" ?
 
 When your code is running in the final target environment e.g. your website is accessible to the public. It is not a final state, it will receive updates.
 

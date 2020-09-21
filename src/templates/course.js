@@ -42,14 +42,14 @@ export default ({ data: {course} }) => {
     }
   })
   return (
-    <Fragment>
+    <main>
       <Container rootStyles={styles.title}>
         <h1>{course.frontmatter.title}</h1>
         <dl>
           <dt>Teachers</dt>
-          <dl>{course.frontmatter.authors.join(', ')}</dl>
+          <dd>{course.frontmatter.authors.join(', ')}</dd>
           <dt>Course</dt>
-          <dl>{course.frontmatter.school} - {course.frontmatter.period}</dl>
+          <dd>{course.frontmatter.school} - {course.frontmatter.period}</dd>
         </dl>
       </Container>
       <Container>
@@ -63,7 +63,7 @@ export default ({ data: {course} }) => {
           )}
         </ul>
       </Container>
-    </Fragment>
+    </main>
 )}
 
 export const pageQuery = graphql`

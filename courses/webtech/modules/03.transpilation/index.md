@@ -2,7 +2,7 @@
 duration: 1.5 hours
 ---
 
-## Part 2: Transpilation
+# Transpilation
 
 The language used across the course such as JavaScript, CSS, HTML can be written in alternative syntaxes. The rest of the course will present and use TypeScript, CoffeeScript, Jade, Stylus and friends.
 

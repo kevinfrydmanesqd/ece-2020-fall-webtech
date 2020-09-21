@@ -5,6 +5,7 @@ authors:
 - Kevin Frydman <kevin.frydman@esquad.co>
 school: ECE
 period: Fall 2020
+feature: ./feature/index.png
 ---
 
 # Web Technologies

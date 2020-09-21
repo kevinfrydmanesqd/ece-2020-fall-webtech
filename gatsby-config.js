@@ -33,6 +33,10 @@ module.exports = {
   //     path: path.join(__dirname, `content`, `modules`),
   //   },
   },{
+    resolve: `gatsby-transformer-sharp`,
+  },{
+    resolve: `gatsby-plugin-sharp`,
+  },{
     resolve: "gatsby-plugin-mdx",
     options: {
       extensions: [`.mdx`, `.md`],
@@ -50,9 +54,11 @@ module.exports = {
           },
         },
       }],
-      gatsbyRemarkPlugins: [ {
+      gatsbyRemarkPlugins: [{
         resolve: 'remark-extract-title'
-      } ]
+      },{
+        resolve: `gatsby-remark-images`,
+      }]
     }
   }],
 }

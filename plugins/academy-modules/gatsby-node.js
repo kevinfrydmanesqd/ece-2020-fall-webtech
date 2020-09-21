@@ -27,6 +27,7 @@ exports.onCreateNode = async (args) => {
   // Filter non-blog files
   if(!/courses\/[a-zA-Z0-9_\-\.]+\/modules\/[a-zA-Z0-9_\-\.]+\/index\.md/.test(node.fileAbsolutePath)){ return }
   node.frontmatter.disabled = !!node.frontmatter.disabled
+  if(node.frontmatter.disabled) return
   // Lang
   const filename = path.basename(node.fileAbsolutePath)
   const slugs = path.dirname(node.fileAbsolutePath).split(path.sep)

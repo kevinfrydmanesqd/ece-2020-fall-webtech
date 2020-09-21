@@ -62,7 +62,7 @@ export default ({ data: {module} }) => {
     }
   })
   return(
-    <Fragment>
+    <main>
       <Container rootStyles={styles.title_root} childStyles={styles.title_child}>
         <div>
           <h1>{module.course.frontmatter.title} - {module.frontmatter.title}</h1>
@@ -82,7 +82,7 @@ export default ({ data: {module} }) => {
           <MDXRenderer>{module.parent.body}</MDXRenderer>
         </MDXProvider>
       </Container>
-    </Fragment>
+    </main>
 )}
 
 export const pageQuery = graphql`

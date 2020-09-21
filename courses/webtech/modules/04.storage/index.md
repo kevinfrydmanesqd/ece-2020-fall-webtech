@@ -1,5 +1,8 @@
+---
+disabled: true
+---
 
-## Databases
+# Databases and storage
 
 * RDBMS (basis for SQL) : MySQL, PostgreSQL, Hive, Oracle
 * NoSQL :

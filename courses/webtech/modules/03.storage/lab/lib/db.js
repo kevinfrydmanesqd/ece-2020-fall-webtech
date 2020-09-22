@@ -36,7 +36,7 @@ module.exports = {
       if(!original) throw Error('Unregistered channel id')
       store.channels[id] = merge(original, channel)
     },
-    update: (id, channel) => {
+    delete: (id, channel) => {
       const original = store.channels[id]
       if(!original) throw Error('Unregistered channel id')
       delete store.channels[id]

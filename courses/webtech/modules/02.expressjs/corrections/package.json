@@ -14,9 +14,7 @@
   "author": "david worms <david@adaltas.com>",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.17.1",
-    "should": "^13.2.3",
-    "supertest": "^4.0.2"
+    "express": "^4.17.1"
   },
   "devDependencies": {
     "mocha": "^8.1.3"

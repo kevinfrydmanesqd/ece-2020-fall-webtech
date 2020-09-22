@@ -3,7 +3,7 @@ date: 2020-10-22
 duration: 3 hours
 ---
 
-# Express.js and TypeScript
+# Express.js
 
 The course will introduce Node.JS frameworks and focus on ExpressJS to write a web application that exposes REST services and renders HTML pages.
 

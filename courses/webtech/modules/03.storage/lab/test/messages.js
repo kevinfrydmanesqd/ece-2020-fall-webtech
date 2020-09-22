@@ -2,7 +2,7 @@
 const supertest = require('supertest')
 const app = require('../lib/app')
 
-describe('channels', () => {
+describe('messages', () => {
   
   beforeEach( () => {
     db.admin.reset()

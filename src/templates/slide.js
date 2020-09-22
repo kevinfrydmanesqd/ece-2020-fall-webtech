@@ -72,7 +72,6 @@ export default ({ data: {slide} }) => {
       }
     }
     const onMouseMove = () => {
-      console.log('move')
       clearTimeout(timeout)
       setVisible(true)
       setTimeout( () => {
@@ -80,7 +79,6 @@ export default ({ data: {slide} }) => {
       }, 3000)
     }
     document.addEventListener('keyup', onKeyUp)
-    console.log('mousemove')
     document.addEventListener('mousemove', onMouseMove)
     return () => {
       document.removeEventListener('keyup', onKeyUp)

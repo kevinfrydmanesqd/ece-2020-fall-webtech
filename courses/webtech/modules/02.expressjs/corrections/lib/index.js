@@ -30,7 +30,6 @@ app.get('/channels', (req, res) => {
     ...db.channels.map( channel => `<li><a href="/channel/${channel.id}">${channel.name}</a></li>`),
     '</ul>',
   ].join('')
-  
   res.send(html)
 })
 

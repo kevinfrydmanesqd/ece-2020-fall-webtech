@@ -4,32 +4,41 @@ const {clone, merge} = require('mixme')
 
 const store =  {
   channels: {
-    // '1': {
-    //   name: 'channel 1'
-    // },
-    // '2': {
-    //   name: 'channel 2'
-    // },
-    // '3': {
-    //   name: 'channel 3'
-    // },
   }
 }
+// const level = require('level')
+// const db = level(__dirname + '/../db')
 
 module.exports = {
   channels: {
-    create: (channel) => {
+    create: async (channel) => {
       if(!channel.name) throw Error('Invalid channel')
       id = uuid()
       store.channels[id] = channel
+      // await db.put(`channels:${id}`, JSON.stringify(channel))
       return merge(channel, {id: id})
     },
-    list: () => {
+    list: async () => {
       return Object.keys(store.channels).map( (id) => {
         const channel = clone(store.channels[id])
         channel.id = id
         return channel
       })
+      // return new Promise( (resolve, reject) => {
+      //   const channels = []
+      //   db.createReadStream({
+      //     gt: "channels:",
+      //     lte: "channels" + String.fromCharCode(":".charCodeAt(0) + 1),
+      //   }).on( 'data', ({key, value}) => {
+      //     channel = JSON.parse(value)
+      //     channel.id = key
+      //     channels.push(channel)
+      //   }).on( 'error', (err) => {
+      //     reject(err)
+      //   }).on( 'end', () => {
+      //     resolve(channels)
+      //   })
+      // })
     },
     update: (id, channel) => {
       const original = store.channels[id]
@@ -43,8 +52,9 @@ module.exports = {
     }
   },
   admin: {
-    reset: () => {
+    clear: async () => {
       store.channels = {}
+      // await db.clear()
     }
   }
 }

@@ -4,8 +4,8 @@ const app = require('../lib/app')
 
 describe('users', () => {
   
-  beforeEach( () => {
-    db.admin.reset()
+  beforeEach( async () => {
+    await db.admin.clear()
   })
   
   it.skip('list empty', async () => {

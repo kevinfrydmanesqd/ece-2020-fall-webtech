@@ -11,13 +11,13 @@ app.get('/', (req, res) => {
   ].join(''))
 })
 
-app.get('/channels', (req, res) => {
-  const channels = db.channels.list()
+app.get('/channels', async (req, res) => {
+  const channels = await db.channels.list()
   res.json(channels)
 })
 
-app.post('/channel', (req, res) => {
-  const channel = db.channels.create(req.body)
+app.post('/channel', async (req, res) => {
+  const channel = await db.channels.create(req.body)
   res.status(201).json(channel)
 })
 

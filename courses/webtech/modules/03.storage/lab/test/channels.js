@@ -5,8 +5,8 @@ const db = require('../lib/db')
 
 describe('channels', () => {
   
-  beforeEach( () => {
-    db.admin.reset()
+  beforeEach( async () => {
+    await db.admin.clear()
   })
   
   it('list empty', async () => {
@@ -28,6 +28,7 @@ describe('channels', () => {
     .expect(200)
     channels.should.match([{
       id: /^\w+-\w+-\w+-\w+-\w+$/,
+      // id: /^channels:\w+-\w+-\w+-\w+-\w+$/,
       name: 'channel 1'
     }])
   })

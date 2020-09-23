@@ -17,11 +17,11 @@ The relationships are as follow:
 
 ## Part 1: test coverage for every entities
 
-To get started, we provided some exemple on how to create CRUD operation on a channel entity. Use this as an example to create the same for users and messages.
-
 The storage is currently using an in-memory `store` object located inside the `lib/db` module. It is not persistent. A new process will create a new database.
 
-Only the channels tests are implemented, you must implement the messages and users tests. Start by removing all the occurences of `.skip` inside the test folder and make sure the tests are passing by enriching the `./lib/db.js` and `./lib/app.js` modules. 
+To get started, we provided some examples on how to create CRUD operation on the channel entity.
+
+Only the tests for the `channel` entity are implemented and we only tests channels creation and listing. This is enough for now as we don't need to update or delete a channel. You must implement the messages and users tests. Start by removing all the occurences of `.skip` inside the test folder and make sure the tests are passing by enriching the `./lib/db.js` and `./lib/app.js` modules. 
 
 ## Part 2: persistent storage
 

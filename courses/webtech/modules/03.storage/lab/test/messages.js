@@ -34,7 +34,7 @@ describe('messages', () => {
     .get(`/channels/${channel.id}/messages`)
     .expect(200)
     messages.should.match([{
-      creation: /^d+$/
+      creation: (it) => it.should.be.approximately(Date.now(), 1000),
       content: 'Hello ECE'
     }])
   })
@@ -50,7 +50,7 @@ describe('messages', () => {
     .send({content: 'Hello ECE'})
     .expect(201)
     message.should.match({
-      creation: /^d+$/
+      creation: (it) => it.should.be.approximately(Date.now(), 1000),
       content: 'Hello ECE'
     })
     // Check it was correctly inserted

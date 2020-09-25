@@ -19,7 +19,7 @@ describe('users', () => {
   it.skip('list one element', async () => {
     // Create a user
     await supertest(app)
-    .post('/channel')
+    .post('/users')
     .send({username: 'user_1'})
     // Ensure we list the users correctly
     const {body: users} = await supertest(app)
@@ -34,7 +34,7 @@ describe('users', () => {
   it.skip('add one element', async () => {
     // Create a user
     const {body: user} = await supertest(app)
-    .post('/channel')
+    .post('/users')
     .send({username: 'user_1'})
     .expect(201)
     // Check its return value

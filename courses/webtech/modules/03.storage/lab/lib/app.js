@@ -16,17 +16,17 @@ app.get('/channels', async (req, res) => {
   res.json(channels)
 })
 
-app.post('/channel', async (req, res) => {
+app.post('/channels', async (req, res) => {
   const channel = await db.channels.create(req.body)
   res.status(201).json(channel)
 })
 
-app.get('/channel/:id', (req, res) => {
+app.get('/channels/:id', (req, res) => {
   const channel = db.channels.get(req.body)
   res.json(channel)
 })
 
-app.put('/channel/:id', (req, res) => {
+app.put('/channels/:id', (req, res) => {
   const channel = db.channels.update(req.body)
   res.json(channel)
 })

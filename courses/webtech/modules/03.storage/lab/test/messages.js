@@ -11,11 +11,11 @@ describe('messages', () => {
   it.skip('list empty', async () => {
     // Create a channel
     const {body: channel} = await supertest(app)
-    .post('/channel')
+    .post('/channels')
     .send({name: 'channel 1'})
     // Get messages
     const {body: messages} = await supertest(app)
-    .get(`/channel/${channel.id}/messages`)
+    .get(`/channels/${channel.id}/messages`)
     .expect(200)
     messages.should.match([])
   })
@@ -23,15 +23,15 @@ describe('messages', () => {
   it.skip('list one message', async () => {
     // Create a channel
     const {body: channel} = await supertest(app)
-    .post('/channel')
+    .post('/channels')
     .send({name: 'channel 1'})
     // and a message inside it
     await supertest(app)
-    .post(`/channel/${channel.id}/messages`)
+    .post(`/channels/${channel.id}/messages`)
     .send({content: 'Hello ECE'})
     // Get messages
     const {body: messages} = await supertest(app)
-    .get(`/channel/${channel.id}/messages`)
+    .get(`/channels/${channel.id}/messages`)
     .expect(200)
     messages.should.match([{
       creation: /^d+$/
@@ -42,11 +42,11 @@ describe('messages', () => {
   it.skip('add one element', async () => {
     // Create a channel
     const {body: channel} = await supertest(app)
-    .post('/channel')
+    .post('/channels')
     .send({name: 'channel 1'})
     // Create a message inside it
     const {body: message} = await supertest(app)
-    .post(`/channel/${channel.id}/messages`)
+    .post(`/channels/${channel.id}/messages`)
     .send({content: 'Hello ECE'})
     .expect(201)
     message.should.match({
@@ -55,7 +55,7 @@ describe('messages', () => {
     })
     // Check it was correctly inserted
     const {body: messages} = await supertest(app)
-    .get(`/channel/${channel.id}/messages`)
+    .get(`/channels/${channel.id}/messages`)
     messages.length.should.eql(1)
   })
   

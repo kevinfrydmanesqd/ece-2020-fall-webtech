@@ -20,7 +20,7 @@ describe('channels', () => {
   it('list one element', async () => {
     // Create a channel
     await supertest(app)
-    .post('/channel')
+    .post('/channels')
     .send({name: 'channel 1'})
     // Ensure we list the channels correctly
     const {body: channels} = await supertest(app)
@@ -36,7 +36,7 @@ describe('channels', () => {
   it('add one element', async () => {
     // Create a channel
     const {body: channel} = await supertest(app)
-    .post('/channel')
+    .post('/channels')
     .send({name: 'channel 1'})
     .expect(201)
     // Check its return value

@@ -14,7 +14,7 @@ describe('channels', () => {
     const {body: channels} = await supertest(app)
     .get('/channels')
     .expect(200)
-    channels.should.match([]) //Ce test par définition doit nous retourner "rien" -> tableau vide
+    channels.should.eql([])
   })
 
   it('list one element', async () => {

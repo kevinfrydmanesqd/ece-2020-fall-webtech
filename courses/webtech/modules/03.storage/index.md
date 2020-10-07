@@ -38,38 +38,16 @@ disabled: true
 
 * Dependencies installation
   ```shell
-  npm install --save encoding-down leveldown levelup level-ws 
-  npm i --save-dev @types/levelup
+  npm install --save level
   ```
-* Create a `src/declarations.d.ts` file and add 
-```javascript
-declare module 'encoding-down'
-declare module 'leveldown'
-declare module 'levelup'
-declare module 'level-ws'
-```
-* In `tsconfig.json` set 
-```json
-{
-    "compilerOptions": {
-      "noImplicitAny": false
-    }
-}
-```
 
 ## Use the db
 
 To open
 
 ```javascript
-import encoding from 'encoding-down'
-import leveldown from 'leveldown'
-import levelup from 'levelup'
-
-const db = levelup(encoding(
-  leveldown("path"), 
-  { valueEncoding: 'json' })
-)
+const level = require('level')
+const db = level('./path/to/db')
 ```
 
 ## Use the db
@@ -90,30 +68,7 @@ db.get(key, (err, value) => {
 })
 ```
 
-## Use the db
-
-Let's create a wrapper  
-Create a `leveldb.ts` file: 
-
-```javascript
-import encoding from 'encoding-down'
-import leveldown from 'leveldown'
-import levelup from 'levelup'
-
-export class LevelDB {
-  static open(path: string) {
-    const encoded = encoding(leveldown(path), { valueEncoding: 'json' })
-    return levelup(encoded)
-  }
-}
-```
-
-## The metrics
-
-* Key: `metrics:#{id}:#{timestamp}`
-* Value: an integer
-
-## Read/write metrics
+## Write keys
 
 * One by one ? Too heavy !
 * Use streaming :
@@ -133,7 +88,7 @@ ws.write({ key: 'occupation', value: 'Clown' })
 ws.end()
 ```
 
-## Read/write metrics
+## Read keys
 
 * One by one ? Too heavy !
 * Use streaming :
@@ -154,116 +109,3 @@ const rs = db.createReadStream()
     console.log('Stream ended')
   })
 ```
-
-## Let’s post some metrics
-
-In `src/metrics.ts`
-
-* Update the class to open a database connection 
-
-```javascript 
-import LevelDB = require('./leveldb')
-
-export class MetricsHandler {
-  private db: any 
-  
-  constructor(dbPath: string) {
-    this.db = LevelDB.open(dbPath)
-  }
-}
-```
-
-## Let’s post some metrics
-
-In `src/metrics.ts`
-
-* Add a function to save data
-
-```javascript 
-import WriteStream from 'level-ws'
-
-export class MetricsHandler {
-    public save(key: number, metrics: Metric[], callback: (error: Error | null) => void) {
-      const stream = WriteStream(this.db)
-      stream.on('error', callback)
-      stream.on('close', callback)
-      metrics.forEach((m: Metric) => {
-        stream.write({ key: `metric:${key}${m.timestamp}`, value: m.value })
-      })
-      stream.end()
-    }
-}
-```
-
-## Let’s post some metrics
-
-Install `body-parser` to parse the request’s body
-
-```shell
-npm i --save body-parser
-```
-
-Configure Express to use it in `src/server.ts`
-
-```javascript
-app.use(bodyparser.json())
-app.use(bodyparser.urlencoded())
-```
-
-## Let’s post some metrics
-
-Add a route in `src/server.ts`
-
-```javascript
-const dbMet: MetricsHandler = new MetricsHandler('./db/metrics')
-
-app.post('/metrics/:id', (req: any, res: any) => {
-  dbMet.save(req.params.id, req.body, (err: Error | null) => {
-    if (err) throw err
-    res.status(200).send()
-  })
-})
-```
-
-## Let’s post some metrics
-
-* Using Postman :
-  * Set up a POST request on /metrics
-  * Set the header Content-Type:application/json
-  * Add an array of metrics as RAW body :
-
-```shell
-[
-  { "timestamp":"1384686660000", "value":"10" }
-]
-```
-
-## Or use a script ?
-
-`tsc && ./node_modules/.bin/ts-node bin/populate.ts`
-
-```javascript
-#!/usr/bin/env ts-node
-
-import { Metric, MetricsHandler } from '../src/metrics'
-
-const met = [
-  new Metric(`${new Date('2013-11-04 14:00 UTC').getTime()}`, 12),
-  new Metric(`${new Date('2013-11-04 14:15 UTC').getTime()}`, 10),
-  new Metric(`${new Date('2013-11-04 14:30 UTC').getTime()}`, 8)
-]
-
-const db = new MetricsHandler('./db')
-
-db.save('0', met, (err: Error | null) => {
-  if (err) throw err
-  console.log('Data populated')
-})
-```
-
-## Your work
-
-* Add a `get` function to `metrics` module
-* Add a route to get a metric (one of the metric, all the metrics)
-* Add a `delete` function to `metrics` module
-* Add a route to delete a metric based on its key

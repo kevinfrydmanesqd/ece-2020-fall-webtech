@@ -17,7 +17,7 @@ describe('messages', () => {
     const {body: messages} = await supertest(app)
     .get(`/channels/${channel.id}/messages`)
     .expect(200)
-    messages.should.match([])
+    messages.should.eql([])
   })
   
   it.skip('list one message', async () => {

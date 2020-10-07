@@ -13,7 +13,7 @@ describe('users', () => {
     const {body: users} = await supertest(app)
     .get('/users')
     .expect(200)
-    users.should.match([])
+    users.should.eql([])
   })
   
   it.skip('list one element', async () => {

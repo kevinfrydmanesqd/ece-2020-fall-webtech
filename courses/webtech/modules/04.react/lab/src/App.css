@@ -1,0 +1,9 @@
+
+@import-normalize;
+
+.App {
+  color: #fff;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}

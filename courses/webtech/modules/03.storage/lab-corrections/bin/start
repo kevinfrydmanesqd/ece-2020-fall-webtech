@@ -1,4 +1,4 @@
-#!env node
+#!/bin/env node
 
 const app = require('../lib/app')
 const config = {

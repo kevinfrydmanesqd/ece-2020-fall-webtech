@@ -11,7 +11,6 @@ module.exports = {
       if(!channel.name) throw Error('Invalid channel')
       const id = uuid()
       await db.put(`channels:${id}`, JSON.stringify(channel))
-      console.log(merge(channel, {id: id}))
       return merge(channel, {id: id})
     },
     get: async (id) => {

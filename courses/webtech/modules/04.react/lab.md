@@ -19,6 +19,7 @@ following components: 'Header', 'Footer', 'Main', 'Channels', 'Channel',
 - 'MessageForm.js' send a new message
 
 \`\`\`
+
 +--------------------------------------------+
 |                  Header                    |
 +--------------------------------------------+
@@ -31,6 +32,7 @@ following components: 'Header', 'Footer', 'Main', 'Channels', 'Channel',
 +--------------------------------------------+
 |                  Footer                    |
 +--------------------------------------------+
+
 \`\`\`
 
 ## 2 - Styles - Level easy

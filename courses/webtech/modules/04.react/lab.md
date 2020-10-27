@@ -18,7 +18,7 @@ following components: 'Header', 'Footer', 'Main', 'Channels', 'Channel',
 - 'Messages.js' prints the list of messages inside the current channel
 - 'MessageForm.js' send a new message
 
-\`\`\`
+```
 
 +--------------------------------------------+
 |                  Header                    |
@@ -33,7 +33,7 @@ following components: 'Header', 'Footer', 'Main', 'Channels', 'Channel',
 |                  Footer                    |
 +--------------------------------------------+
 
-\`\`\`
+```
 
 ## 2 - Styles - Level easy
 

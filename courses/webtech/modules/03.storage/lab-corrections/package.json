@@ -37,8 +37,8 @@
   },
   "scripts": {
     "reset": "bin/reset",
-    "develop": "bin/init && bin/app",
-    "start": "bin/app",
+    "develop": "bin/init && bin/start",
+    "start": "bin/start",
     "test": "mocha 'test/**/*.js'"
   }
 }

@@ -84,6 +84,13 @@ We will go deep into the protocol, see how it work and integrate with traditionn
 * Claims, request obj, ...
 * ID Token for the client, shall never be sent (eg to microservices)
 
+## PKCE
+
+* Extension to the Authorization Code flow
+* Securely perform the OAuth exchange from public clients
+* No client secret
+* Activated with the `public` property in Dex client configuration
+
 ## Resources
 
 * [An Illustrated Guide to OAuth and OpenID Connect](https://developer.okta.com/blog/2019/10/21/illustrated-guide-to-oauth-and-oidc), video and article, 16mn.

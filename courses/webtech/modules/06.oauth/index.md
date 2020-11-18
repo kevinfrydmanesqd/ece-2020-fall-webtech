@@ -12,8 +12,8 @@ We will go deep into the protocol, see how it work and integrate with traditionn
 ## OAuth basics
 
 * A meta-framework, a protocol of protocols
-* Oauth is OAuth2
 * Used as the base of other specifications
+* Oauth is OAuth2
 * Such as OpenID Connect, UMA, HEART
 * Adresses some important requirements
   * Delegate access
@@ -31,16 +31,16 @@ We will go deep into the protocol, see how it work and integrate with traditionn
 
 * Request access (signup, login, ...)
 * Login (transparent, username/password, 2 factor auth, ...)
-* Content (allowed the application to access resources on your behalf, can be hidden)
+* Consent (allowed the application to access resources on your behalf, can be hidden)
 
 ## Code Flow
 
 * Multiple flows in OAuth, even more in OpenID Connect
 * Most popular is Authentication Code Flow
-* Application requests the user to be authenticated
-* User authorizes the application to consume resources on behalf of the user
+* Application require the user to be authenticated
 * User is redirect from the application to the Authorization Server
-* Once authenticated, consent takes place 
+* Once authenticated, consent takes place
+* User authorizes the application to consume resources on his behalf
 * User is redirected to the application with a short live authorisation code
 * Authorisation code is a Nonce (No More than Once) code
 * Code is exchange for an access token from the client application
@@ -62,10 +62,10 @@ We will go deep into the protocol, see how it work and integrate with traditionn
 * Not the only kind of token supported by OAuth
 * JWT is the most popular
 * Pronounced like the english word "jot"
-* Lightweight tokenps passed in HTTP headers & query strings
+* Lightweight tokens passed in HTTP headers & query strings
 * Encoded as JSON
 * Encrypted, signed, or neither
-* 3 parts, the hash, the content, the signature
+* 3 parts, the header, the payload, the signature
 
 ## Usages of OAuth
 
@@ -77,7 +77,6 @@ We will go deep into the protocol, see how it work and integrate with traditionn
 ## OpenID Connect
 
 * Based on OAuth2
-* Made for mobile
 * Clients also receive ID Tokens (identity tokens)
 * User info endpoint to get user data
 * Additionnal flow
@@ -86,11 +85,16 @@ We will go deep into the protocol, see how it work and integrate with traditionn
 
 ## PKCE
 
+* Pronounced like the english word "pixy"
 * Extension to the Authorization Code flow
 * Securely perform the OAuth exchange from public clients
 * No client secret
 * Activated with the `public` property in Dex client configuration
+* If you come to find it, don't use the implicit flow, never
 
 ## Resources
 
 * [An Illustrated Guide to OAuth and OpenID Connect](https://developer.okta.com/blog/2019/10/21/illustrated-guide-to-oauth-and-oidc), video and article, 16mn.
+* [Securing APIs and Microservices with OAuth and OpenID Connect](https://curity.io/resources/videos/securing-apis-and-microservices-with-oauth-and-openid-connect/), video, 45mn.
+* [PKCE, RFC 7636: Proof Key for Code Exchange](https://oauth.net/2/pkce/)
+* [What's going on with the OAuth 2.0 Implicit flow?](https://www.youtube.com/watch?v=CHzERullHe8)

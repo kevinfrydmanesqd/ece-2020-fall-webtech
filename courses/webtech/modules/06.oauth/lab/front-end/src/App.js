@@ -19,7 +19,7 @@ const styles = {
 }
 
 export default () => {
-  const [user, setUser] = useState(true)
+  const [user, setUser] = useState(null)
   const [drawerMobileVisible, setDrawerMobileVisible] = useState(false)
   const drawerToggleListener = () => {
     setDrawerMobileVisible(!drawerMobileVisible)

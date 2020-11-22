@@ -37,4 +37,4 @@ In your code, you shall make use of cookies twice. The first time to store the c
      7. get the code verifier from the cookie as well as the code query parameter   
      8. retrieve the tokens from the oauth server   
      9. persist the token inside a session   
-     10. print the user email information   
+     10. redirect to the same page without any extra query parameters (shall bring us to step 11)   

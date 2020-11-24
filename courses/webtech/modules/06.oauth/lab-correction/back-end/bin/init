@@ -1,0 +1,128 @@
+#!env node
+
+const axios = require('axios')
+const app = require('../lib/app')
+const config = {
+  port: 3001
+};
+
+(async function() {
+  await app.listen(config.port);
+  await Promise.all([{
+    name: 'Channel 1',
+    messages: [{
+      author: 'sergei',
+      creation: 1602831101929,
+      content: `
+      ## 1 - Architecture - Level easy
+  
+      It is now the right time to re-organize/refactor our code. Split this
+      monolithic react Component into multiple section. In the end, we should end
+      up with the following components: 'Header', 'Footer', 'Main', 'Channels',
+      'Channel', 'Messages', 'MessageSend':
+  
+      - 'App.js' file uses 'Header.js', 'Main.js', 'Footer.js'
+      - 'Main.js' file uses 'Channels.js', 'Channel.js'
+      - 'Channels.js' prints the list of channels
+      - 'Channel.js' prints the messages, uses 'Messages.js' and 'MessageSend.js'
+      - 'Messages.js' prints the list of messages inside the current channel
+      - 'MessageForm.js' send a new message
+
+      \`\`\`
+      +--------------------------------------------+
+      |                  Header                    |
+      +--------------------------------------------+
+      |   Channels    |          Channel           |
+      |               | +------------------------+ |
+      |               | |        Messages        | |
+      |               | +------------------------+ |
+      |               | |      MessageSend       | |
+      |               | +------------------------+ |
+      +--------------------------------------------+
+      |                  Footer                    |
+      +--------------------------------------------+
+      \`\`\`
+      `.replace(/^ {6}/gm,''),
+    },{
+      author: 'david',
+      creation: 1602832138892,
+      content: `
+      ## 2 - Styles - Level easy
+  
+      Give it some styles, use CSS to make it looks good. Possible source of
+      improvements include changing the colors, replacing the HTML "send" button
+      with an icon, working on the header, providing day/night themes ... be creative
+      `.replace(/^ {6}/gm,''),
+    },{
+      author: 'sergei',
+      creation: 1602840139202,
+      content: `
+      ## 3 - Use an external library - Level medium
+  
+      Format the date in a human readable format. While the date is generated on
+      the server side to ensure its relevance and prevent from forgery, it must be
+      displayed according to the user browser local. The
+      [Moment.js](https://momentjs.com/) library has been the library of choice
+      for many years to accomplish date formatting. Read what is displayed on the
+      top right corner of their homepage, it is now depreciated. Read the reasons
+      and act accordingly.
+      `.replace(/^ {6}/gm,''),
+    },{
+      author: 'david',
+      creation: 1602844139200,
+      content: `
+      ## 4 - Support message contents in Markdown - Level hard
+  
+      Markdown is the most popular syntax to format text into HTML. It is used
+      by the majority of the project Readme files, to write documentation and to
+      generate websites.
+  
+      I recommand you to use the [unified](https://unifiedjs.com/) which is very
+      powerful and comes with a lot of plugins. You can read the Markdown to HTML
+      guide in the learn section and enrich it with your selection of relevant
+      plugins.
+  
+      Consider adding syntax highlight support with a library like
+      [Prism](https://prismjs.com/).
+      `.replace(/^ {6}/gm,'').replace(/^ {6}/gm,''),
+    }]
+  },{
+    name: 'Channel 2',
+    messages: [{
+      author: 'sergei',
+      creation: 1602223579200,
+      content: `
+      Ping
+      `.replace(/^ {6}/gm,'')
+    },{
+      author: 'david',
+      creation: 1602523579200,
+      content: `
+      Pong
+      `.replace(/^ {6}/gm,'')
+    }]
+  },{
+    name: 'Channel 3',
+    messages: [{
+      author: 'sergei',
+      creation: 1602223579200,
+      content: `
+      What is the answer to the Ultimate Question of Life, the Universe and Everything ?
+      `.replace(/^ {6}/gm,'')
+    },{
+      author: 'david',
+      creation: 1602523579200,
+      content: `
+      42
+      `.replace(/^ {6}/gm,'')
+    }]
+  }].map( async (channel) => {
+    const {data: {id}} = await axios.post(`http://localhost:${config.port}/channels`, {
+      name: channel.name
+    })
+    return Promise.all( channel.messages.map( async (message) => {
+      await axios.post(`http://localhost:${config.port}/channels/${id}/messages`, message)
+    }))
+  }))
+  process.exit()
+})();

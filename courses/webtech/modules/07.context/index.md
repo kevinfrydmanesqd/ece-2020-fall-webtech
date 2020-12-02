@@ -1,5 +1,5 @@
 ---
-date: 2020-11-30
+date: 2020-11-23
 duration: 1.5 hours
 ---
 
@@ -7,7 +7,7 @@ duration: 1.5 hours
 
 When react applications grow and gain more additionnal complexity, sharing data between the components and updating the comportant in sync with new values become cumbersome. Traditionnally, there were solutions to circumvent such as Redux and Mobx. The recent addition of the Context API in React simplify state management.
 
-## OAuth basics
+## Why
 
 * Share data at all level of the application
 * Solve the problem of prop drilling
@@ -90,7 +90,7 @@ ReactDOM.render(
 
 ## Example - Consumer hook
 
-```
+```js
 import {useContext} from 'react';
 
 const LoggedOut () => {

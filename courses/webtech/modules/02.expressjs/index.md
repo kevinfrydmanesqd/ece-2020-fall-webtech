@@ -164,9 +164,9 @@ curl
 
 Sur Postman, vous devez régler le header Content-Type : application/json
 
-Vous devez installer une lib supplémentaire : body-parser
+Vous devez installer une librairie supplémentaire : body-parser
 
-Il permet d'analyser et de parser pour vous les paramètres transmis dans un POST, PUT
+Elle permet d'analyser et de parser pour vous les paramètres transmis dans un POST, PUT
 C'est le premier middleware que vous allez installer !
 
 ```shell
@@ -180,6 +180,8 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 ```
+
+Voici un exemple avec une API de type POST :
 
 ```javascript
 app.post('/users', (req, res) => {

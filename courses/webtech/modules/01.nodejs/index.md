@@ -38,7 +38,7 @@ We will finally initiate the use of git and GitHub. We'll also cover package bes
 
 ```javascript
 // Import a module
-const http = require('http')
+const http = require('http');
 
 // Declare an http server
 http.createServer(function (req, res) {
@@ -50,7 +50,7 @@ http.createServer(function (req, res) {
   res.end('Hello World\n');
 
 // Start the server
-}).listen(8080)
+}).listen(8080);
 
 // curl localhost:8080 or go to http://localhost:8080
 ```
@@ -66,7 +66,7 @@ const serverHandle = function (req, res) {
 }
 
 const server = http.createServer(serverHandle);
-server.listen(8080)
+server.listen(8080);
 ```
 
 ## Sending back HTML
@@ -83,7 +83,7 @@ const content = '<!DOCTYPE html>' +
 '    <body>' +
 '       <p>Hello World !</p>' +
 '    </body>' +
-'</html>'
+'</html>';
 
 const serverHandle = function (req, res) {
   res.writeHead(200, {'Content-Type': 'text/html'});
@@ -102,7 +102,7 @@ const serverHandle = function (req, res) {
 
 ```javascript 
 // Import Node url module
-const url = require('url')
+const url = require('url');
 
 const serverHandle = function (req, res) {
   // Retrieve and print the current path
@@ -129,8 +129,8 @@ http://my.site/my/page.html?username=toto&password=lulu
 ## Get query parameters
 
 ```javascript 
-const url = require('url')
-const qs = require('querystring')
+const url = require('url');
+const qs = require('querystring');
 
 const serverHandle = function (req, res) {
   // Retrieve and print the queryParams
@@ -146,20 +146,20 @@ const serverHandle = function (req, res) {
 ## Basic routing example
 
 ```javascript 
-const url = require('url')
-const qs = require('querystring')
+const url = require('url');
+const qs = require('querystring');
 
 const serverHandle = function (req, res) {
-  const route = url.parse(req.url)
-  const path = route.pathname 
-  const params = qs.parse(route.query)
+  const route = url.parse(req.url);
+  const path = route.pathname;
+  const params = qs.parse(route.query);
 
   res.writeHead(200, {'Content-Type': 'text/plain'});
 
   if (path === '/hello' && 'name' in params) {
-    res.write('Hello ' + params['name'])
+    res.write('Hello ' + params['name']);
   } else {
-    res.write('Hello anonymous')
+    res.write('Hello anonymous');
   }
   
   res.end();

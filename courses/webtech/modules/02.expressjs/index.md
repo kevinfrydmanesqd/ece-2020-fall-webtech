@@ -16,217 +16,133 @@ The course will introduce Node.JS frameworks and focus on ExpressJS to write a w
 
 [ExpressJS guide](https://expressjs.com/en/guide/routing.html)
 
-## What’s an API ?
-
-* Application Programming Interface
-* In web: REST
-  * Expose a set of HTTP routes
-  * Use HTTP verbs (GET / POST / PUT / DELETE)
-  * Client connects to communicate
-  * Usually communicating in JSON
-  
-REST API example: https://petstore.swagger.io/
-
-## How to use an API ?
-
-* Combination of two sides:
-  * Back-end: rest api
-  * Front-end: web pages w/ JS, mobile app, …
-* ExpressJS brings both for the web !
-
 ## Create a basic server
 
 * Manually: use `node-http`
 * With express:
 
 ```javascript
-express = require('express')
-app = express()
+const express = require('express');
+const app = express();
 
-app.set('port', 1337)
+app.get('/', (req, res) => {
+  res.send('Hello World!');
+});
 
-app.listen(
-  app.get('port'), 
-  () => console.log(`server listening on ${app.get('port')}`)
-)
+app.listen(8000, function() {
+  console.log(`server listening on 8000`);
+});
 ```
 
-## Routing
+## JSON Response
 
-* Manually: parse the url and apply corresponding logic
-* With Express:
+Dans le cadre de notre service Web, il n’est pas très intéressant de retourner un simple texte car nous ne voulons pas avoir une interface graphique mais plutôt échanger de la donnée. Pour cela, nous allons donc utiliser le format texte JSON dans les réponses des actions. Heureusement, Javascript permet une implémentation très simple de ce genre de réponse :
+
+```javascript
+const express = require('express');
+const app = express();
+
+app.get('/', (req, res) => {
+  const response = {
+    message: 'Hello World!',
+  };
+
+  res.send(JSON.stringify(response));
+  //Vous pouvez aussi faire à la place de la ligne précedente : return res.status(200).json(response);
+});
+
+app.listen(8000, function() {
+  console.log(`server listening on 8000`);
+});
+```
+
+## Routes statiques
+
+Comme vu précédemment, il est possible d’associer une fonction à une route afin d’effectuer différentes actions en fonction de l’URL. Pour cela, nous allons tout d’abord mettre en place plusieurs routes qui seront statiques :
+
+```javascript
+const express = require('express');
+const app = express();
+
+app.get('/', (req, res) => {
+  const response = {
+    message: 'Hello World!',
+  };
+
+  res.send(JSON.stringify(response));
+});
+
+app.get('/users', function(req, res) {
+  const users = [
+    {
+       id: '1234',
+       name: 'user1',
+    },
+    {
+      id: '1234',
+      name: 'user1',
+    },
+  ];
+  
+  return res.status(200).json(users);
+});
+
+app.listen(8000, function() {
+  console.log(`server listening on 8000`);
+});
+```
+
+## Routes dynamiques
+
+Dans le cadre d’un service Web, il est très peu intéressant d’avoir des routes statiques car la requête à faire pour le service se trouve dans l’URL et donc cet URL change en permanence.
+C’est donc pour cela qu’est utilisé le principe de paramètre de routage ​qui représente une variable de routage dans l’URL. Ce paramètre est indiqué dans la route avec “:”.
+
+```javascript
+app.get('/users/:id', function(req, res) {
+  const userId = req.params.id;
+  
+  return res.status(200).json(userId);
+});
+```
+
+Ici nous avons créé un paramètre id dans la route, il sera disponible dans l’objet req.params. Exemple: http://localhost:8000/users/420
+Remarque sur la propriété de l'objet "params" : 
+Dans cet exemple, on a fait params.id car on a écrit "/:id". Si on avait écrit "/:userId", il aurait fallu faire req.params.userId.
+
+La variable sera d'ailleurs au format string.
+
+## Conditions de routes
+
+Afin de mieux paramétrer les routes, il est possible de mettre en place des conditions sur les variables de routage afin que l’action ne soit qu’appeler si l’URL remplit ces conditions. Nous aborderons différents paramétrage de conditions :
+
+Les expressions régulières sont un moyen très utile d’extraire de l’information dans du texte. Si vous souhaitez en apprendre plus, je vous invite à lire ​https://regexone.com/​ (en anglais). Par la suite, les expressions régulières qui vous seront présentées seront expliquées.
+Afin de blinder un paramètre de routage en tant que chiffre, il est possible de faire ceci avec les expressions régulières:
+
+```javascript
+app.get('/users/:id(\\d+)', function(req, res) {
+  const userId = req.params.id;
+  
+  return res.status(200).json(userId);
+});
+```
+
+## Méthode HTTP
 
 ```javascript
 app.get('/', function (req, res) {
   // GET
-})
+});
 
 app.post('/', (req, res) => {
   // POST
-})
+});
 
-app
-  .put('/', function (req, res) {
+app.put('/', function (req, res) {
     // PUT
-  })
-  .delete('/', (req, res) => {
+});
+app.delete('/', (req, res) => {
     // DELETE
-  })
-```
-
-## Routing
-
-You can add parameters in the routes :
-
-```javascript
-app.get(
-  '/hello/:name', 
-  (req, res) => res.send("Hello " + req.params.name)
-)
-```
-
-## Prepare a quick front end
-
-* Install package `ejs` - [read docs ejs.co](https://ejs.co/)
-* Create a `view/` directory
-* Create a `hello.ejs` file in it:
-
-```html
-<h1>Hello <%= name %></h1>
-<p>Welcome to our humble application</p>
-```
-
-## Prepare a front end
-
-Tell express to expose our views with ejs templating:
-
-```javascript
-app.set('views', __dirname + "/views")
-app.set('view engine', 'ejs');
-```
-
-Render our index on `/hello/:name`:
-
-```javascript
-app.get(
-  '/hello/:name', 
-  (req, res) => res.render('hello.ejs', {name: req.params.name})
-)
-```
-
-## Make it sexy !
-
-* Expose static content (JS, CSS, Images, …)
-* Download bootstrap [getbootstrap.com/getting-started/#download](http://getbootstrap.com/getting-started/#download)
-* Download JQuery [code.jquery.com/jquery-3.4.1.min.js](https://code.jquery.com/jquery-3.4.1.min.js)
-* Add the css in public/css and the js in public/js
-
-## Make it sexy !
-
-* In `index.js`
-```js
-path = require('path')
-app.use(express.static(path.join(__dirname, 'public')))
-```
-* Put JQuery & bootstrap files in `public/js` and `public/css`
-* In a `views/partials/head.ejs` file:
-
-```html
-<meta charset="UTF-8">
-<title>ECE AST</title>
-
-<link rel="stylesheet" href="/css/bootstrap.min.css">
-<style>
-    body    { padding-top:50px; }
-</style>
-
-<script src="/js/jquery-2.1.4.min.js"></script>
-<script src="/js/bootstrap.min.js" /></script>
-```
-
-## Make it sexy !
-
-* In `views/hello.ejs`:
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-      <% include partials/head %>
-  </head>
-  <body class="container">
-    <h1>Hello <%= name %></h1>
-    <p>Welcome to our humble application</p>
-  </body>
-</html>
-```
-
-## Let’s bring some AJAX
-
-* Technologies used to dynamically update static pages
-* Use JS embedded in HTML
-* Get data from a server
-* Update page without reloading
-
-## Create dummy data
-
-* Prepare the data on the back-end
-* Let’s create a new module called `metrics.js`:
-
-```js
-module.exports = {
-  get: (callback) => {
-    callback(null, [
-      { timestamp: new Date('2013-11-04 14:00 UTC').getTime(), value:12}
-    , { timestamp: new Date('2013-11-04 14:30 UTC').getTime(), value:15}
-    ])
-  }
-}
-```
-
-## Create dummy data
-
-* Expose the metrics on the back-end
-
-```javascript
-app.get('/metrics.json', (req, res) => {
-  metrics.get((err, data) => {
-    if(err) throw err
-    res.status(200).json(data)
-  })
-})
-```
-
-## And get it on the front !
-
-* In our `hello.ejs`
-
-```html
-<body class="container">
-  <div class="col-md-6 col-md-offset-3">
-    <h1>Hello <%= name %></h1>
-    <button class="btn btn-success" id="show-metrics">
-      Bring the metrics
-    </button>
-    <div id="metrics"></div>
-  </div>
-</body>
-```
-
-## And get it on the front !
-
-* And after the end of the body between script tags:
-
-```js
-$('#show-metrics').click((e) => {
-  e.preventDefault();
-  $.getJSON("/metrics.json", {}, (data) => {
-    const content = data.map(d => {
-      return '<p>timestamp: '+d.timestamp+', value: '+d.value+'</p>';
-    })
-    $('#metrics').append(content.join("\n"));
-  });
-})
+});
 ```
 
 ## Postman
@@ -244,9 +160,31 @@ $('#show-metrics').click((e) => {
 curl 
 ```
 
-## Work of Part 1
+## Transmettre des données au format JSON
 
-* Using the code and repo from last module, convert everything to use `express` 
-instead of doing routing and server setup manually. You should have:
-  - `/` home page with description 
-  - `/hello` page with the button and AJAX request for obtaining metrics
+Sur Postman, vous devez régler le header Content-Type : application/json
+
+Vous devez installer une lib supplémentaire : body-parser
+
+Il permet d'analyser et de parser pour vous les paramètres transmis dans un POST, PUT
+C'est le premier middleware que vous allez installer !
+
+```shell
+npm install --save body-parser
+```
+
+Ensuite ajoutez les lignes suivantes dans votre code juste après avoir déclarer express :
+
+```javascript
+const bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+```
+
+```javascript
+app.post('/users', (req, res) => {
+  const body = req.body;
+
+  return res.status(201).json(body);
+});
+```

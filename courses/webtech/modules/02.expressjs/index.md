@@ -18,7 +18,7 @@ The course will introduce Node.JS frameworks and focus on ExpressJS to write a w
 
 ## Create a basic server
 
-* Manually: use `node-http`
+* Manually: use `http`
 * With express:
 
 ```javascript

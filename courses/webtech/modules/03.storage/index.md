@@ -46,8 +46,8 @@ disabled: true
 To open
 
 ```javascript
-const level = require('level')
-const db = level('./path/to/db')
+const level = require('level');
+const db = level('./path/to/db');
 ```
 
 ## Use the db
@@ -57,7 +57,7 @@ To write
 ```javascript
 db.put(key, value, (err) => {
   if(err) {...}
-})
+});
 ```
 
 To read
@@ -65,7 +65,7 @@ To read
 ```javascript
 db.get(key, (err, value) => {
   if(err) {...}
-})
+});
 ```
 
 ## Write keys
@@ -75,17 +75,17 @@ db.get(key, (err, value) => {
 
 ```javascript
 // Write
-import WriteStream from 'level-ws'
+import WriteStream from 'level-ws';
 const ws = WriteStream(db);
 
 ws.on('error', function (err) {
   console.log('Oh my!', err)
-})
+});
 ws.on('close', function () {
   console.log('Stream closed')
-})
-ws.write({ key: 'occupation', value: 'Clown' })
-ws.end()
+});
+ws.write({ key: 'occupation', value: 'Clown' });
+ws.end();
 ```
 
 ## Read keys
@@ -107,5 +107,5 @@ const rs = db.createReadStream()
   })
   .on('end', function () {
     console.log('Stream ended')
-  })
+  });
 ```

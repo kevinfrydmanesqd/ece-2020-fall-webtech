@@ -1,0 +1,23 @@
+{
+  "name": "webtech-lab-2",
+  "version": "1.0.0",
+  "description": "WebTech correction lab 2",
+  "authors": [
+    "kevin frydman <kevin.frydman@twinkle-app.com>"
+  ],
+  "scripts": {
+    "start": "nodemon ./bin/server.js"
+  },
+  "dependencies": {
+    "body-parser": "1.19.0",
+    "express": "4.17.1",
+    "nodemon": "2.0.7"
+  },
+  "keywords": [
+    "tech",
+    "ece",
+    "nodejs"
+  ],
+  "license": "MIT",
+  "main": "index.js"
+}

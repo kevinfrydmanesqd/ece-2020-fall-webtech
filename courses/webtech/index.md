@@ -2,7 +2,7 @@
 title: Web Technologies
 authors:
 - David Worms <david@adaltas.com>
-- Kevin Frydman <kevin.frydman@esquad.co>
+- Kevin Frydman <kevin.frydman@twinkle-app.co>
 school: ECE
 period: Fall 2020
 feature: ./feature/index.png
@@ -22,6 +22,6 @@ Web and database technologies, command line usage, basic programming skills.
 
 Evaluation :
 
-* Participation
+* Participation / Lab
 * Build a project
 * QCM at the end of the course

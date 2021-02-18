@@ -109,3 +109,10 @@ const rs = db.createReadStream()
     console.log('Stream ended')
   });
 ```
+
+## Units Tests
+
+* Test your code
+* Many tools : mocha, jest, ...
+* Supertest to simulate api call : https://www.npmjs.com/package/supertest
+* TDD : https://openclassrooms.com/fr/courses/3504461-testez-linterface-de-votre-site/4270571-apprenez-le-test-driven-development-tdd

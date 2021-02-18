@@ -1,53 +1,74 @@
+const app = require('../app');
+const db = require('../db_config');
+const request = require('supertest');
 
-const supertest = require('supertest')
-const app = require('../lib/app')
-const db = require('../lib/db')
+describe('channel api tests', () => {
+	beforeEach(async () => {
+		await db.clear(); //on va clean la base de données
+	});
 
-describe('channels', () => {
-  
-  beforeEach( async () => {
-    await db.admin.clear()
-  })
-  
-  it('list empty', async () => {
-    // Return an empty channel list by default
-    const {body: channels} = await supertest(app)
-    .get('/channels')
-    .expect(200)
-    channels.should.eql([])
-  })
-  
-  it('list one element', async () => {
-    // Create a channel
-    await supertest(app)
-    .post('/channels')
-    .send({name: 'channel 1'})
-    // Ensure we list the channels correctly
-    const {body: channels} = await supertest(app)
-    .get('/channels')
-    .expect(200)
-    channels.should.match([{
-      id: /^\w+-\w+-\w+-\w+-\w+$/,
-      // id: /^channels:\w+-\w+-\w+-\w+-\w+$/,
-      name: 'channel 1'
-    }])
-  })
-  
-  it('add one element', async () => {
-    // Create a channel
-    const {body: channel} = await supertest(app)
-    .post('/channels')
-    .send({name: 'channel 1'})
-    .expect(201)
-    // Check its return value
-    channel.should.match({
-      id: /^\w+-\w+-\w+-\w+-\w+$/,
-      name: 'channel 1'
-    })
-    // Check it was correctly inserted
-    const {body: channels} = await supertest(app)
-    .get('/channels')
-    channels.length.should.eql(1)
-  })
-  
-})
+	it('list empty', async () => {
+		// Return an empty channel list by default
+		await request(app)
+			.get('/api/v1/channels')
+			.expect(200, []);
+	});
+
+	it('list one element', async () => {
+		// Create a channel
+		const channel = {
+			id: '123',
+			name: 'name',
+		};
+		await db.put(`channels:${channel.id}`, JSON.stringify(channel));
+
+		// Ensure we list the channels correctly
+		await request(app)
+			.get('/api/v1/channels')
+			.expect(200, [{
+				id: '123',
+				name: 'name',
+			}]);
+	});
+
+	it('create new channel name not given', async () => {
+		await request(app)
+			.post('/api/v1/channels')
+			.expect(400, {name: 'Name is required.'});
+	});
+
+	it('create new channel', async () => {
+		const {body} = await request(app)
+			.post('/api/v1/channels')
+			.send({name: 'channel 1'})
+			.expect(201);
+
+		body.should.match({
+			id: /^\w+-\w+-\w+-\w+-\w+$/, //on utilise une regex pour dire que notre id correspond bien à un uui
+			name: 'channel 1'
+		});
+	});
+
+	it('show channel', async () => {
+		// Create a channel
+		const channel = {
+			id: '123',
+			name: 'name',
+		};
+		await db.put(`channels:${channel.id}`, JSON.stringify(channel));
+
+		// Ensure we list the channels correctly
+		await request(app)
+			.get('/api/v1/channels/123')
+			.expect(200, {
+				id: '123',
+				name: 'name',
+			});
+	});
+
+	//TODO show channel with id who does not exist
+
+	//TODO update channel with all cases
+
+	//TODO delete channel with all cases
+});

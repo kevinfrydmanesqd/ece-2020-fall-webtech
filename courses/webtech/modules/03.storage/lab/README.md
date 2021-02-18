@@ -8,7 +8,7 @@ This is a chat application we wrote to learn the basics and the not so basics fe
 Start the web application:
 
 ```bash
-./bin/start 
+./bin/server.js 
 Chat is waiting for you at http://localhost:3000
 ```
 

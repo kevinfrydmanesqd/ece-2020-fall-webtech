@@ -50,17 +50,3 @@ displayed according to the user browser local. The
 many years to accomplish date formatting. Read what is displayed on the top
 right corner of their homepage, it is now depreciated. Read the reasons and act
 accordingly.
-
-## 4 - Support message contents in Markdown - Level hard
-
-Markdown is the most popular syntax to format text into HTML. It is used by the
-majority of the project Readme files, to write documentation and to generate
-websites.
-
-I recommand you to use the [unified](https://unifiedjs.com/) which is very
-powerful and comes with a lot of plugins. You can read the Markdown to HTML
-guide in the learn section and enrich it with your selection of relevant
-plugins.
-
-Consider adding syntax highlight support with a library like
-[Prism](https://prismjs.com/).

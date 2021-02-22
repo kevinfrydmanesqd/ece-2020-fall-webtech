@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "start": "nodemon ./bin/server.js",
-    "test": "cross-env NODE_ENV=testing mocha 'test/**/*.js'"
+    "test": "cross-env NODE_ENV=test mocha 'test/**/*.js'"
   },
   "dependencies": {
     "body-parser": "1.19.0",

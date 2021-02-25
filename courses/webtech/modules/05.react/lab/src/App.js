@@ -1,120 +1,139 @@
-import {useState} from 'react';
+import React, {useState} from 'react';
 import './App.css';
-/** @jsx jsx */
-import { jsx } from '@emotion/core'
+
+//Permet d'inserer un retour à la ligne
+//https://github.com/yosuke-furukawa/react-nl2br#readme
+const nl2br = require('react-nl2br');
 
 const styles = {
-  root: {
-    boxSizing: 'border-box',
-    display: 'flex',
-    flexDirection: 'column',
-    backgroundColor: '#565E71',
-    padding: '50px',
-  },
-  header: {
-    height: '60px',
-    backgroundColor: 'rgba(255,255,255,.3)',
-    flexShrink: 0,
-  },
-  headerLogIn: {
-    backgroundColor: 'red',
-  },
-  headerLogOut: {
-    backgroundColor: 'blue',
-  },
-  footer: {
-    height: '30px',
-    backgroundColor: 'rgba(255,255,255,.3)',
-    flexShrink: 0,
-  },
-  main: {
-    backgroundColor: '#373B44',
-    flex: '1 1 auto',
-    display: 'flex',
-    flexDirection: 'row',
-    overflow: 'hidden',
-  },
-  channels: {
-    minWidth: '200px',
-  },
-  channel: {
-    height: '100%',
-    flex: '1 1 auto',
-    display: 'flex',
-    flexDirection: 'column',
-    overflow: 'hidden',
-  },
-  messages: {
-    flex: '1 1 auto',
-    height: '100%',
-    overflow: 'auto',
-    '& ul': {
-      'margin': 0,
-      'padding': 0,
-      'textIndent': 0,
-      'listStyleType': 0,
+    root: {
+        boxSizing: 'border-box',
+        display: 'flex',
+        flexDirection: 'column',
+        backgroundColor: '#565E71',
+        padding: 50
     },
-  },
-  message: {
-    margin: '.2rem',
-    padding: '.2rem',
-    // backgroundColor: '#66728E',
-    ':hover': {
-      backgroundColor: 'rgba(255,255,255,.2)',
+    header: {
+        height: 60,
+        backgroundColor: 'rgba(255,255,255,.3)',
+        flexShrink: 0
     },
-  },
-  form: {
-    borderTop: '2px solid #373B44',
-    padding: '.5rem',
-    display: 'flex',
-  },
-  content: {
-    flex: '1 1 auto',
-    marginRight: '.5rem'
-  },
-  send: {
-    backgroundColor: '#D6DDEC',
-    padding: '.2rem .5rem',
-    border: 'none',
-    ':hover': {
-      backgroundColor: '#2A4B99',
-      cursor: 'pointer',
-      color: '#fff',
+    headerLogIn: {
+        backgroundColor: 'red'
     },
-  },
-  
-}
+    headerLogOut: {
+        backgroundColor: 'blue'
+    },
+    footer: {
+        height: 30,
+        backgroundColor: 'rgba(255,255,255,.3)',
+        flexShrink: 0
+    },
+    main: {
+        backgroundColor: '#373B44',
+        flex: '1 1 auto',
+        display: 'flex',
+        flexDirection: 'row',
+        overflow: 'hidden'
+    },
+    channels: {
+        minWidth: 200
+    },
+    channel: {
+        height: '100%',
+        flex: '1 1 auto',
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden'
+    },
+    messages: {
+        flex: '1 1 auto',
+        height: '100%',
+        overflow: 'auto',
+        '& ul': {
+            'margin': 0,
+            'padding': 0,
+            'textIndent': 0,
+            'listStyleType': 0
+        }
+    },
+    message: {
+        margin: '.2rem',
+        padding: '.2rem',
+        // backgroundColor: '#66728E',
+        ':hover': {
+            backgroundColor: 'rgba(255,255,255,.2)'
+        }
+    },
+    form: {
+        borderTop: '2px solid #373B44',
+        padding: '.5rem',
+        display: 'flex'
+    },
+    content: {
+        flex: '1 1 auto',
+        marginRight: '.5rem'
+    },
+    send: {
+        backgroundColor: '#D6DDEC',
+        padding: '.2rem .5rem',
+        border: 'none',
+        ':hover': {
+            backgroundColor: '#2A4B99',
+            cursor: 'pointer',
+            color: '#fff'
+        }
+    }
+};
 
 const MessageForm = ({
-  addMessage
-}) => {
-  const onSubmit = (e) => {
-    e.preventDefault()
-    const data = new FormData(e.target)
-    addMessage({
-      content: data.get('content'),
-      author: 'david',
-      creation: Date.now(),
-    })
-    e.target.elements.content.value = ''
-  } 
-  return (
-    <form css={styles.form}  onSubmit={onSubmit}>
-      <input type="input" name="content" css={styles.content} />
-      <input type="submit" value="Send" css={styles.send} />
-    </form>
-  )
-}
+                         addMessage
+                     }) => {
+    const [content, setContent] = useState('');
+
+    //You can improve this function with one hook (useCallback) :
+    // https://fr.reactjs.org/docs/hooks-intro.html
+    // https://fr.reactjs.org/docs/hooks-reference.html
+    const onSubmit = (e) => {
+        addMessage({
+            content,
+            author: 'david',
+            creation: Date.now(),
+        });
+
+        setContent('');
+    };
+
+    //You can improve this function with one hook (useCallback) :
+    const onChange = (e) => {
+        setContent(e.target.value);
+    };
+
+    return (
+        <div style={styles.form}>
+            <textarea
+                onChange={onChange}
+                name="content"
+                rows={5}
+                style={styles.content}
+                value={content}
+            />
+            <button onClick={onSubmit} type="submit" style={styles.send}>
+                Send
+            </button>
+        </div>
+    )
+};
 
 export default ({
-  channel = {
-    name: 'Fake channel'
-  }
-}) => {
-  const [messages, setMessages] = useState([{
-    author: 'sergei',
-    creation: 1602831101929,
-    content: `
+                    channel = {
+                        name: 'Fake channel'
+                    }
+                }) => {
+    const [messages, setMessages] = useState([{
+        author: 'sergei',
+        creation: 1602831101929,
+        content: `
     ## 1 - Architecture - Level easy
     
     It is now the right time to re-organize/refactor our code. Split this
@@ -135,7 +154,7 @@ export default ({
     +--------------------------------------------+
     |   Channels    |          Channel           |
     |               | +------------------------+ |
-    |               | |        Messages        | |
+    |               | |    Messages / Message  | |
     |               | +------------------------+ |
     |               | |      MessageSend       | |
     |               | +------------------------+ |
@@ -143,21 +162,21 @@ export default ({
     |                  Footer                    |
     +--------------------------------------------+
     \`\`\`
-    `,
-  },{
-    author: 'david',
-    creation: 1602832138892,
-    content: `
+    `
+    }, {
+        author: 'david',
+        creation: 1602832138892,
+        content: `
     ## 2 - Styles - Level easy
     
     Give it some styles, use CSS to make it looks good. Possible source of
-    improvements include changing the colors, replacing the HTML "send" button
+    improvements include changing the colors, replacing the HTML 'send' button
     with an icon, working on the header, providing day/night themes ... be creative
-    `,
-  },{
-    author: 'sergei',
-    creation: 1602840139202,
-    content: `
+    `
+    }, {
+        author: 'sergei',
+        creation: 1602840139202,
+        content: `
     ## 3 - Use an external library - Level medium
     
     Format the date in a human readable format. While the date is generated on
@@ -167,11 +186,11 @@ export default ({
     for many years to accomplish date formatting. Read what is displayed on the
     top right corner of their homepage, it is now depreciated. Read the reasons
     and act accordingly.
-    `,
-  },{
-    author: 'david',
-    creation: 1602844139200,
-    content: `
+    `
+    }, {
+        author: 'david',
+        creation: 1602844139200,
+        content: `
     ## 4 - Support message contents in Markdown - Level hard
     
     Markdown is the most popular syntax to format text into HTML. It is used
@@ -185,51 +204,48 @@ export default ({
     
     Consider adding syntax highlight support with a library like
     [Prism](https://prismjs.com/).
-    `,
-  }])
-  const addMessage = (message) => {
-    setMessages([
-      ...messages,
-      message
-    ])
-  }
-  return (
-    <div className="App" css={styles.root}>
-      <header className="App-header" css={styles.header}>
-        <h1>header</h1>
-      </header>
-      <main className="App-main" css={styles.main}>
-        <div css={styles.channels}>
+    `
+    }]);
+
+    const addMessage = newMessage => {
+        setMessages([
+            ...messages,
+            newMessage
+        ]);
+    };
+
+    return (
+        <div className="app" style={styles.root}>
+            <header className="App-header" style={styles.header}>
+                <h1>header</h1>
+            </header>
+            <main className='App-main' style={styles.main}>
+                <div style={styles.channels}>
+                </div>
+                <div style={styles.channel}>
+                    <div style={styles.messages}>
+                        <h1>Messages for {channel.name}</h1>
+                        <ul>
+                            {messages.map((message, i) => (
+                                <li key={i} style={styles.message}>
+                                    <p>
+                                        <span>{message.author}</span>
+                                        {' '}
+                                        <span>{(new Date(message.creation)).toString()}</span>
+                                    </p>
+                                    <div>
+                                        {nl2br(message.content)}
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                    <MessageForm addMessage={addMessage} />
+                </div>
+            </main>
+            <footer className="app-footer" style={styles.footer}>
+                footer
+            </footer>
         </div>
-        <div css={styles.channel}>
-          <div css={styles.messages}>
-            <h1>Messages for {channel.name}</h1>
-            <ul>
-              { messages.map( (message, i) => (
-                <li key={i} css={styles.message}>
-                  <p>
-                    <span>{message.author}</span>
-                    {' '}
-                    <span>{(new Date(message.creation)).toString()}</span>
-                  </p>
-                  <div>
-                    {
-                      message.content
-                      .split(/(\n +\n)/)
-                      .filter( el => el.trim() )
-                      .map( el => <p>{el}</p>)
-                    }
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <MessageForm addMessage={addMessage} />
-        </div>
-      </main>
-      <footer className="App-footer" style={styles.footer}>
-        footer
-      </footer>
-    </div>
-  );
+    );
 }

@@ -6,7 +6,7 @@ during our last session. We will make a few improvements to it.
 
 ## 1 - Architecture - Level easy
 
-It is now the right time to re-organize/refactor our code. Split this monolithic
+It is now the right time to **re-organize/refactor** our code. Split this monolithic
 react Component into multiple section. In the end, we should end up with the
 following components: 'Header', 'Footer', 'Main', 'Channels', 'Channel',
 'Messages', 'MessageSend':
@@ -16,6 +16,7 @@ following components: 'Header', 'Footer', 'Main', 'Channels', 'Channel',
 - 'Channels.js' prints the list of channels
 - 'Channel.js' prints the messages, uses 'Messages.js' and 'MessageSend.js'
 - 'Messages.js' prints the list of messages inside the current channel
+- 'Message.js' display one message
 - 'MessageForm.js' send a new message
 
 ```
@@ -25,7 +26,7 @@ following components: 'Header', 'Footer', 'Main', 'Channels', 'Channel',
 +--------------------------------------------+
 |   Channels    |          Channel           |
 |               | +------------------------+ |
-|               | |        Messages        | |
+|               | |    Messages / Message  | |
 |               | +------------------------+ |
 |               | |      MessageSend       | |
 |               | +------------------------+ |

@@ -3,53 +3,68 @@
 
 ## Introduction
 
-The project creates a Chat application similar to Discord, WhatApps or Keybase with a minimal set of features. The user can securely create and manage channels, invite friends and post messages in a secure manner. By the end, the user will be able:
+Ce projet a pour sujet la reproduction d’un tchat à la manière de Discord/Whatsapp/Keybase (de manière très simplifiée)... Le but est de fournir une application Web permettant d’accéder à des channels, d’écrire des messages, ....
 
-* To authenticate itself using an external provider with Oauth (groups 1 and 3) or using a local account with its internal sign in form (groups 2 and 4).
-* Navigate through his channels and the messages associated with the current channel.
-* Share the channel access with other users.
-* Access the channel to which he was invited.
-* Send new messages.
-* Edit and remove **his** messages.
-* Use the user Gravatar if any or provide a default randomly generated Gravatar, choose an avatar proposed by the application and upload his avatar.
-* Modify his settings.
-* Trust the Chat application because it is secured and the resource access is verified.
+* S’authentifier auprès de l’application avec un compte local et un formulaire d’inscription.
+* Naviguer au travers de ses channels et des messages du channel sélectionné.
+* Partager l’accès au channel avec d’autres utilisateurs.
+* Accéder aux channels auxquels il a été ajouté.
+* Envoyer un nouveau message.
+* Modifier et supprimer son message.
+* Automatiser l’association de leur email avec leur gravatar, sélectionner un avatar proposé par l’application et uploader son propre gravatar.
+* Système de préférence de compte.
+* Bénéficier d’une application sécurisée dans laquelle l’accès aux ressources est vérifié (authentification et autorisation).
 
 ## Delivery
 
-The project must be published on GitHub. You must grant access to your repository if it is private. The repository must respect best practices and usages. It shall contain at least two folders, one for the back-end API and one for the front-end application.
+Votre projet est à faire par groupe de deux, au sein d’un même groupe de TD.
 
-Communication and presentation of your project must be present in the readme file. The readme must include and reproduce the tasks with your own comments. An example is provided in the `README.md` file provided with the example project. What you have done, why and how you implement features, instructions, recommendations, important notes... all must be concise. The goal is to provide the maximum of context for the correction while accelerating the reviewing process.
+Votre projet devra être déposé sur campus avec le nom suivant : Gr0X_Nom1_Prenom1_Nom2_Prenom2.rar
 
-A default application is provided to start. It is recommanded to clone it and start from there. It also comes with a `./README.md` file. **Use this file** as a template for your own readme.
+**Vous ne devez pas inclure dans votre archive les dossiers node_modules**
+
+Une application par défaut est disponible. Nous vous recommandons de partir de celle-ci.
 
 ## Deadline
 
-The project is due by **December 20th, 2020** in the evening. Please notify me if it is ready before.
+La deadline est fixée pour le ** **
 
 ## Evaluation
 
-Each task is associated with a grade which is provided for information and which might be adjusted.
+Attention à bien respecter les spécifications pour les fonctionnalités demandées.
+Vous devez respecter les conventions de nommage de variable comme vu en cours cf le fichier sur campus.
 
-Be sure to respect the instructions. If any doubts, **post an issue** on the [course GitHub repository](https://github.com/adaltas/ece-2020-fall-webtech/).
+**Tout plagiat sera sanctionné d’un 0 et d’un avertissement**
 
-Any **plagiarism will be penalized** with a 0 and a warning.
+Interdiction d’utiliser :
 
-It is forbidden to:
+* d’autres frameworks ou librairie autre que React (Vuejs, Angular, …),
+* tout autres bases de données que LevelDB qui n’est pas du type Column Family ou Sorted Key Value Set
+* des templates React “tout fait”.
 
-* use any alternative framework to React.js (eg Vue.js, Angular, ...).
-* any alternative storage to LevelDB unless it is a sorted key-value store or a column family store.
-* existing available layout templates (but you can get inspiration from them).
+Le projet doit fonctionner. Aucun évaluation sera faite si le projet ne se lance par correctement
 
 You are provided with a working project. The final project must be working as well. No correction will be made on a project which does not start.
 
-The final project must be **professional** grade. You must think about everything expected from a project in production including resource access, error management, ... Don't forget to communicate in the Readme about what has been implemented.
+S'il y a des informations nécessaires à fournir, veuillez les fournir dans le Readme.
+
+Les fonctionnalités doivent fonctionner !
 
 ## Tasks
 
+#### Gestion de projet
+
+* Respect des conventions de nommage
+  poinnts : 2
+* Structure des projets simple, compréhensible et stable, organisation des dossiers, services, composants 4
+* Qualité globale du code (indentation, clarté, …) 4
+* Apparence globale de l’application web 4
+
+#### Développement (English)
+
 Note, you do not have to complete all tasks, do your best and don't hesitate to ask questions. Some tasks are much easier than expected.
 
-Project management
+##### Project management
 
 * Naming convention   
   points: 2   
@@ -66,13 +81,15 @@ Project management
 * Design, UX   
   points: 4   
   level: medium   
-  Overall look and feel, user experience (UX), material-ui and graphical components, CSS styling
-* Git and DevOps   
+  Overall look and feel, user experience (UX), material-ui/bootstrap and graphical components, CSS styling
+
+##### Application development
+
+* Sign In, Sign Up, Log Out   
   points: 4   
   level: medium   
-  Commit history, branch usage, merge versus rebase, squashing, unit tests, CI/CD (eg run unit tests and Travis, Jenkins, ...), linter, ...
-
-Application development
+  Make a sign in form, a sign up form and create all the API needed.   
+  The user can also log out.
 
 * Welcome screens   
   points: 4   
@@ -85,7 +102,7 @@ Application development
 * Channel membership and access   
   points: 4   
   level: medium   
-  Every request sent to the API server (back-end) must contain the user access token in the HTTP header with its identity (email). Once the token is validated by the authentication middleware, the user ID must be associated with the created channel (eg `owner` property). If the user does not yet exist in the database, he must be created automatically.
+  Every request sent to the API server (back-end) must contain the user access token in the HTTP header. Once the token is validated by the authentication middleware, the user ID must be associated with the created channel (eg `owner` property).
 * Ressource access control   
   points: 4   
   level: medium   
@@ -127,4 +144,4 @@ Application development
 * Replace LevelDB with a scalable and distributed alternative (Cassandra, HBase, ...)
 * Any feature of your liking
 
-Bonuses are expected to be proposed if a large majority of the tasks are implemented. Communicate about the bonus inside the readme file to inform about their existence and usage.
+Bonuses are expected to be proposed if **the majority of the tasks are implemented**. Communicate about the bonus inside the readme file to inform about their existence and usage.

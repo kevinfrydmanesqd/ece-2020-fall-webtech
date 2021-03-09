@@ -1,0 +1,45 @@
+{
+  "name": "webtech-lab-3",
+  "version": "1.0.0",
+  "description": "WebTech demo lab",
+  "authors": [
+    "david worms <david@adaltas.com>",
+    "kevin frydman <kevin.frydman@twinkle-app.com>"
+  ],
+  "scripts": {
+    "start": "nodemon ./bin/server.js",
+    "test": "cross-env NODE_ENV=test mocha 'test/**/*.js'"
+  },
+  "dependencies": {
+    "body-parser": "1.19.0",
+    "cross-env": "7.0.3",
+    "express": "4.17.1",
+    "level": "6.0.1",
+    "nodemon": "2.0.7",
+    "uuid": "8.3.2"
+  },
+  "devDependencies": {
+    "mocha": "8.1.3",
+    "should": "13.2.3",
+    "supertest": "4.0.2"
+  },
+  "keywords": [
+    "web",
+    "ece",
+    "nodejs",
+    "express",
+    "mocha"
+  ],
+  "license": "MIT",
+  "main": "app/index.js",
+  "mocha": {
+    "throw-deprecation": true,
+    "require": [
+      "should"
+    ],
+    "inline-diffs": true,
+    "timeout": 40000,
+    "reporter": "spec",
+    "recursive": true
+  }
+}

@@ -32,6 +32,7 @@ La deadline est fixée pour le ** **
 ## Evaluation
 
 Attention à bien respecter les spécifications pour les fonctionnalités demandées.
+
 Vous devez respecter les conventions de nommage de variable comme vu en cours cf le fichier sur campus.
 
 **Tout plagiat sera sanctionné d’un 0 et d’un avertissement**
@@ -44,8 +45,6 @@ Interdiction d’utiliser :
 * des templates React “tout fait”.
 
 Le projet doit fonctionner. Aucun évaluation sera faite si le projet ne se lance par correctement
-
-You are provided with a working project. The final project must be working as well. No correction will be made on a project which does not start.
 
 S'il y a des informations nécessaires à fournir, veuillez les fournir dans le Readme.
 
@@ -106,8 +105,9 @@ Note, you do not have to complete all tasks, do your best and don't hesitate to 
   Every request sent to the API server (back-end) must contain the user access token in the HTTP header. Once the token is validated by the authentication middleware, the user ID must be associated with the created channel (eg `owner` property).
 * Ressource access control   
   points: 4   
-  level: medium   
+  level: medium
   A user must only gain access to the channel he created or to the channels he was invited to. The APIs must return the appropriate channels. It must also prevent unexpected access and intrusion attempts. The HTTP response must return an appropriate HTTP response code and message.
+  The user password must be encrypted. You can use this library : https://github.com/kelektiv/node.bcrypt.js#readme 
 * Invite users to channels   
   points: 6   
   level: hard   
@@ -136,7 +136,7 @@ Note, you do not have to complete all tasks, do your best and don't hesitate to 
   points: 6   
   level: hard   
   Offer the user the ability to upload his avatar in the form of an image (eg png, svg, ...). Ideally, the form must support drag and drop, filter the file type and restrict the file size.
-  Images can be saved in different ways (clouds, locally files, database)
+  Images can be saved in different ways (clouds, locally files, database) but you will have 6 points only if you do the best scalable features
 
 ## Bonus ideas
 

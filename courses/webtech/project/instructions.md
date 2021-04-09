@@ -38,6 +38,7 @@ Vous devez respecter les conventions de nommage de variable comme vu en cours cf
 
 Interdiction d’utiliser :
 
+* autres languages que javascript (typescript, php, python, ...)
 * d’autres frameworks ou librairie autre que React (Vuejs, Angular, …),
 * tout autres bases de données que LevelDB qui n’est pas du type Column Family ou Sorted Key Value Set
 * des templates React “tout fait”.

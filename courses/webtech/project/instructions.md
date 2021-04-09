@@ -136,6 +136,7 @@ Note, you do not have to complete all tasks, do your best and don't hesitate to 
   points: 6   
   level: hard   
   Offer the user the ability to upload his avatar in the form of an image (eg png, svg, ...). Ideally, the form must support drag and drop, filter the file type and restrict the file size.
+  Images can be saved in different ways (clouds, locally files, database)
 
 ## Bonus ideas
 

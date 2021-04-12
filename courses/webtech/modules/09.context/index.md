@@ -49,24 +49,26 @@ When react applications grow and gain more additionnal complexity, sharing data 
 ## Example - Context initialization
 
 ```jsx
-import React, {useState} from 'react'
+import React, {useState} from 'react';
 
 export const Context = React.createContext();
 
-export const Provider ({
-  children
-}) => {
-  const [user, setUser] = useState(null)
+export const Provider = ({children}) => {
+  const [user, setUser] = useState(null);
+
   return (
     <Context.Provider value={{
       user: user,
       setUser: (user) => {
-        if(user && !user.email){
-          throw Error("Invalid user")
-        }
-        setUser(oauth)
-      },
-    }}>{children}</Context.Provider>
+          if(user && !user.email) {
+            throw Error("Invalid user")
+          }
+          setUser(user);
+        },
+      }}
+    >
+      {children}
+    </Context.Provider>
   )
 }
 ```
@@ -93,25 +95,27 @@ ReactDOM.render(
 ```js
 import {useContext} from 'react';
 
-const LoggedOut () => {
-  const {setUser} = useContext(Context)
-  return (
-    <button onclick={()=>{ setUser('guest') }}>Login</button>
-  )
-}
+const LoggedOut = () => {
+  const {setUser} = useContext(Context);
 
-const LoggedIn () => {
-  const {user, setUser} = useContext(Context)
+  return (
+    <button onclick={()=>{setUser('guest')}}>Login</button>
+  )
+};
+
+const LoggedIn = () => {
+  const {user, setUser} = useContext(Context);
   return (
     <div>
       Welcome {user}
-      <button onclick={()=>{ setUser(null) }}>Logout</button>
+      <button onclick={()=>{setUser(null)}}>Logout</button>
     </div>
   )
-}
+};
 
 export default () => {
-  const {user} = useContext(Context)
-  return user ? <LoggedIn /> : <LoggedOut />
-})
+  const {user} = useContext(Context);
+
+  return user ? <LoggedIn /> : <LoggedOut />;
+};
 ```

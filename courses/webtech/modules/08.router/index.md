@@ -48,3 +48,4 @@ SPA stands for SinglePageApplication. It literally means an application that con
 
 * [React Router homepage](https://reactrouter.com/)
 * [The Future of React Router and @reach/router](https://reacttraining.com/blog/reach-react-router-future/)
+

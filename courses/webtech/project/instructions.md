@@ -19,7 +19,7 @@ Ce projet a pour sujet la reproduction d’un tchat à la manière de Discord/Wh
 
 Votre projet est à faire par groupe de deux, au sein d’un même groupe de TD.
 
-Votre projet devra être déposé sur campus avec le nom suivant : Gr0X_Nom1_Prenom1_Nom2_Prenom2.rar
+Votre projet devra être déposé sur *campus* avec le nom suivant : Gr0X_Nom1_Prenom1_Nom2_Prenom2.rar
 
 **Vous ne devez pas inclure dans votre archive les dossiers node_modules**
 
@@ -27,7 +27,7 @@ Une application par défaut est disponible. Nous vous recommandons de partir de 
 
 ## Deadline
 
-La deadline est fixée pour le ** **
+La deadline est fixée pour le 09 / 05 / 2021 à 23H55
 
 ## Evaluation
 
